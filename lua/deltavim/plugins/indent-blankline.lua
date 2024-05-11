@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 return {
   "lukas-reineke/indent-blankline.nvim",
   main = "ibl",
@@ -10,6 +11,7 @@ return {
     "IBLDisableScope",
     "IBLToggleScope",
   },
+  ---@type ibl.config
   opts = {
     indent = { char = "▏" },
     scope = {

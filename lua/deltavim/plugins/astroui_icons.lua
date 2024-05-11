@@ -1,5 +1,7 @@
+---@type LazyPluginSpec
 return {
   "AstroNvim/astroui",
+  ---@param opts AstroUIOpts
   opts = function(_, opts)
     opts.icons = require("deltavim.utils").merge({
       ActiveLSP = "",
@@ -66,6 +68,6 @@ return {
       VimIcon = "",
       Window = "󱂬",
       WordFile = "󰈭",
-    }, require "deltavim.lspkind")
+    } --[[@as AstroUIStatusOpts]], require "deltavim.lspkind")
   end,
 }

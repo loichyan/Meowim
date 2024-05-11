@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 return {
   "AstroNvim/astrocore",
   lazy = false,

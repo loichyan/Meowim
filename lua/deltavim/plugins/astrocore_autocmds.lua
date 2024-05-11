@@ -1,5 +1,7 @@
+---@type LazyPluginSpec
 return {
   "AstroNvim/astrocore",
+  ---@param opts AstroCoreOpts
   opts = function(_, opts)
     local config = require("deltavim").config.autocmds
     local astro, buf_utils = require "astrocore", require "astrocore.buffer"

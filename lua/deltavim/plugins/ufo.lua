@@ -1,5 +1,5 @@
+---@type LazyPluginSpec
 return {
-
   "kevinhwang91/nvim-ufo",
   event = { "User AstroFile", "InsertEnter" },
   dependencies = {
@@ -25,6 +25,7 @@ return {
       end
     end
 
+    ---@type UfoConfig
     return {
       preview = {
         win_config = {

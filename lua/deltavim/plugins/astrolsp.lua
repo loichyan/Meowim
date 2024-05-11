@@ -1,5 +1,7 @@
+---@type LazyPluginSpec
 return {
   "AstroNvim/astrolsp",
+  ---@param opts AstroLSPOpts
   opts = function(_, opts)
     require("deltavim.utils").merge(opts, {
       features = {

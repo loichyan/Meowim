@@ -1,5 +1,7 @@
+---@type LazyPluginSpec
 return {
   "AstroNvim/astroui",
+  ---@param opts AstroUIOpts
   opts = function(_, opts)
     local sign_handlers = {}
 

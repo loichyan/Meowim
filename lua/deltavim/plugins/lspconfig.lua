@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 return {
   "neovim/nvim-lspconfig",
   event = "User AstroFile",

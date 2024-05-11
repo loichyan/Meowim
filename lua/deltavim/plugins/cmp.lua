@@ -108,14 +108,16 @@ return {
     }
 
     local icon = require("astroui").get_icon
+    ---@type cmp.ConfigSchema
     return {
       enabled = function()
         if vim.bo[0].buftype == "prompt" then return false end
         ---@diagnostic disable-next-line: undefined-field
-        return vim.F.if_nil(vim.b.cmp_enabled, astro.config.features.cmp)
+        return vim.b.cmp_enabled ~= false or astro.config.features.cmp ~= false
       end,
       snippet = { expand = snip_expand },
       formatting = {
+        expandable_indicator = true,
         fields = { "kind", "abbr" },
         format = function(_, item)
           item.kind = " " .. icon(item.kind) .. " "

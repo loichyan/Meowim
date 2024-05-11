@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 return {
   "stevearc/dressing.nvim",
   lazy = true,

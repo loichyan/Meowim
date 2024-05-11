@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 return {
   "goolord/alpha-nvim",
   cmd = "Alpha",
@@ -5,6 +6,7 @@ return {
   dependencies = {
     {
       "AstroNvim/astrocore",
+      ---@param opts AstroCoreOpts
       opts = function(_, opts)
         local autocmd = opts.autocmds
 

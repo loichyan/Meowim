@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 return {
   "stevearc/aerial.nvim",
   event = "User AstroFile",

@@ -1,5 +1,6 @@
 require("deltavim").init()
 
+---@type LazySpec
 return {
   { "folke/lazy.nvim", dir = vim.env.LAZY },
   { "loichyan/DeltaVim", lazy = false, priority = 10000 },
