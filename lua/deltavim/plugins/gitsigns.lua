@@ -1,10 +1,8 @@
 ---@type LazyPluginSpec
 return {
   "lewis6991/gitsigns.nvim",
-
   enabled = vim.fn.executable "git" == 1,
   event = "User AstroGitFile",
-
   opts = function()
     local icon = require("astroui").get_icon
 

@@ -1,9 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "nvim-treesitter/nvim-treesitter",
-  dependencies = {
-    { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true },
-  },
+  dependencies = { { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true } },
   opts = {
     textobjects = {
       select = {

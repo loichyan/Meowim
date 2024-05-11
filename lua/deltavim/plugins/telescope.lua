@@ -10,6 +10,7 @@ return {
       build = "make",
     },
   },
+
   opts = function()
     local actions = require "telescope.actions"
     local icon = require("astroui").get_icon
@@ -44,6 +45,7 @@ return {
       },
     }
   end,
+
   config = function(_, opts)
     local telescope = require "telescope"
     telescope.setup(opts)

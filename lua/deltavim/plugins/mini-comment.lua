@@ -1,7 +1,6 @@
 ---@type LazyPluginSpec
 return {
   "echasnovski/mini.comment",
-
   dependencies = {
     {
       "JoosepAlviste/nvim-ts-context-commentstring",
@@ -9,7 +8,6 @@ return {
       opts = { enable_autocmd = false },
     },
   },
-
   keys = function()
     local plugin = require("lazy.core.config").spec.plugins["mini.comment"]
     local opts = require("lazy.core.plugin").values(plugin, "opts", false)
@@ -22,7 +20,6 @@ return {
       { mappings.textobject or "gc", mode = "o", desc = "Comment lines" },
     }
   end,
-
   opts = function()
     local cms_ok, cms = pcall(require, "ts_context_commentstring")
     return {

@@ -3,7 +3,5 @@ return {
   "AstroNvim/astrotheme",
   lazy = true,
   ---@type AstroThemeOpts
-  opts = {
-    plugins = { ["dashboard-nvim"] = true },
-  },
+  opts = { plugins = { ["dashboard-nvim"] = true } },
 }

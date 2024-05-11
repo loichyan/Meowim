@@ -2,6 +2,7 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
   cmd = "Neotree",
+
   dependencies = {
     { "MunifTanjim/nui.nvim", lazy = true },
     {
@@ -47,6 +48,7 @@ return {
       end,
     },
   },
+
   opts = function()
     local astro = require "astrocore"
     local icon = require("astroui").get_icon

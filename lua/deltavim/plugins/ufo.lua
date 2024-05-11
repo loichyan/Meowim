@@ -16,6 +16,7 @@ return {
       },
     },
   },
+
   opts = function()
     local function handleFallbackException(bufnr, err, providerName)
       if type(err) == "string" and err:match "UfoFallbackException" then
@@ -49,6 +50,7 @@ return {
       end,
     }
   end,
+
   config = function(_, opts)
     local ufo = require "ufo"
     ufo.setup(opts)
