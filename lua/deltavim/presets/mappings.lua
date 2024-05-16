@@ -37,6 +37,9 @@ return {
           ["<Leader>w"] = "buffer.close",
           ["<Leader>W"] = "common.close_window",
 
+          ["<Leader>l"] = { desc = icon("ActiveLSP", 1) .. "LSP" },
+          ["<Leader>lf"] = "conform.format",
+
           --------------
           -- quickfix
           --------------
@@ -61,7 +64,6 @@ return {
           ["]e"] = "diagnostic.next_error",
           ["[e"] = "diagnostic.prev_error",
 
-          ["<Leader>l"] = { desc = icon("ActiveLSP", 1) .. "LSP" },
           ["<Leader>ld"] = "diagnostic.list_document_diagnostics",
           ["<Leader>lD"] = "diagnostic.list_workspace_diagnostics",
           ["<Leader>le"] = "diagnostic.list_document_errors",
@@ -104,6 +106,8 @@ return {
           ["<Leader>ua"] = "autopairs.toggle_global",
           ["<Leader>uc"] = "cmp.toggle_buffer",
           ["<Leader>uC"] = "cmp.toggle_global",
+          ["<Leader>uf"] = "conform.toggle_buffer",
+          ["<Leader>uF"] = "conform.toggle_global",
           ["<Leader>un"] = "notify.dismiss",
           ["<Leader>ur"] = "illuminate.toggle_buffer",
           ["<Leader>uR"] = "illuminate.toggle_global",
@@ -256,6 +260,9 @@ return {
           [">"] = { ">gv", noremap = true },
           ["j"] = "common.j",
           ["k"] = "common.k",
+
+          ["<Leader>l"] = { desc = icon("ActiveLSP", 1) .. "LSP" },
+          ["<Leader>lf"] = "conform.format",
         },
       })
       -- override mappings by other available plugins
@@ -290,7 +297,7 @@ return {
   {
     "astrolsp",
     opts = function(_, opts)
-      local icon, utils = require("astroui").get_icon, require "deltavim.utils"
+      local utils = require "deltavim.utils"
       utils.make_mappings(opts.mappings, {
         n = {
           ------
@@ -306,7 +313,6 @@ return {
           ["gy"] = "lsp.goto_type_definition",
 
           ["<Leader>la"] = "lsp.code_action",
-          ["<Leader>lf"] = "lsp.format",
           ["<Leader>lg"] = "lsp.list_document_symbols",
           ["<Leader>lG"] = "lsp.list_workspace_symbols",
           ["<Leader>lh"] = "lsp.hover_signature_help",
@@ -316,18 +322,14 @@ return {
           ["<Leader>lL"] = "lsp.run_codelens",
           ["<Leader>lr"] = "lsp.rename",
 
-          ["<Leader>uf"] = "lsp.toggle_buffer_autoformat",
-          ["<Leader>uF"] = "lsp.toggle_global_autoformat",
           ["<Leader>uh"] = "lsp.toggle_buffer_inlay_hints",
           ["<Leader>uH"] = "lsp.toggle_global_inlay_hints",
           ["<Leader>uL"] = "lsp.toggle_global_codelens",
           ["<Leader>uY"] = "lsp.toggle_buffer_semantic_tokens",
         },
 
-        v = {
-          ["<Leader>l"] = { desc = icon("ActiveLSP", 1) .. "LSP" },
+        x = {
           ["<Leader>la"] = "lsp.code_action",
-          ["<Leader>lf"] = "lsp.format",
         },
       })
       -- override mappings by other available plugins

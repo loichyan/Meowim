@@ -23,10 +23,6 @@ return {
         },
       },
       flags = {},
-      formatting = {
-        format_on_save = { enabled = true },
-        disabled = { "lua_ls" },
-      },
       handlers = {
         ---@diagnostic disable-next-line: redefined-local
         function(server, opts) require("lspconfig")[server].setup(opts) end,
@@ -42,10 +38,6 @@ return {
         }),
       },
       servers = { "lua_ls" },
-      ---@type table<string,boolean|table> setup null-ls formatters
-      formatters = {
-        stylua = true,
-      },
       ---@type table<string,boolean|table> setup null-ls linters
       linters = {},
       on_attach = nil,

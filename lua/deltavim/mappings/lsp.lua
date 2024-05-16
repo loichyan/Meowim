@@ -1,16 +1,14 @@
-local formatting_enabled = require("deltavim.utils").formatting_enabled
-
 return {
   code_action = {
     function() vim.lsp.buf.code_action() end,
     desc = "Select symbol code action",
-    cond = "testDocument/codeAction",
+    cond = "textDocument/codeAction",
   },
 
   format = {
     function() vim.lsp.buf.format(require("astrolsp").format_opts) end,
     desc = "Format buffer",
-    cond = formatting_enabled,
+    cond = "textDocument/formatting",
   },
 
   rename = {
@@ -88,13 +86,13 @@ return {
   toggle_buffer_autoformat = {
     function() require("astrolsp.toggles").buffer_autoformat() end,
     desc = "Toggle autoformatting (buffer)",
-    cond = formatting_enabled,
+    cond = "textDocument/formatting",
   },
 
   toggle_global_autoformat = {
     function() require("astrolsp.toggles").autoformat() end,
     desc = "Toggle autoformatting (global)",
-    cond = formatting_enabled,
+    cond = "textDocument/formatting",
   },
 
   toggle_buffer_inlay_hints = {

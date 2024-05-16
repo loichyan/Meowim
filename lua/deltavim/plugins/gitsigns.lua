@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 ---@type LazyPluginSpec
 return {
   "lewis6991/gitsigns.nvim",
@@ -6,7 +7,6 @@ return {
   opts = function()
     local icon = require("astroui").get_icon
     ---@type Gitsigns.Config
-    ---@diagnostic disable: missing-fields
     return {
       signs = {
         add = { text = icon "GitSign" },
