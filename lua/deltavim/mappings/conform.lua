@@ -2,6 +2,11 @@
 return {
   { cond = "conform.nvim" },
 
+  show_info = {
+    "<Cmd>ConformInfo<CR>",
+    desc = "Show formatters status",
+  },
+
   format = {
     "<Cmd>Format<CR>",
     desc = "Format buffer",
