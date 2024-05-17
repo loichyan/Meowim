@@ -114,4 +114,53 @@ function M.telescope_find_files(cwd)
   end
 end
 
+---Resolves all available linters for a specific buffer. This function is a
+---drop-in replacement for `require("lint)._resolve_linter_by_ft`.
+---@param filetype string? filetype to resolve, default is the current buffer's
+function M.resolve_linters_by_ft(filetype)
+  local lint = require "lint"
+  local by_ft = lint.linters_by_ft
+  filetype = filetype or vim.bo.filetype
+
+  -- find all available linters
+  local linters = by_ft[filetype]
+  if not linters then
+    linters = {}
+    for _, ft in pairs(vim.split(filetype, ".", { plain = true })) do
+      M.concat(linters, by_ft[ft] or {})
+    end
+  end
+
+  if #linters == 0 then linters = by_ft["_"] or {} end -- use fallback linters
+  M.concat(linters, by_ft["*"] or {}) -- append global linters
+
+  -- dedup and validate configured linters
+  local dedup_linters = {}
+  for _, name in ipairs(linters) do
+    if
+      not dedup_linters[name]
+      and lint.linters[name]
+      and vim.fn.executable(lint.linters[name].cmd) == 1
+    then
+      dedup_linters[name] = true
+    end
+  end
+  return vim.tbl_keys(dedup_linters)
+end
+
+---Debounces a function callback, i.e. ensure the function is not invoked until
+---`ms` milliseconds have elapsed since the last call.
+---@param ms integer minimal milliseconds during two calls
+---@param fn function function to be invoked
+function M.debounce(ms, fn)
+  local timer = assert(vim.uv.new_timer())
+  return function(...)
+    local argv = { ... }
+    timer:start(ms, 0, function()
+      timer:stop()
+      vim.schedule_wrap(fn)(unpack(argv))
+    end)
+  end
+end
+
 return M

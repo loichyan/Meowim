@@ -61,6 +61,7 @@ function M.defer_startup()
   M.pause()
 
   -- defer initially for 500ms or until `vim.notify` changes
+  -- TODO: remove vim.loop after NeoVim v0.9
   local uv = vim.uv or vim.loop
   local timer, checker = uv.new_timer(), uv.new_check()
 
