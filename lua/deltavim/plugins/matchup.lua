@@ -2,7 +2,7 @@
 return {
   "andymass/vim-matchup",
   lazy = true,
-  event = "VeryLazy",
+  event = "User AstroFile",
   specs = {
     "nvim-treesitter",
     opts = {
