@@ -4,9 +4,9 @@ return {
   lazy = true,
   event = "VeryLazy",
   specs = {
-    "nvim-treesitter/nvim-treesitter",
-    matchup = {
-      enable = true,
+    "nvim-treesitter",
+    opts = {
+      matchup = { enable = true },
     },
   },
 }
