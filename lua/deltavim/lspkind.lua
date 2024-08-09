@@ -1,43 +1,10 @@
-return {
-  -- Credit: https://github.com/NvChad/ui/blob/1e0e198/lua/nvchad/icons/lspkind.lua
-  Array = "",
-  Boolean = "",
-  Calendar = "",
-  Class = "󰠱",
-  Codeium = "",
-  Color = "󰏘",
-  Constant = "󰏿",
-  Constructor = "",
-  Copilot = "",
-  Enum = "",
-  EnumMember = "",
-  Event = "",
-  Field = "󰜢",
-  File = "󰈚",
-  Folder = "󰉋",
-  Function = "󰆧",
-  Interface = "",
-  Keyword = "󰌋",
-  Method = "󰆧",
-  Module = "",
-  Namespace = "󰌗",
-  Null = "󰟢",
-  Number = "",
-  Object = "󰅩",
-  Operator = "󰆕",
-  Package = "",
-  Property = "󰜢",
-  Reference = "󰈇",
-  Snippet = "",
-  String = "󰉿",
-  Struct = "󰙅",
-  TabNine = "",
-  Table = "",
-  Tag = "",
-  Text = "󰉿",
-  TypeParameter = "󰊄",
-  Unit = "󰑭",
-  Value = "󰎠",
-  Variable = "󰀫",
-  Watch = "󰥔",
-}
+local lspkind, icons = {}, require "mini.icons"
+
+for _, kind in ipairs(vim.lsp.protocol.CompletionItemKind) do
+  lspkind[kind] = icons.get("lsp", kind)
+end
+for _, kind in ipairs(vim.lsp.protocol.SymbolKind) do
+  lspkind[kind] = icons.get("lsp", kind)
+end
+
+return lspkind

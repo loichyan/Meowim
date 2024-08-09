@@ -64,7 +64,7 @@ return {
       end, { "i", "s" }),
     }
 
-    local icon = require("astroui").get_icon
+    local lspkind = require "deltavim.lspkind"
     ---@type cmp.ConfigSchema
     return {
       enabled = function()
@@ -81,7 +81,9 @@ return {
         expandable_indicator = true,
         fields = { "kind", "abbr" },
         format = function(_, item)
-          item.kind = " " .. icon(item.kind) .. " "
+          item.kind = " "
+            .. (lspkind[item.kind] or require("mini.icons").get("default", "lsp"))
+            .. " "
           return item
         end,
       },

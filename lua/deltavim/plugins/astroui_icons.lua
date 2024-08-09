@@ -3,7 +3,7 @@ return {
   "astroui",
   ---@param opts AstroUIOpts
   opts = function(_, opts)
-    opts.icons = require("deltavim.utils").merge({
+    opts.icons = {
       ActiveLSP = "",
       ActiveTS = "",
       ArrowLeft = "",
@@ -68,6 +68,6 @@ return {
       VimIcon = "",
       Window = "󱂬",
       WordFile = "󰈭",
-    } --[[@as AstroUIStatusOpts]], require "deltavim.lspkind")
+    }
   end,
 }
