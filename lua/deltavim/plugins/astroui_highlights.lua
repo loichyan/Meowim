@@ -5,7 +5,7 @@ return {
   opts = function(_, opts)
     opts.highlights = {
       init = function()
-        local hlgroup, lspkind = require("astroui").get_hlgroup, require "deltavim.lspkind"
+        local hlgroup = require("astroui").get_hlgroup
 
         local Error = hlgroup("Error").fg
         local NormalFloat = hlgroup "NormalFloat"
@@ -33,12 +33,11 @@ return {
 
         -- Atom style completion menu
         -- Credit: https://github.com/NvChad/base46/blob/adb64a6/lua/base46/integrations/cmp.lua#L100-L108
-        for kind, _ in pairs(lspkind) do
-          local hlname = "CmpItemKind" .. kind
+        local miniicon = require "mini.icons"
+        for kind, _ in pairs(require "deltavim.lspkind") do
+          local _, hlname = miniicon.get("lsp", kind)
           local hl = hlgroup(hlname)
-          hl.bg = hl.fg
-          hl.fg = NormalFloat.bg
-          highlights[hlname] = hl
+          highlights["CmpItemKind" .. kind] = { bg = hl.fg, fg = NormalFloat.bg }
         end
 
         return highlights
