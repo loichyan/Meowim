@@ -95,7 +95,7 @@ local opts = {
   },
 
   install = {
-    colorscheme = { "habamax" },
+    colorscheme = { "astrotheme", "habamax" },
   },
 
   ui = {
