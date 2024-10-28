@@ -1,14 +1,5 @@
----@module "lazy"
-
 if package.loaded["lazy"] then
-  -- Keep plugin management separate from configuration logic.
-  --
-  -- Note that lazy.nvim overrides Neovim's built-in loader, causing
-  -- pack/*/start/* to be sourced again. The overhead is minimal since the
-  -- files are marked as no-op after lazy.nvim loads (using package.loaded).
-  --
-  -- For more details, see: https://github.com/folke/lazy.nvim/issues/1180
-  --
+  -- https://github.com/folke/lazy.nvim/issues/1180
   return
 end
 
@@ -40,68 +31,19 @@ vim.opt.rtp:prepend(lazypath)
 
 ---@type LazyConfig
 local opts = {
-  performance = {
-    rtp = {
-      disabled_plugins = {
-        "2html_plugin",
-        "bugreport",
-        "ftplugin",
-        "getscript",
-        "getscriptPlugin",
-        "gzip",
-        "health",
-        "logipat",
-        "matchit",
-        "matchparen",
-        "netrw",
-        "netrwFileHandlers",
-        "netrwPlugin",
-        "netrwSettings",
-        "nvim",
-        "optwin",
-        "rplugin",
-        "rrhelper",
-        "spellfile",
-        "spellfile_plugin",
-        "synmenu",
-        "syntax",
-        "tar",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "vimball",
-        "vimballPlugin",
-        "zip",
-        "zipPlugin",
-      },
-    },
-  },
-
   defaults = {
     lazy = false,
-    version = false,
+  },
+
+  local_spec = false,
+
+  git = {
+    log = { "-4" },
+    timeout = 60,
   },
 
   pkg = {
     enabled = false,
-  },
-
-  readme = {
-    enabled = false,
-  },
-
-  change_detection = {
-    enabled = false,
-  },
-
-  install = {
-    colorscheme = { "astrotheme", "habamax" },
-  },
-
-  ui = {
-    pills = false,
-    border = "single",
-    backdrop = 100,
   },
 
   dev = {
@@ -109,6 +51,53 @@ local opts = {
     patterns = {
       os.getenv "USER" or os.getenv "USERNAME",
     },
+  },
+
+  install = {
+    colorscheme = { "astrotheme", "default" },
+  },
+
+  ui = {
+    border = "single",
+    backdrop = 100,
+    pills = true,
+    size = { width = 0.9, height = 0.9 },
+  },
+
+  custom_keys = {
+    ["<localleader>l"] = nil,
+    ["<localleader>t"] = nil,
+  },
+
+  diff = {
+    cmd = "diffview.nvim",
+  },
+
+  change_detection = {
+    notify = false,
+  },
+
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "man",
+        "matchit",
+        "matchparen",
+        "netrwPlugin",
+        "osc52",
+        "rplugin",
+        "spellfile",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+
+  readme = {
+    enabled = false,
   },
 }
 
