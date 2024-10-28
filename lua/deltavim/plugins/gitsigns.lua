@@ -1,4 +1,4 @@
----@module "gitsigns"
+---@module "gitsigns.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {

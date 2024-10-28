@@ -1,4 +1,4 @@
----@module "resession"
+---@module "resession.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {

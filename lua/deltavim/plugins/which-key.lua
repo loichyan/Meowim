@@ -1,4 +1,4 @@
----@module "which-key"
+---@module "which-key.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {

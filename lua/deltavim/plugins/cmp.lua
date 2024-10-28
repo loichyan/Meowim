@@ -1,4 +1,4 @@
----@module "cmp"
+---@module "nvim-cmp"
 
 ---@type LazyPluginSpec
 local Spec = {
@@ -7,8 +7,8 @@ local Spec = {
 
   dependencies = {
     { "hrsh7th/cmp-buffer", lazy = true },
-    { "hrsh7th/cmp-path", lazy = true },
-    { "cmp-nvim-lsp", optional = true },
+    { "hrsh7th/cmp-path",   lazy = true },
+    { "cmp-nvim-lsp",       optional = true },
   },
 
   opts = function()
@@ -44,9 +44,9 @@ local Spec = {
 
       ["<Tab>"] = cmapping(function(fallback)
         if
-          vim.api.nvim_get_mode() ~= "c"
-          and vim.snippet
-          and vim.snippet.active { direction = 1 }
+            vim.api.nvim_get_mode() ~= "c"
+            and vim.snippet
+            and vim.snippet.active { direction = 1 }
         then
           vim.schedule(function() vim.snippet.jump(1) end)
         else
@@ -55,9 +55,9 @@ local Spec = {
       end, { "i", "s" }),
       ["<S-Tab>"] = cmapping(function(fallback)
         if
-          vim.api.nvim_get_mode() ~= "c"
-          and vim.snippet
-          and vim.snippet.active { direction = -1 }
+            vim.api.nvim_get_mode() ~= "c"
+            and vim.snippet
+            and vim.snippet.active { direction = -1 }
         then
           vim.schedule(function() vim.snippet.jump(-1) end)
         else
@@ -84,8 +84,8 @@ local Spec = {
         fields = { "kind", "abbr" },
         format = function(_, item)
           item.kind = " "
-            .. (lspkind[item.kind] or require("mini.icons").get("default", "lsp"))
-            .. " "
+              .. (lspkind[item.kind] or require("mini.icons").get("default", "lsp"))
+              .. " "
           return item
         end,
       },
@@ -107,9 +107,9 @@ local Spec = {
         },
       },
       sources = {
-        { name = "buffer", priority = 500, group_index = 2 },
+        { name = "buffer",   priority = 500, group_index = 2 },
         { name = "nvim_lsp", priority = 1000 },
-        { name = "path", priority = 250 },
+        { name = "path",     priority = 250 },
       },
       mapping = mapping,
     }

@@ -1,4 +1,4 @@
----@module "neoconf"
+---@module "neoconf.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {

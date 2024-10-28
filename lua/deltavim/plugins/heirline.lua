@@ -1,4 +1,4 @@
----@module "herline"
+---@module "herline.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {
@@ -22,7 +22,7 @@ local Spec = {
         colors = require("astroui").config.status.setup_colors(),
         disable_winbar_cb = function(args)
           return not require("astrocore.buffer").is_valid(args.buf)
-            or condition.buffer_matches({ buftype = { "terminal", "nofile" } }, args.buf)
+              or condition.buffer_matches({ buftype = { "terminal", "nofile" } }, args.buf)
         end,
       },
 

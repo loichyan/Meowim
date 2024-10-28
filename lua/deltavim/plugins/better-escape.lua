@@ -1,4 +1,4 @@
----@module "better-escape"
+---@module "better-escape.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {

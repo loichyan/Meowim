@@ -1,4 +1,4 @@
----@module "lazydev"
+---@module "lazydev.nvim"
 
 local Spec = {
   "folke/lazydev.nvim",
@@ -6,11 +6,11 @@ local Spec = {
   cmd = "LazyDev",
   opts = function(_, opts)
     opts.library = {
-      { path = "astrocore", words = { "AstroCore" } },
-      { path = "astrolsp", words = { "AstroLSP" } },
-      { path = "astrotheme", words = { "AstroTheme" } },
-      { path = "astroui", words = { "AstroUI" } },
-      { path = "lazy.nvim", words = { "Lazy" } },
+      { path = "astrocore",          words = { "AstroCore" } },
+      { path = "astrolsp",           words = { "AstroLSP" } },
+      { path = "astrotheme",         words = { "AstroTheme" } },
+      { path = "astroui",            words = { "AstroUI" } },
+      { path = "lazy.nvim",          words = { "Lazy" } },
       { path = "luvit-meta/library", words = { "vim%.uv" } },
     }
     if vim.fn.has "nvim-0.10" ~= 1 then

@@ -1,4 +1,4 @@
----@module "aerial"
+---@module "aerial.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {
