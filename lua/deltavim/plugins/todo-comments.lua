@@ -1,4 +1,4 @@
----@module "todo-comments"
+---@module "todo-comments.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {

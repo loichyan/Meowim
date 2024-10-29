@@ -2,7 +2,7 @@
 
 ---@type LazyPluginSpec
 local Spec = {
-  "L3MON4D3/LuaSnip",
+  "l3mon4d3/luasnip",
   lazy = true,
   dependencies = { { "rafamadriz/friendly-snippets", lazy = true } },
   specs = {

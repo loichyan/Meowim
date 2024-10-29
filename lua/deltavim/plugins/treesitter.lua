@@ -1,4 +1,4 @@
----@module "treesitter"
+---@module "nvim-treesitter"
 
 ---@type LazyPluginSpec
 local Spec = {

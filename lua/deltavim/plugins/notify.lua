@@ -1,4 +1,4 @@
----@module "notify"
+---@module "nvim-notify"
 
 ---@type LazyPluginSpec
 local Spec = {

@@ -1,4 +1,4 @@
----@module "neo-tree"
+---@module "neo-tree.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {
@@ -18,8 +18,8 @@ local Spec = {
               desc = "Open Explorer on startup with directory",
               callback = function()
                 if
-                  package.loaded["neo-tree"]
-                  or not require("astrocore").is_available "neo-tree.nvim"
+                    package.loaded["neo-tree"]
+                    or not require("astrocore").is_available "neo-tree.nvim"
                 then
                   return true
                 end

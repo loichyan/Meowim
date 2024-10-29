@@ -1,11 +1,13 @@
+---@module "nvim-lspconfig"
+
 ---@type LazyPluginSpec
 local Spec = {
   "neovim/nvim-lspconfig",
   event = "User AstroFile",
   cmd = { "LspInfo", "LspLog", "LspStart" },
   dependencies = {
-    { "neoconf.nvim", optional = true },
-    { "williamboman/mason.nvim", config = true },
+    { "neoconf.nvim",                      optional = true },
+    { "williamboman/mason.nvim",           config = true },
     { "williamboman/mason-lspconfig.nvim", config = true }
   },
   config = function(_, _)

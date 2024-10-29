@@ -1,4 +1,4 @@
----@module "alpha"
+---@module "alpha-nvim"
 
 ---@type LazyPluginSpec
 local Spec = {
@@ -33,11 +33,11 @@ local Spec = {
                 local keys = { "showtabline", "laststatus", "cmdheight" }
 
                 if
-                  not before
-                  and (
-                    (ev.event == "User" and ev.file == "AlphaReady")
-                    or (ev.event == "BufWinEnter" and vim.bo[ev.buf].filetype == "alpha")
-                  )
+                    not before
+                    and (
+                      (ev.event == "User" and ev.file == "AlphaReady")
+                      or (ev.event == "BufWinEnter" and vim.bo[ev.buf].filetype == "alpha")
+                    )
                 then
                   before = {}
                   for _, k in ipairs(keys) do
@@ -46,9 +46,9 @@ local Spec = {
                   end
                   vim.g.before_alpha = before
                 elseif
-                  before
-                  and ev.event == "BufWinEnter"
-                  and vim.bo[ev.buf].buftype ~= "nofile"
+                    before
+                    and ev.event == "BufWinEnter"
+                    and vim.bo[ev.buf].buftype ~= "nofile"
                 then
                   for _, k in ipairs(keys) do
                     vim.opt[k] = before[k]
@@ -161,12 +161,12 @@ local Spec = {
         local ms = math.floor(stats.startuptime * 100 + 0.5) / 100
         opts.section.footer.val = {
           "Neovim loaded "
-            .. stats.loaded
-            .. "/"
-            .. stats.count
-            .. " plugins  in "
-            .. ms
-            .. "ms",
+          .. stats.loaded
+          .. "/"
+          .. stats.count
+          .. " plugins  in "
+          .. ms
+          .. "ms",
         }
         pcall(vim.cmd.AlphaRedraw)
       end,

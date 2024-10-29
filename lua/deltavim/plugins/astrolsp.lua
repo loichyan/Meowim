@@ -1,4 +1,4 @@
----@module "astrocore"
+---@module "astrolsp"
 
 ---@type LazyPluginSpec
 local Spec = {

@@ -1,4 +1,4 @@
----@module "telescope"
+---@module "telescope.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {

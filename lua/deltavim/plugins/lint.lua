@@ -1,4 +1,4 @@
----@module "lint"
+---@module "nvim-lint"
 
 ---@type LazyPluginSpec
 local Spec = {
@@ -21,7 +21,7 @@ local Spec = {
       local base = lint.linters[name]
       lint.linters[name] = (type(linter) == "table" and type(base) == "table")
           and vim.tbl_deep_extend("force", base, linter)
-        or linter
+          or linter
     end
 
     lint.linters_by_ft = opts.linters_by_ft

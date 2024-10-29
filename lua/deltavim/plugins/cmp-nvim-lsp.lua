@@ -1,4 +1,4 @@
----@module "cmp"
+---@module "cmp-nvim-lsp"
 
 ---@type LazyPluginSpec
 local Spec = {

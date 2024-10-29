@@ -1,4 +1,4 @@
----@module "plenary"
+---@module "plenary.nvim"
 
 ---@type LazyPluginSpec
 local Spec = {
@@ -6,4 +6,3 @@ local Spec = {
 }
 
 return Spec
-
