@@ -1,6 +1,2 @@
-# Lazy.nvim
-/lazy-lock.json
-
-# User configurations
-/lua/pde
-/lua/pde.lua
+/init.lua
+/lua/config

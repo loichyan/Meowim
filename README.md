@@ -1,27 +1,24 @@
-# 🌱 DeltaVim
+# 😺 Meowim
 
-DeltaVim is a personalized fork of [AstroNvim](https://github.com/AstroNvim/AstroNvim).
+Meowim is a starting point for your PDE (Personal Development Environment) with Neovim.
 
-<!-- prettier-ignore -->
 > [!IMPORTANT]
 > Currently, this project is mainly focused on my personal use, so it might frequently introduce
 > breaking changes. In the future, it may be maintained as a Neovim distribution for public use.
 > Nevertheless, any suggestions and contributions are sincerely appreciated!
 >
-> BTW, you might want to check out
-> [my Neovim configuration](https://github.com/loichyan/nvim) for more details.
+> BTW, you might want to check out [my Neovim configuration](https://github.com/loichyan/nvim)
+> for more details.
 
 ## ⭐ Credits
 
-Heartfelt gratitude to the following distros that provided immense inspiration for the development
-of this project:
+Heartfelt thanks to these projects for providing excellent configuration references:
 
 - [AstroNvim](https://github.com/AstroNvim/AstroNvim)
-- [CosmicVim](https://github.com/CosmicNvim/CosmicNvim)
-- [LunarVim](https://github.com/LunarVim)
+- [LazyVim](https://github.com/LazyVim/LazyVim)
+- [LunarVim](https://github.com/LunarVim/LunarVim)
 - [NvChad](https://github.com/NvChad/NvChad)
 
 ## ⚖️ License
 
-Licensed under GNU General Public License, Version 3.0 ([LICENSE](LICENSE) or
-<https://www.gnu.org/licenses/gpl-3.0>).
+Licensed under GNU General Public License, Version 3.0 ([LICENSE](LICENSE) or <https://www.gnu.org/licenses/gpl-3.0>).
