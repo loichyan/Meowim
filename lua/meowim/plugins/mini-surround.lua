@@ -1,0 +1,21 @@
+---@type LazyPluginSpec
+---@type MeoSpec
+return {
+    "mini.surround",
+    lazy = true,
+    config = function()
+        require("mini.surround").setup({
+            n_lines = 500,
+            search_method = "cover_or_next",
+            mappings = {
+                add = "yz",
+                delete = "dz",
+                replace = "cz",
+                find = "",
+                find_left = "",
+                highlight = "",
+                update_n_lines = "",
+            },
+        })
+    end,
+}

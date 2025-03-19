@@ -1,7 +1,6 @@
-local M = {}
+---@class Meowim
+local Meowim = {}
 
-function M.setup(opts)
-    _ = opts
-end
+function Meowim.setup(opts) _ = opts end
 
-return M
+return Meowim
