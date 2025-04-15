@@ -40,5 +40,5 @@ return {
             end,
         })
     end,
-    dependencies = { "mini.sessions" },
+    dependencies = { "mini.sessions", "mini.tabline", "mini.statusline" },
 }

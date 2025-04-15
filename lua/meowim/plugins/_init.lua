@@ -1,6 +1,11 @@
 ---@type MeoSpecs
 return {
-    { "echasnovski/mini.nvim", lazy = false, priority = 0 },
+    {
+        "echasnovski/mini.nvim",
+        lazy = false,
+        priority = 0,
+        imports = { "meowim.plugins.mini" },
+    },
     {
         "Meowim:autocommands",
         shadow = true,
