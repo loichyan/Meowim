@@ -1,8 +1,7 @@
 ---@type MeoSpec
 return {
     "folke/snacks.nvim",
-    lazy = false,
-    priority = 10,
+    lazy = true,
     config = function()
         require("snacks").setup({
             bigfile = { enabled = true },
@@ -11,7 +10,9 @@ return {
         })
         vim.api.nvim_create_autocmd("User", {
             pattern = "MiniFilesActionRename",
-            callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
+            callback = function(event)
+                require("snacks.rename").on_rename_file(event.data.from, event.data.to)
+            end,
         })
     end,
 }

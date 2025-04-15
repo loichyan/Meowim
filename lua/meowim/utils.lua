@@ -19,7 +19,7 @@ end
 ---Returns the name of current session if valid.
 ---@return string?
 function Utils.session_get()
-    local name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+    local name = vim.fs.basename(vim.fn.getcwd())
     -- Ignore a hidden directory.
     if vim.startswith(name, ".") then
         return
@@ -33,7 +33,7 @@ function Utils.session_get()
 end
 
 function Utils.session_restore()
-    local name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+    local name = vim.fs.basename(vim.fn.getcwd())
     if not name then
         return
     end
