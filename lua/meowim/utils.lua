@@ -60,6 +60,44 @@ function Utils.fzf_files(hidden)
     end
 end
 
+---Creates an automatically cached colorscheme:
+---  1. Create `colors/<name>.lua` in your configuration directory.
+---  2. Call `cached_colorscheme(<name>, <set up your colorscheme>)`.
+---@param name string
+---@param setup fun()
+function Utils.cached_colorscheme(name, setup)
+    local curr_path = vim.api.nvim_get_runtime_file("/colors/" .. name .. ".lua", false)[1]
+    if not curr_path then
+        error("cannot find the specified colorscheme: " .. name)
+    end
+    local curr_ts = assert(vim.loop.fs_stat(curr_path)).mtime.nsec
+
+    local cache_dir = vim.fn.stdpath("cache") .. "/colors/"
+    local cache_path = cache_dir .. name .. ".lua"
+    local cache_ts_path = cache_dir .. name .. ".timestamp"
+
+    local _, cache_ts_file = pcall(io.open, cache_ts_path, "r")
+    if cache_ts_file then
+        local cache_ts = cache_ts_file:read("*n")
+        if cache_ts == curr_ts then
+            -- Cache is the latest, load it.
+            dofile(cache_path)
+            return
+        end
+    end
+
+    -- Cache is not found or expired, compile the colorscheme.
+    setup()
+    require("mini.colors").get_colorscheme():write({
+        compress = true,
+        directory = cache_dir,
+        name = name,
+    })
+    assert(io.open(cache_ts_path, "w"):write(curr_ts))
+    local compiled = string.dump(assert(loadfile(cache_path)), true)
+    assert(io.open(cache_path, "wb"):write(compiled))
+end
+
 ---Returns the state of a toggler of current buffer.
 ---@param bufid integer
 ---@param key string
