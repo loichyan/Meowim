@@ -18,20 +18,51 @@ require("meowim.utils").cached_colorscheme("onedark", function()
             base0E = "#c678dd",
             base0F = "#be5046",
         },
-        use_cterm = true,
+        use_cterm = false,
+        -- stylua: ignore
+        plugins = {
+            default = false,
+            ["echasnovski/mini.nvim"] = true,
+            ["ggandor/leap.nvim"]     = true,
+            ["hrsh7th/nvim-cmp"]      = true,
+            ["ibhagwan/fzf-lua"]      = true,
+        },
     })
 
-    local hl = vim.api.nvim_set_hl
+    ---@return vim.api.keyset.get_hl_info
+    local gethl = function(name) return vim.api.nvim_get_hl(0, { name = name, link = false }) end
+    ---@param hl vim.api.keyset.highlight
+    local sethl = function(name, hl) vim.api.nvim_set_hl(0, name, hl) end
+
+    local removebg = function(name)
+        sethl(name, vim.tbl_extend("force", gethl(name), { bg = "NONE", ctermbg = "NONE" }))
+    end
+
     -- Reuse highlights of nvim-cmp for blink.cmp.
     for k, _ in pairs(vim.lsp.protocol.CompletionItemKind) do
         if type(k) == "string" then
-            hl(0, "BlinkCmpKind" .. k, { link = "CmpItemKind" .. k })
+            sethl("BlinkCmpKind" .. k, { link = "CmpItemKind" .. k })
         end
     end
 
     -- Reuse highlights of leap.nvim for flash.nvim.
-    hl(0, "FlashBackdrop", { link = "LeapBackdrop" })
-    hl(0, "FlashCurrent", { link = "LeapLabelSelected" })
-    hl(0, "FlashLabel", { link = "LeapLabel" })
-    hl(0, "FlashMatch", { link = "LeapMatch" })
+    sethl("FlashBackdrop", { link = "LeapBackdrop" })
+    sethl("FlashCurrent", { link = "LeapLabelSelected" })
+    sethl("FlashLabel", { link = "LeapLabel" })
+    sethl("FlashMatch", { link = "LeapMatch" })
+
+    -- Improve highlights for window separators, sign columns, and tabline.
+    removebg("WinSeparator")
+    removebg("LineNr")
+    removebg("LineNrAbove")
+    removebg("LineNrBelow")
+    removebg("CursorLineNr")
+    removebg("SignColumn")
+    removebg("CursorLineSign")
+    removebg("DiagnosticSignError")
+    removebg("DiagnosticSignHint")
+    removebg("DiagnosticSignInfo")
+    removebg("DiagnosticSignOk")
+    removebg("DiagnosticSignWarn")
+    sethl("MiniTabLineFill", { link = "MiniTabLineVisible" })
 end)

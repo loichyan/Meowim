@@ -16,10 +16,14 @@ return {
                 },
             },
         }
+
         local lspconfig = require("lspconfig")
         for name, config in pairs(servers) do
             config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
             lspconfig[name].setup(config)
         end
+
+        -- Other configurations
+        vim.diagnostic.config({ virtual_text = true })
     end,
 }

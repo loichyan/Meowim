@@ -2,6 +2,7 @@
 return {
     "mini.starter",
     lazy = false,
+    priority = 40,
     config = function()
         local starter = require("mini.starter")
         starter.setup({
@@ -39,6 +40,23 @@ return {
                 return ("Loaded %d/%d plugins  in %.2fms"):format(loaded, total, time / 1000000)
             end,
         })
+
+        local laststatus = nil
+        vim.api.nvim_create_autocmd({ "User", "BufWinEnter" }, {
+            desc = "Configure MiniStarter",
+            callback = function()
+                if vim.bo.filetype ~= "ministarter" then
+                    if laststatus then
+                        vim.o.laststatus = laststatus
+                    end
+                    laststatus = nil
+                    return
+                elseif not laststatus then
+                    laststatus = vim.o.laststatus
+                    vim.o.laststatus = 0
+                end
+            end,
+        })
     end,
-    dependencies = { "mini.sessions", "mini.tabline", "mini.statusline" },
+    dependencies = { "mini.sessions" },
 }
