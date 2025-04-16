@@ -39,6 +39,10 @@ Meow.keyset({
     { "<Esc>", super_clear, desc = "Clear trivial items" },
     { "<C-C>", super_clear, desc = "Clear trivial items" },
 
+    -- toggles
+    { "<LocalLeader>f", require("meowim.utils").create_toggler("autoformat_disabled", false), desc = "Toggle autoformat"          },
+    { "<LocalLeader>F", require("meowim.utils").create_toggler("autoformat_disabled", true),  desc = "Toggle autoformat globally" },
+
     -- buffers/tabs/windows
     { "<Leader>n",  "<Cmd>enew<CR>",                                   desc = "New buffer"           },
     { "<Leader>t",  "<Cmd>tabnew<CR>",                                 desc = "New tab"              },
@@ -115,9 +119,12 @@ Meow.keyset({
     { "<Leader>fr", function() require("fzf-lua").resume() end,                      desc = "Resume picker"     },
     { "<Leader>fR", function() require("fzf-lua").registers() end,                   desc = "Find registers"    },
 
-    -- toggles
-    { "<LocalLeader>f", require("meowim.utils").create_toggler("autoformat_disabled", false), desc = "Toggle autoformat"          },
-    { "<LocalLeader>F", require("meowim.utils").create_toggler("autoformat_disabled", true),  desc = "Toggle autoformat globally" },
+    -- git
+    { "<Leader>gb", "<Plug>(git-conflict-both)",                              desc = "Accept both changes"     },
+    { "<Leader>gB", "<Plug>(git-conflict-none)",                              desc = "Accept base changes"     },
+    { "<Leader>gc", "<Plug>(git-conflict-ours)",                              desc = "Accept current changes"  },
+    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                            desc = "Accept incoming changes" },
+    { "<Leader>gs", function() require("mini.diff").do_hunks(0, "apply") end, desc = "Stage buffer hunks"      },
 })
 
 -- stylua: ignore
