@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "folke/lazydev.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         ---@diagnostic disable-next-line:missing-fields
         require("lazydev").setup({

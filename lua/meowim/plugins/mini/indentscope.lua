@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.indentscope",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         local indentscope = require("mini.indentscope")
         indentscope.setup({

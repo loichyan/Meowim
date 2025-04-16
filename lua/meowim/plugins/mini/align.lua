@@ -1,6 +1,6 @@
 ---@type MeoSpec
 return {
     "mini.align",
-    lazy = true,
+    event = "VeryLazy",
     config = function() require("mini.align").setup() end,
 }

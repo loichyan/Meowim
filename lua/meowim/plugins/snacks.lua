@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "folke/snacks.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         require("snacks").setup({
             bigfile = { enabled = true },

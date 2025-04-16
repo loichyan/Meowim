@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.ai",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         local ai = require("mini.ai")
         local ts = ai.gen_spec.treesitter

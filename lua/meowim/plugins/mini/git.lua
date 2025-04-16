@@ -1,6 +1,6 @@
 ---@type MeoSpec
 return {
     "mini.git",
-    lazy = true,
+    event = "VeryLazy",
     config = function() require("mini.git").setup() end,
 }

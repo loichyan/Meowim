@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "folke/flash.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         ---@diagnostic disable:missing-fields
         require("flash").setup({

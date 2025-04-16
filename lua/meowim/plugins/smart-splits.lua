@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mrjones2014/smart-splits.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         require("smart-splits").setup({
             resize_mode = { quit_key = "q", silent = true },

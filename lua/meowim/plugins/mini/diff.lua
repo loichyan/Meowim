@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.diff",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         require("mini.diff").setup({
             mappings = {

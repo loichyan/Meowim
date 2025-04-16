@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.hipatterns",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         local hipatterns = require("mini.hipatterns")
         local hi_words = require("mini.extra").gen_highlighter.words

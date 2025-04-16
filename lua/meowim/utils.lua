@@ -125,4 +125,14 @@ function Utils.create_toggler(key, global)
     end
 end
 
+---Creates an one-off autocommand triggered by the `VeryLazy` event.
+---@param callback fun()
+function Utils.on_very_lazy(callback)
+    vim.api.nvim_create_autocmd("User", {
+        once = true,
+        pattern = "VeryLazy",
+        callback = callback,
+    })
+end
+
 return Utils

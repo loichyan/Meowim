@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.operators",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         -- stylua: ignore
         require("mini.operators").setup({

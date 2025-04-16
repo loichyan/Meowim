@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.snippets",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         local snippets = require("mini.snippets")
         snippets.setup({

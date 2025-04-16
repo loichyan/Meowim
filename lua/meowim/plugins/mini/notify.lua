@@ -2,7 +2,7 @@
 return {
     "mini.notify",
     lazy = false,
-    priority = 10,
+    priority = 95,
     config = function()
         local notify = require("mini.notify")
         notify.setup()

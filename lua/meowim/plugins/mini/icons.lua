@@ -2,7 +2,7 @@
 return {
     "mini.icons",
     lazy = false,
-    priority = 5,
+    priority = 90,
     config = function()
         local icons = require("mini.icons")
         icons.setup()

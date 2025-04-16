@@ -2,7 +2,6 @@
 return {
     "mini.starter",
     lazy = false,
-    priority = 40,
     config = function()
         local starter = require("mini.starter")
         starter.setup({
@@ -28,7 +27,7 @@ return {
                 local loaded = 0
                 for _, p in ipairs(require("meow").manager:plugins()) do
                     if
-                        not p:is_disabled()
+                        p:is_enabled()
                         and (not p:is_shadow() or (vim.startswith(p.name, "mini.")))
                     then
                         total = total + 1

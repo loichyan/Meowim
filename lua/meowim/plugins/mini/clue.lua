@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.clue",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         local miniclue = require("mini.clue")
         miniclue.setup({

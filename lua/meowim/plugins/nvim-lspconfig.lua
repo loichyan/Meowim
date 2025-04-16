@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "neovim/nvim-lspconfig",
-    lazy = true,
+    event = "VeryLazy",
     dependencies = { "blink.cmp" },
     config = function()
         ---@type lspconfig.Config

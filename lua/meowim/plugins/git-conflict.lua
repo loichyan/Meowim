@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "akinsho/git-conflict.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         require("git-conflict").setup({
             default_mappings = false,

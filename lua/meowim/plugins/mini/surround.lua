@@ -2,7 +2,7 @@
 ---@type MeoSpec
 return {
     "mini.surround",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         require("mini.surround").setup({
             n_lines = 500,

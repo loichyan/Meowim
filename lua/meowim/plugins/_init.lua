@@ -1,27 +1,16 @@
+require("meowim").setup()
+
 ---@type MeoSpecs
 return {
     {
+        "loichyan/Meowim",
+        shadow = true,
+        lazy = false,
+        priority = 999,
+    },
+    {
         "echasnovski/mini.nvim",
         lazy = false,
-        priority = 0,
-        imports = { "meowim.plugins.mini" },
-    },
-    {
-        "Meowim:autocommands",
-        shadow = true,
-        lazy = false,
-        config = function() require("meowim.config.autocommands") end,
-    },
-    {
-        "Meowim:options",
-        shadow = true,
-        lazy = false,
-        config = function() require("meowim.config.options") end,
-    },
-    {
-        "Meowim:keymaps",
-        shadow = true,
-        lazy = true,
-        config = function() require("meowim.config.keymaps") end,
+        import = "meowim.plugins.mini",
     },
 }

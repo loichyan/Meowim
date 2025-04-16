@@ -1,6 +1,6 @@
 ---@type MeoSpec
 return {
     "stevearc/quicker.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function() require("quicker").setup() end,
 }

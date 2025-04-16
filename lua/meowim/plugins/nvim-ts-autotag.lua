@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "windwp/nvim-ts-autotag",
-    lazy = true,
+    event = "VeryLazy",
     dependencies = { "nvim-treesitter" },
     config = function() require("nvim-ts-autotag").setup() end,
 }

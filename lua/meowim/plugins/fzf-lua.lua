@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "ibhagwan/fzf-lua",
-    lazy = true,
+    event = "VeryLazy",
     init = function()
         -- Replace vim.ui.select with the fzf picker.
         ---@diagnostic disable-next-line: duplicate-set-field

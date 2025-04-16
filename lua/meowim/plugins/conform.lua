@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "stevearc/conform.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         require("conform").setup({
             format_on_save = function(bufid)

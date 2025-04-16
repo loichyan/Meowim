@@ -1,6 +1,6 @@
 ---@type MeoSpec
 return {
     "folke/ts-comments.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function() require("ts-comments").setup() end,
 }

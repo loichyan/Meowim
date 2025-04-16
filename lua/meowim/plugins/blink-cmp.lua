@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "saghen/blink.cmp",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         require("blink.cmp").setup({
             signature = { enabled = true },

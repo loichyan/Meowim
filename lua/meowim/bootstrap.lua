@@ -49,6 +49,6 @@ deps.now(function()
     deps.add("loichyan/meow.nvim")
     vim.cmd.colorscheme("onedark") -- Configure the preferred colorscheme.
     require("meow").setup({
-        specs = { imports = { "meowim.plugins" } },
+        specs = { import = "meowim.plugins" },
     })
 end)

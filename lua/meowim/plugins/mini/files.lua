@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.files",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
         require("mini.files").setup({
             options = { use_as_default_explorer = true },
