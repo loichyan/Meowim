@@ -64,7 +64,7 @@ end
 ---  1. Create `colors/<name>.lua` in your configuration directory.
 ---  2. Call `cached_colorscheme(<name>, <set up your colorscheme>)`.
 ---@param name string
----@param setup fun()
+---@param setup fun():Colorscheme?
 function Utils.cached_colorscheme(name, setup)
     local curr_path = vim.api.nvim_get_runtime_file("/colors/" .. name .. ".lua", false)[1]
     if not curr_path then
@@ -87,8 +87,8 @@ function Utils.cached_colorscheme(name, setup)
     end
 
     -- Cache is not found or expired, compile the colorscheme.
-    setup()
-    require("mini.colors").get_colorscheme():write({
+    local colors = setup() or require("mini.colors").get_colorscheme()
+    colors:write({
         compress = true,
         directory = cache_dir,
         name = name,
