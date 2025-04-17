@@ -81,6 +81,10 @@ require("meowim.utils").cached_colorscheme("onedark", function()
 
     -- Make window separators and sign columns transparent.
     rmbg("WinSeparator")
+    rmbg("StatusLine")
+    rmbg("StatusLineTerm")
+    rmbg("StatusLineNC")
+    rmbg("StatusLineTermNC")
     rmbg("LineNr")
     rmbg("LineNrAbove")
     rmbg("LineNrBelow")
