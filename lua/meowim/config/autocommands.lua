@@ -1,4 +1,3 @@
-local au = vim.api.nvim_create_autocmd
 local trivial_files = {
     ["checkhealth"] = true,
     ["fzf"] = true,
@@ -21,6 +20,7 @@ local rulers = {
     ["markdown"] = 100,
 }
 
+local au = vim.api.nvim_create_autocmd
 au("FileType", {
     desc = "Tweak trivial files",
     pattern = vim.tbl_keys(trivial_files),

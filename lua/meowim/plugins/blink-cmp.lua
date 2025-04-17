@@ -48,8 +48,8 @@ return {
                     ["<C-Y>"] = { "select_and_accept", "fallback" },
                     ["<C-E>"] = { "cancel", "fallback" },
 
-                    ["<Tab>"] = { "show", "select_next", "fallback" },
-                    ["<S-Tab>"] = { "show", "select_prev", "fallback" },
+                    ["<Tab>"] = { "show_and_insert", "select_next", "fallback" },
+                    ["<S-Tab>"] = { "show_and_insert", "select_prev", "fallback" },
 
                     ["<C-N>"] = { "select_next", "fallback" },
                     ["<C-P>"] = { "select_prev", "fallback" },

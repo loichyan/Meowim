@@ -75,9 +75,9 @@ require("meowim.utils").cached_colorscheme("onedark", function()
     end
 
     -- Prefer yellow color for diagnostics.
-    rephl("DiagnosticWarn", { fg = palette.base09 })
-    rephl("DiagnosticFloatingWarn", { fg = palette.base09 })
-    rephl("DiagnosticUnderlineWarn", { sp = palette.base09 })
+    rephl("DiagnosticWarn", { fg = palette.base0A })
+    rephl("DiagnosticFloatingWarn", { fg = palette.base0A })
+    rephl("DiagnosticUnderlineWarn", { sp = palette.base0A })
 
     -- Make window separators and sign columns transparent.
     rmbg("WinSeparator")
@@ -97,7 +97,7 @@ require("meowim.utils").cached_colorscheme("onedark", function()
     rmbg("ErrorMsg")
 
     -- Add bg for floating titles.
-    sethl("MiniNotifyTitle", { link = "MiniPickNormal" })
+    sethl("MiniNotifyTitle", { link = "MiniPickHeader" })
 
     -- Make tabline transparent.
     rmbg("TabLineFill")

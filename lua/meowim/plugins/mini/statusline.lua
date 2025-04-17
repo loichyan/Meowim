@@ -84,7 +84,7 @@ local config = function()
         if diff then
             for _, sec in ipairs(diff_sections) do
                 local count = diff[sec[1]]
-                if count ~= 0 then
+                if count and count ~= 0 then
                     add(sec[3], string.format("%s%d", sec[2], count))
                 end
             end
@@ -96,20 +96,19 @@ local config = function()
         local filename
         if vim.bo.buftype == "terminal" then
             filename = "%t"
-        elseif ministl.is_truncated(75) then
+        elseif ministl.is_truncated(80) then
             filename = "%t%m%r"
         else
             filename = "%f%m%r"
         end
         add("", filename)
 
-        add(nil, "%<") -- Mark general truncate point
-        add(nil, "%=") -- End left section
+        add(nil, "%<%=") -- End left section
 
         --------------
         --- File infos
         --------------
-        add("", ministl.section_lsp({ trunc_width = 75 }))
+        add("", ministl.section_lsp({ trunc_width = 100 }))
         add("", ministl.section_fileinfo({ trunc_width = 120 }))
 
         local searchcount = ministl.section_searchcount({})
