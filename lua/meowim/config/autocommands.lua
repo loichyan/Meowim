@@ -24,14 +24,14 @@ local rulers = {
 au("FileType", {
     desc = "Tweak trivial files",
     pattern = vim.tbl_keys(trivial_files),
-    callback = function(args)
+    callback = function(ev)
         vim.b.miniindentscope_disable = true
         vim.bo.buflisted = false
         vim.keymap.set(
             "n",
             "q",
             "<Cmd>close<CR>",
-            { desc = "Close current window", buffer = args.buf }
+            { desc = "Close current window", buffer = ev.buf }
         )
     end,
 })

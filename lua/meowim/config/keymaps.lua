@@ -128,7 +128,7 @@ Meow.keyset({
 })
 
 -- stylua: ignore
-vim.api.nvim_create_autocmd("LspAttach", { callback = function(args) Meow.keyset(args.buf, {
+vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev) Meow.keyset(ev.buf, {
     { "K",   function() vim.lsp.buf.hover() end,           desc = "Show documentation"   },
     { "gd",  function() vim.lsp.buf.definition() end,      desc = "Goto definition"      },
     { "gD",  function() vim.lsp.buf.type_definition() end, desc = "Goto type definition" },
