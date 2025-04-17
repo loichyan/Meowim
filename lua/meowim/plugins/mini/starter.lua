@@ -40,18 +40,17 @@ return {
             end,
         })
 
-        local laststatus = nil
+        local prev_laststatus
         vim.api.nvim_create_autocmd({ "User", "BufWinEnter" }, {
             desc = "Configure MiniStarter",
             callback = function()
                 if vim.bo.filetype ~= "ministarter" then
-                    if laststatus then
-                        vim.o.laststatus = laststatus
+                    if prev_laststatus then
+                        vim.o.laststatus = prev_laststatus
                     end
-                    laststatus = nil
-                    return
-                elseif not laststatus then
-                    laststatus = vim.o.laststatus
+                    prev_laststatus = nil
+                elseif not prev_laststatus then
+                    prev_laststatus = vim.o.laststatus
                     vim.o.laststatus = 0
                 end
             end,
