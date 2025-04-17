@@ -45,10 +45,13 @@ end
 -- Install the plugin manager and load our plugin specs.
 local deps = require("mini.deps")
 deps.setup({ path = { package = pack_path } })
+deps.add({ name = "mini.nvim", checkout = "HEAD" })
+deps.add({ name = "meow.nvim", checkout = "HEAD" })
 deps.now(function()
-    deps.add("loichyan/meow.nvim")
     vim.cmd.colorscheme("onedark") -- Configure the preferred colorscheme.
     require("meow").setup({
         specs = { import = "meowim.plugins" },
+        patch_mini = true,
+        enable_snapshot = true,
     })
 end)
