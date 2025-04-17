@@ -25,7 +25,7 @@ return {
                 local time = _G.meowim_startup_time or 0
                 local total = 0
                 local loaded = 0
-                for _, p in ipairs(require("meow").manager:plugins()) do
+                for _, p in ipairs(Meow.manager:plugins()) do
                     if
                         p:is_enabled()
                         and (not p:is_shadow() or (vim.startswith(p.name, "mini.")))
