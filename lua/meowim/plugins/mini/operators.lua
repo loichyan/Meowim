@@ -12,7 +12,7 @@ return {
             sort     = { prefix = "gs" },
         })
 
-        -- Use 'gX' instead of Neovim's bultin 'gx' to open URIs.
+        -- Use 'gX' instead of Neovim's builtin 'gx' to open URIs.
         Meow.keyset({
             {
                 "gX",

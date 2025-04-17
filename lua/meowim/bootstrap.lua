@@ -25,10 +25,10 @@ vim.api.nvim_create_autocmd("UIEnter", {
     end,
 })
 
--- Enable the experimental loader and disalbe some useless standard plugins to
+-- Enable the experimental loader and disable some useless standard plugins to
 -- speed up the startup.
 vim.loader.enable(true)
-local disalbed_builtins = {
+local disabled_builtins = {
     "gzip",
     -- "matchit",
     -- "matchparen",
@@ -38,7 +38,7 @@ local disalbed_builtins = {
     "tutor",
     "zipPlugin",
 }
-for _, p in ipairs(disalbed_builtins) do
+for _, p in ipairs(disabled_builtins) do
     vim.g["loaded_" .. p] = true
 end
 

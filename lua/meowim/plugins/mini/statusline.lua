@@ -30,7 +30,7 @@ local config = function()
             { vim.diagnostic.severity.HINT,  "H", "DiagnosticHint"  },
         }
 
-    -- Eviline-like statuline
+    -- Eviline-like statusline
     local active = function()
         local groups = {}
         local add = function(hi, string)

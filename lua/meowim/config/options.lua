@@ -10,7 +10,7 @@ o.laststatus = 3 -- Show global statusline
 o.expandtab = true
 o.tabstop = 4
 
--- Supress statusline redrawing when typing in cmdline.
+-- Suppress statusline redrawing when typing in cmdline.
 local prev_laststatus
 vim.api.nvim_create_autocmd({ "CmdlineEnter", "CmdlineLeave" }, {
     desc = "Disable statusline in cmdline",
