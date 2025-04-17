@@ -1,5 +1,13 @@
 local Utils = {}
 
+---Determines whether the current working directory is a git repository.
+---@param cwd string?
+---@return boolean
+function Utils.is_git_repo(cwd)
+    cwd = cwd or vim.fn.getcwd()
+    return vim.fn.executable("git") == 1 and vim.uv.fs_stat(cwd .. "/.git") ~= nil
+end
+
 ---Close other buffers.
 ---@param dir integer -1: close all left, 0: close all others, 1: close all right
 function Utils.buffer_close_others(dir)
@@ -20,8 +28,8 @@ end
 ---@return string?
 function Utils.session_get()
     local name = vim.fs.basename(vim.fn.getcwd())
-    -- Ignore a hidden directory.
-    if vim.startswith(name, ".") then
+    -- Ignore hidden directories or non-repositories.
+    if vim.startswith(name, ".") or not Utils.is_git_repo() then
         return
     end
     -- Ignore an empty session.
@@ -47,7 +55,7 @@ function Utils.fzf_files(hidden)
     if hidden then
         require("fzf-lua").files({ cwd = cwd, hidden = true })
     else
-        if vim.fn.executable("git") == 1 and vim.uv.fs_stat(cwd .. "/.git") then
+        if Utils.is_git_repo(cwd) then
             require("fzf-lua").git_files({
                 -- Show untracked files.
                 cmd = "git ls-files --exclude-standard --cached --modified --others --deduplicate",
