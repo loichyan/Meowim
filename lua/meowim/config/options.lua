@@ -1,3 +1,5 @@
+-- Options that must be set before loading plugins.
+
 local g, o = vim.g, vim.o
 
 g.mapleader = " "

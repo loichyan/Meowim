@@ -21,9 +21,6 @@ return {
             config.capabilities = cmp.get_lsp_capabilities(config.capabilities)
             lspconfig[name].setup(config)
         end
-
-        -- Other configurations
-        vim.diagnostic.config({ virtual_text = true })
     end,
     dependencies = { "blink.cmp" },
 }

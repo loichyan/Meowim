@@ -10,6 +10,7 @@ function Meowim.setup()
     require("meowim.utils").on_very_lazy(function()
         require("meowim.config.autocommands")
         require("meowim.config.keymaps")
+        require("meowim.config.polish")
     end)
 
     did_setup = true
