@@ -14,21 +14,21 @@ local config = function()
         end,
     })
 
-        -- stylua: ignore
-        local diff_sections = {
-            { "n_ranges", "#", "diffLine"    },
-            { "add",      "+", "diffAdded"   },
-            { "change",   "~", "diffChanged" },
-            { "delete",   "-", "diffRemoved" },
-        }
+    -- stylua: ignore
+    local diff_sections = {
+        { "n_ranges", "#", "diffLine"    },
+        { "add",      "+", "diffAdded"   },
+        { "change",   "~", "diffChanged" },
+        { "delete",   "-", "diffRemoved" },
+    }
 
-        -- stylua: ignore
-        local diagnostic_sections = {
-            { vim.diagnostic.severity.ERROR, "E", "DiagnosticError" },
-            { vim.diagnostic.severity.WARN,  "W", "DiagnosticWarn"  },
-            { vim.diagnostic.severity.INFO,  "I", "DiagnosticInfo"  },
-            { vim.diagnostic.severity.HINT,  "H", "DiagnosticHint"  },
-        }
+    -- stylua: ignore
+    local diagnostic_sections = {
+        { vim.diagnostic.severity.ERROR, "E", "DiagnosticError" },
+        { vim.diagnostic.severity.WARN,  "W", "DiagnosticWarn"  },
+        { vim.diagnostic.severity.INFO,  "I", "DiagnosticInfo"  },
+        { vim.diagnostic.severity.HINT,  "H", "DiagnosticHint"  },
+    }
 
     -- Eviline-like statusline
     local active = function()
@@ -116,18 +116,38 @@ local config = function()
             add("String", " Search " .. searchcount)
         end
 
-        add("Constant", "%l|%2v")
+        add("Constant", "%3l|%2v")
 
         add(mode_hl, " %##")
 
         return table.concat(groups, " ")
     end
 
+    vim.o.cmdheight = 0 -- Hide cmdline
+    vim.o.laststatus = 3 -- Show global statusline
     ministl.setup({
         content = {
             active = active,
             inactive = function() end,
         },
+    })
+
+    -- Suppress statusline redrawing when typing in cmdline.
+    local prev_laststatus
+    vim.api.nvim_create_autocmd({ "CmdlineEnter", "CmdlineLeave" }, {
+        desc = "Disable statusline in cmdline",
+        callback = function(ev)
+            if ev.event == "CmdlineEnter" then
+                if prev_laststatus then
+                    return
+                end
+                prev_laststatus = vim.o.laststatus
+                vim.o.laststatus = 0
+            elseif prev_laststatus then
+                vim.o.laststatus = prev_laststatus
+                prev_laststatus = nil
+            end
+        end,
     })
 end
 

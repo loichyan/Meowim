@@ -45,7 +45,7 @@ Meow.keyset({
 
     -- buffers/tabs/windows
     { "<Leader>n",  "<Cmd>enew<CR>",                                   desc = "New buffer"           },
-    { "<Leader>t",  "<Cmd>tabnew<CR>",                                 desc = "New tab"              },
+    { "<Leader>N",  "<Cmd>tabnew<CR>",                                 desc = "New tab"              },
     { "<Leader>-",  "<Cmd>split<CR>",                                  desc = "Split horizontal"     },
     { "<Leader>\\", "<Cmd>vsplit<CR>",                                 desc = "Split vertical"       },
     { "<Leader>m",  function() require("mini.misc").zoom() end,        desc = "Zoom current buffer"  },
@@ -133,11 +133,13 @@ vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev) Meow.keyset(e
     { "gd",  function() vim.lsp.buf.definition() end,      desc = "Goto definition"      },
     { "gD",  function() vim.lsp.buf.type_definition() end, desc = "Goto type definition" },
 
-    { "<Leader>ln", function() vim.lsp.buf.rename() end,                     desc = "Rename"                },
-    { "<Leader>la", function() vim.lsp.buf.code_action() end,                desc = "List code actions"     },
-    { "<Leader>lA", function() require("fzf-lua").lsp_code_actions() end,    desc = "Pick code actions"     },
-    { "<Leader>li", function() vim.lsp.buf.implementation() end,             desc = "List implementations"   },
-    { "<Leader>lI", function() require("fzf-lua").lsp_implementations() end, desc = "Pick implementations"  },
-    { "<Leader>lr", function() vim.lsp.buf.references() end,                 desc = "List references"       },
-    { "<Leader>lR", function() require("fzf-lua").lsp_references() end,      desc = "Pick references"       },
+    { "<Leader>la", function() vim.lsp.buf.code_action() end,                desc = "List code actions", mode = { "n", "x" } },
+    { "<Leader>lA", function() require("fzf-lua").lsp_code_actions() end,    desc = "Pick code actions", mode = { "n", "x" } },
+    { "<Leader>lf", function() require("conform").format() end,              desc = "Format",            mode = { "n", "x" } },
+
+    { "<Leader>ln", function() vim.lsp.buf.rename() end,                     desc = "Rename"               },
+    { "<Leader>li", function() vim.lsp.buf.implementation() end,             desc = "List implementations" },
+    { "<Leader>lI", function() require("fzf-lua").lsp_implementations() end, desc = "Pick implementations" },
+    { "<Leader>lr", function() vim.lsp.buf.references() end,                 desc = "List references"      },
+    { "<Leader>lR", function() require("fzf-lua").lsp_references() end,      desc = "Pick references"      },
 }) end, desc = "Set LSP specified keymaps" })

@@ -2,7 +2,6 @@
 return {
     "neovim/nvim-lspconfig",
     event = "VeryLazy",
-    dependencies = { "blink.cmp" },
     config = function()
         ---@type lspconfig.Config
         ---@diagnostic disable-next-line:missing-fields
@@ -17,13 +16,14 @@ return {
             },
         }
 
-        local lspconfig = require("lspconfig")
+        local lspconfig, cmp = require("lspconfig"), require("blink-cmp")
         for name, config in pairs(servers) do
-            config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+            config.capabilities = cmp.get_lsp_capabilities(config.capabilities)
             lspconfig[name].setup(config)
         end
 
         -- Other configurations
         vim.diagnostic.config({ virtual_text = true })
     end,
+    dependencies = { "blink.cmp" },
 }
