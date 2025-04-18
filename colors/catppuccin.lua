@@ -20,13 +20,4 @@ require("meowim.base16").setup({
         base0E = "#c6a0f6",
         base0F = "#f0c6c6",
     },
-    use_cterm = false,
-    -- stylua: ignore
-    plugins = {
-        default = false,
-        ["echasnovski/mini.nvim"] = true,
-        ["ggandor/leap.nvim"]     = true,
-        ["hrsh7th/nvim-cmp"]      = true,
-        ["ibhagwan/fzf-lua"]      = true,
-    },
 })

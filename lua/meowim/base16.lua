@@ -3,14 +3,33 @@
 ---@field name string
 ---Base16 palette.
 ---@field palette table<string,string>
+---Additional options used to set up mini.base16.
+---@field options? table
+---Whether to enable transparent background. This only works when the default
+---customization function is called.
+---@field transparent? boolean
 ---The path of the runtime file used to determine whether to update the
 ---colorscheme cache. No cache will be generated if not specified. The default
 ---is set to `/colors/<name>.lua`.
 ---@field cache_watch_path string?
 ---Make customizations on the colors before they are applied.
----@field custom_colors? fun(palette:table<string,string>,colors:table):table
+---@field custom_colors? fun(opts:MeoBase16Options,colors:table):table
 
 local Base16 = {}
+
+---The default options used to set up mini.base16.
+---@type table
+Base16.defaults = {
+    use_cterm = false,
+    -- stylua: ignore
+    plugins = {
+        default = false,
+        ["echasnovski/mini.nvim"] = true,
+        ["ggandor/leap.nvim"]     = true,
+        ["hrsh7th/nvim-cmp"]      = true,
+        ["ibhagwan/fzf-lua"]      = true,
+    },
+}
 
 ---Apply a customized mini.base16 colorscheme.
 ---@param opts MeoBase16Options|table
@@ -39,9 +58,11 @@ function Base16.setup(opts)
 
     -- Otherwise cache is not found or expired, compile the colorscheme.
     -- 1) Setup mini.base16 and apply customizations.
-    require("mini.base16").setup(opts)
+    require("mini.base16").setup(
+        vim.tbl_extend("force", Base16.defaults, opts.options or {}, { palette = opts.palette })
+    )
     local colors = require("mini.colors").get_colorscheme()
-    colors = (opts.custom_colors or Base16.default_colors_customization)(opts.palette, colors)
+    colors = (opts.custom_colors or Base16.default_colors_customization)(opts, colors)
     colors = colors:apply()
     -- 2) Dump the colorscheme.
     colors:write({ compress = true, directory = cache_dir, name = name })
@@ -63,58 +84,61 @@ function Base16._get_timestamp(path)
     return assert(vim.loop.fs_stat(realpath)).mtime.nsec
 end
 
----@param palette table<string,string>
+---@param opts MeoBase16Options
 ---@param colors table
----@param transparent? boolean
 ---@return table
-function Base16.default_colors_customization(palette, colors, transparent)
-    -- TODO: report inconsistent higroups to mini.base16
-
+function Base16.default_colors_customization(opts, colors)
     ---@return vim.api.keyset.highlight
     local gethl = function(name) return colors.groups[name] end
+
     ---@param hl vim.api.keyset.highlight
-    local sethl = function(name, hl) colors.groups[name] = hl end
-    ---@param overrides vim.api.keyset.highlight|table<string,vim.NIL>
-    local rephl = function(name, overrides)
+    local defhl = function(name, hl) colors.groups[name] = hl end
+
+    ---@param overrides vim.api.keyset.highlight
+    local sethl = function(name, overrides)
         local hl = gethl(name)
         for k, v in pairs(overrides) do
-            if v == vim.NIL then
-                hl[k] = nil
-            else
-                hl[k] = v
-            end
+            hl[k] = v
         end
     end
-    local rmbg = function(name) colors.groups[name].bg = nil end
 
-    if transparent then
+    local rmbg = function(name) colors.groups[name].bg = nil end
+    local palette = opts.palette
+
+    if opts.transparent then
         colors = colors:add_transparency()
-        gethl("CursorLine").bg = palette.base00
     end
 
     -- Reuse highlights of nvim-cmp for blink.cmp.
     for k, _ in pairs(vim.lsp.protocol.CompletionItemKind) do
         if type(k) == "string" then
-            sethl("BlinkCmpKind" .. k, { link = "CmpItemKind" .. k })
+            defhl("BlinkCmpKind" .. k, { link = "CmpItemKind" .. k })
         end
     end
 
     -- Reuse highlights of leap.nvim for flash.nvim.
-    sethl("FlashBackdrop", { link = "LeapBackdrop" })
-    sethl("FlashCurrent", { link = "LeapLabelSelected" })
-    sethl("FlashLabel", { link = "LeapLabel" })
-    sethl("FlashMatch", { link = "LeapMatch" })
+    defhl("FlashBackdrop", { link = "LeapBackdrop" })
+    defhl("FlashCurrent", { link = "LeapLabelSelected" })
+    defhl("FlashLabel", { link = "LeapLabel" })
+    defhl("FlashMatch", { link = "LeapMatch" })
 
     -- Use undercurl for diagnostics
     for _, kind in ipairs({ "Ok", "Hint", "Info", "Warn", "Error" }) do
-        rmbg("DiagnosticSign" .. kind)
-        rephl("DiagnosticUnderline" .. kind, { underline = false, undercurl = true })
+        sethl("DiagnosticUnderline" .. kind, { underline = false, undercurl = true })
     end
 
     -- Prefer yellow color for diagnostics.
-    rephl("DiagnosticWarn", { fg = palette.base0A })
-    rephl("DiagnosticFloatingWarn", { fg = palette.base0A })
-    rephl("DiagnosticUnderlineWarn", { sp = palette.base0A })
+    sethl("DiagnosticWarn", { fg = palette.base0A })
+    sethl("DiagnosticFloatingWarn", { fg = palette.base0A })
+    sethl("DiagnosticUnderlineWarn", { sp = palette.base0A })
+
+    -- Prefer white indentlines and Delimiters.
+    gethl("MiniIndentscopeSymbol").fg = palette.base05
+    gethl("MiniIndentscopeSymbolOff").fg = palette.base04
+    gethl("Delimiter").fg = palette.base04
+
+    -- Use the default highlights for `return`s.
+    defhl("@keyword.return", { link = "Keyword" })
 
     -- Make window separators and sign columns transparent.
     rmbg("WinSeparator")
@@ -133,20 +157,18 @@ function Base16.default_colors_customization(palette, colors, transparent)
     rmbg("Error")
     rmbg("ErrorMsg")
 
+    -- TODO: report inconsistent higroups to mini.base16
+
     -- Add bg for floating titles.
-    sethl("MiniNotifyTitle", { link = "MiniPickHeader" })
+    defhl("MiniNotifyTitle", { link = "MiniPickHeader" })
 
     -- Make tabline transparent.
     rmbg("TabLineFill")
 
     -- Add bg for fzf pickers.
-    sethl("FzfLuaBorder", { link = "MiniPickBorder" })
-    sethl("FzfLuaNormal", { link = "MiniPickNormal" })
-    sethl("FzfLuaTitle", { link = "MiniPickHeader" })
-
-    -- Prefer white indentlines.
-    gethl("MiniIndentscopeSymbol").fg = palette.base05
-    gethl("MiniIndentscopeSymbolOff").fg = palette.base04
+    defhl("FzfLuaBorder", { link = "MiniPickBorder" })
+    defhl("FzfLuaNormal", { link = "MiniPickNormal" })
+    defhl("FzfLuaTitle", { link = "MiniPickHeader" })
 
     return colors
 end
