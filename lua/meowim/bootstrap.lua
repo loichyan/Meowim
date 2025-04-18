@@ -16,7 +16,7 @@ end
 
 -- Record the startup time.
 local stime = vim.loop.hrtime()
-vim.api.nvim_create_autocmd("UIEnter", {
+vim.api.nvim_create_autocmd("VimEnter", {
     desc = "Measure startup time",
     once = true,
     callback = function() _G.meowim_startup_time = vim.loop.hrtime() - stime end,

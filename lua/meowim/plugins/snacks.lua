@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "folke/snacks.nvim",
-    lazy = false,
+    event = "VeryLazy",
     config = function()
         require("snacks").setup({ input = { enabled = true } })
         vim.api.nvim_create_autocmd("User", {

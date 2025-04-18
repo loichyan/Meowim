@@ -16,14 +16,15 @@ local prev_laststatus
 vim.api.nvim_create_autocmd({ "CmdlineEnter", "CmdlineLeave" }, {
     desc = "Disable statusline in cmdline",
     callback = function(ev)
-        if ev.event == "CmdlineLeave" then
+        if ev.event == "CmdlineEnter" then
             if prev_laststatus then
-                vim.o.laststatus = prev_laststatus
+                return
             end
-            prev_laststatus = nil
-        elseif not prev_laststatus then
             prev_laststatus = vim.o.laststatus
             vim.o.laststatus = 0
+        elseif prev_laststatus then
+            vim.o.laststatus = prev_laststatus
+            prev_laststatus = nil
         end
     end,
 })

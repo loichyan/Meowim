@@ -132,8 +132,4 @@ local config = function()
 end
 
 ---@type MeoSpec
-return {
-    "mini.statusline",
-    lazy = false,
-    config = config,
-}
+return { "mini.statusline", lazy = false, config = config }
