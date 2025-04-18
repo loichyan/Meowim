@@ -19,10 +19,7 @@ local stime = vim.loop.hrtime()
 vim.api.nvim_create_autocmd("UIEnter", {
     desc = "Measure startup time",
     once = true,
-    callback = function()
-        _G.meowim_startup_time = vim.loop.hrtime() - stime
-        pcall(require("mini.starter").refresh)
-    end,
+    callback = function() _G.meowim_startup_time = vim.loop.hrtime() - stime end,
 })
 
 -- Enable the experimental loader and disable some useless standard plugins to

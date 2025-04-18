@@ -52,6 +52,7 @@ return {
                 elseif not prev_laststatus then
                     prev_laststatus = vim.o.laststatus
                     vim.o.laststatus = 0
+                    MiniStarter.refresh()
                 end
             end,
         })
