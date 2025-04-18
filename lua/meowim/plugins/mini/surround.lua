@@ -1,4 +1,3 @@
----@type LazyPluginSpec
 ---@type MeoSpec
 return {
     "mini.surround",
