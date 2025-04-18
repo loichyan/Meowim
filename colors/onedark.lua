@@ -1,11 +1,14 @@
+-- Scheme: OneDark
+-- Author: Lalit Magant (http://github.com/tilal6991)
 require("meowim.base16").setup({
     name = "onedark",
+    -- Slightly increase the contrast.
     palette = {
-        base00 = "#282c34",
+        base00 = "#2a303c", -- base00 = "#282c34",
         base01 = "#353b45",
-        base02 = "#3e4451",
-        base03 = "#5a646e",
-        base04 = "#565c64",
+        base02 = "#495162", -- base02 = "#3e4451",
+        base03 = "#636b78", -- base03 = "#545862",
+        base04 = "#5a6375", -- base04 = "#565c64",
         base05 = "#abb2bf",
         base06 = "#b6bdca",
         base07 = "#c8ccd4",
