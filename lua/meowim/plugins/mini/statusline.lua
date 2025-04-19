@@ -133,19 +133,19 @@ local config = function()
     })
 
     -- Suppress statusline redrawing when typing in cmdline.
-    local prev_laststatus
+    local cmdheight_was_zero
     vim.api.nvim_create_autocmd({ "CmdlineEnter", "CmdlineLeave" }, {
-        desc = "Disable statusline in cmdline",
+        desc = "Show statusline when in cmdline",
         callback = function(ev)
             if ev.event == "CmdlineEnter" then
-                if prev_laststatus then
+                if vim.o.cmdheight ~= 0 then
                     return
                 end
-                prev_laststatus = vim.o.laststatus
-                vim.o.laststatus = 0
-            elseif prev_laststatus then
-                vim.o.laststatus = prev_laststatus
-                prev_laststatus = nil
+                vim.o.cmdheight = 1
+                cmdheight_was_zero = true
+            elseif cmdheight_was_zero then
+                vim.o.cmdheight = 0
+                cmdheight_was_zero = nil
             end
         end,
     })
