@@ -45,7 +45,7 @@ deps.setup({ path = { package = pack_path } })
 deps.add({ name = "mini.nvim", checkout = "HEAD" })
 deps.add({ name = "meow.nvim", checkout = "HEAD" })
 deps.now(function()
-    vim.cmd.colorscheme("onedark") -- Configure the preferred colorscheme.
+    vim.cmd.colorscheme("gruvbox") -- Configure the preferred colorscheme.
     require("meow").setup({
         specs = { import = "meowim.plugins" },
         patch_mini = true,

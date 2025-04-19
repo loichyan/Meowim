@@ -133,8 +133,8 @@ function Base16.default_colors_customization(opts, colors)
     sethl("DiagnosticUnderlineWarn", { sp = palette.base0A })
 
     -- Prefer white indentlines and Delimiters.
-    gethl("MiniIndentscopeSymbol").fg = palette.base05
-    gethl("MiniIndentscopeSymbolOff").fg = palette.base04
+    gethl("MiniIndentscopeSymbol").fg = palette.base04
+    defhl("MiniIndentscopeSymbolOff", { link = "MiniIndentscopeSymbol" })
     gethl("Delimiter").fg = palette.base04
 
     -- Use the default highlights for `return`s.
