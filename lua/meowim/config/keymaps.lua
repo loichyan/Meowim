@@ -120,11 +120,11 @@ Meow.keyset({
     { "<Leader>fR", function() require("fzf-lua").registers() end,                   desc = "Pick registers"    },
 
     -- git
-    { "<Leader>gb", "<Plug>(git-conflict-both)",                              desc = "Accept both changes"     },
-    { "<Leader>gB", "<Plug>(git-conflict-none)",                              desc = "Accept base changes"     },
-    { "<Leader>gc", "<Plug>(git-conflict-ours)",                              desc = "Accept current changes"  },
-    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                            desc = "Accept incoming changes" },
-    { "<Leader>gs", function() require("mini.diff").do_hunks(0, "apply") end, desc = "Stage buffer hunks"      },
+    { "<Leader>gb", "<Plug>(git-conflict-both)",                         desc = "Accept both changes"     },
+    { "<Leader>gB", "<Plug>(git-conflict-none)",                         desc = "Accept base changes"     },
+    { "<Leader>gc", "<Plug>(git-conflict-ours)",                         desc = "Accept current changes"  },
+    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                       desc = "Accept incoming changes" },
+    { "<Leader>gs", function() require("mini.git").show_at_cursor() end, desc = "Show Git info at cursor" },
 })
 
 -- stylua: ignore
