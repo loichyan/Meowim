@@ -192,7 +192,7 @@ function Utils.cached_colorscheme(opts)
     colors:write({ compress = true, directory = cache_dir, name = opts.name })
     -- 3) Re-compile the colorscheme to bytecodes.
     local bytes = string.dump(assert(loadfile(cache_path)), true)
-    assert(io.open(cache_path, "wb"):write(bytes))
+    assert(io.open(cache_path, "w"):write(bytes))
     -- 4) Save timestamps.
     cache_ts_file = assert(io.open(cache_ts_path, "w"))
     vim.print(input_ts)

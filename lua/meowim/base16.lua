@@ -11,7 +11,6 @@ Base16.options = {
     plugins = {
         default = false,
         ["echasnovski/mini.nvim"] = true,
-        ["ggandor/leap.nvim"]     = true,
         ["hrsh7th/nvim-cmp"]      = true,
         ["ibhagwan/fzf-lua"]      = true,
     },
@@ -99,14 +98,16 @@ function Base16.colors_customizations(opts, colors)
     -- stylua: ignore
     ---@type table<string,vim.api.keyset.highlight>
     local overrides = {
+        ["MiniCursorword"]           = { bg   = palette.base01      },
+        ["MiniCursorwordCurrent"]    = { bg   = palette.base02      },
         ["MiniIndentscopeSymbol"]    = { fg   = palette.base04      },
         ["MiniIndentscopeSymbolOff"] = { fg   = palette.base04      },
         ["MiniNotifyTitle"]          = { link = "MiniPickHeader"    },
 
-        ["FlashBackdrop"]            = { link = "LeapBackdrop"      },
-        ["FlashCurrent"]             = { link = "LeapLabelSelected" },
-        ["FlashLabel"]               = { link = "LeapLabel"         },
-        ["FlashMatch"]               = { link = "LeapMatch"         },
+        ["FlashBackdrop"]            = { fg = palette.base02                      },
+        ["FlashLabel"]               = { fg = palette.base08                      },
+        ["FlashCurrent"]             = { fg = palette.base00, bg = palette.base09 },
+        ["FlashMatch"]               = { fg = palette.base00, bg = palette.base0B },
 
         ["FzfLuaBorder"]             = { link = "MiniPickBorder"    },
         ["FzfLuaNormal"]             = { link = "MiniPickNormal"    },
