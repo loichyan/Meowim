@@ -1,23 +1,25 @@
--- Scheme: Gruvbox Material Light, Hard
--- Author: Mayush Kumar (https://github.com/MayushKumar), sainnhe (https://github.com/sainnhe/gruvbox-material-vscode)
+-- Scheme: Gruvbox Material Light
+-- Author: Sainnhe Park (https://github.com/sainnhe)
 require("meowim.base16").setup({
     name = "base16-gruvbox-light",
     palette = {
-        base00 = "#f9f5d7",
-        base01 = "#fbf1c7",
-        base02 = "#e0cfa9",
+        base00 = "#eee0b7",
+        base01 = "#e6d5ae",
+        base02 = "#d5c4a1",
         base03 = "#a89984",
-        base04 = "#c9b99a",
-        base05 = "#654735",
-        base06 = "#3c3836",
-        base07 = "#282828",
-        base08 = "#c14a4a",
-        base09 = "#c35e0a",
-        base0A = "#b47109",
-        base0B = "#6c782e",
-        base0C = "#4c7a5d",
-        base0D = "#45707a",
-        base0E = "#945e80",
-        base0F = "#e78a4e",
+        base04 = "#928374",
+
+        base05 = "#3c3836",
+        base06 = "#282828",
+        base07 = "#1b1b1b",
+
+        base08 = "#9d0006",
+        base09 = "#af3a03",
+        base0A = "#b57614",
+        base0B = "#79740e",
+        base0C = "#427b58",
+        base0D = "#076678",
+        base0E = "#8f3f71",
+        base0F = "#7c6f64",
     },
 })
