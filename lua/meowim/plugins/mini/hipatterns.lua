@@ -3,15 +3,15 @@ return {
     "mini.hipatterns",
     event = "VeryLazy",
     config = function()
-        local hipatterns = require("mini.hipatterns")
-        local hi_words = require("mini.extra").gen_highlighter.words
-        hipatterns.setup({
+        local Hipatterns, Utils = require("mini.hipatterns"), require("meowim.utils")
+        Hipatterns.setup({
+            -- stylua: ignore
             highlighters = {
-                fixme = hi_words({ "FIXME" }, "MiniHipatternsFixme"),
-                hack = hi_words({ "HACK" }, "MiniHipatternsHack"),
-                todo = hi_words({ "TODO" }, "MiniHipatternsTodo"),
-                note = hi_words({ "NOTE" }, "MiniHipatternsNote"),
-                hex_color = hipatterns.gen_highlighter.hex_color(),
+                hex_color = Hipatterns.gen_highlighter.hex_color(),
+                fixme = { pattern = Utils.hipattern_todo({ "FIXME "}), group = "MiniHipatternsFixme" },
+                hack  = { pattern = Utils.hipattern_todo({ "HACK" }),  group = "MiniHipatternsHack"  },
+                todo  = { pattern = Utils.hipattern_todo({ "TODO" }),  group = "MiniHipatternsTodo"  },
+                note  = { pattern = Utils.hipattern_todo({ "NOTE" }),  group = "MiniHipatternsNote"  },
             },
         })
     end,

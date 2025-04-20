@@ -109,23 +109,12 @@ function Base16.default_colors_customization(opts, colors)
         colors = colors:add_transparency()
     end
 
-    -- Reuse highlights of nvim-cmp for blink.cmp.
-    for k, _ in pairs(vim.lsp.protocol.CompletionItemKind) do
-        if type(k) == "string" then
-            defhl("BlinkCmpKind" .. k, { link = "CmpItemKind" .. k })
-        end
-    end
-
-    -- Reuse highlights of leap.nvim for flash.nvim.
-    defhl("FlashBackdrop", { link = "LeapBackdrop" })
-    defhl("FlashCurrent", { link = "LeapLabelSelected" })
-    defhl("FlashLabel", { link = "LeapLabel" })
-    defhl("FlashMatch", { link = "LeapMatch" })
-
     -- Use undercurl for diagnostics
     for _, kind in ipairs({ "Ok", "Hint", "Info", "Warn", "Error" }) do
         sethl("DiagnosticUnderline" .. kind, { underline = false, undercurl = true })
     end
+
+    -- TODO: report inconsistent higroups to mini.base16
 
     -- Prefer yellow color for diagnostics.
     sethl("DiagnosticWarn", { fg = palette.base0A })
@@ -137,8 +126,10 @@ function Base16.default_colors_customization(opts, colors)
     defhl("MiniIndentscopeSymbolOff", { link = "MiniIndentscopeSymbol" })
     gethl("Delimiter").fg = palette.base04
 
-    -- Use the default highlights for `return`s.
+    -- Tweak treesitter highlights.
     defhl("@keyword.return", { link = "Keyword" })
+    defhl("@module", { link = "Directory" })
+    defhl("CmpItemKindModule", { link = "Directory" })
 
     -- Make window separators and sign columns transparent.
     rmbg("WinSeparator")
@@ -157,10 +148,12 @@ function Base16.default_colors_customization(opts, colors)
     rmbg("Error")
     rmbg("ErrorMsg")
 
-    -- TODO: report inconsistent higroups to mini.base16
-
-    -- Add bg for floating titles.
+    -- Tweak mini highlights
     defhl("MiniNotifyTitle", { link = "MiniPickHeader" })
+    defhl("MiniHipatternsFixme", { link = "DiagnosticError" })
+    defhl("MiniHipatternsHack", { link = "DiagnosticWarn" })
+    defhl("MiniHipatternsNote", { link = "DiagnosticHint" })
+    defhl("MiniHipatternsTodo", { link = "DiagnosticInfo" })
 
     -- Make tabline transparent.
     rmbg("TabLineFill")
@@ -169,6 +162,19 @@ function Base16.default_colors_customization(opts, colors)
     defhl("FzfLuaBorder", { link = "MiniPickBorder" })
     defhl("FzfLuaNormal", { link = "MiniPickNormal" })
     defhl("FzfLuaTitle", { link = "MiniPickHeader" })
+
+    -- Reuse highlights of nvim-cmp for blink.cmp.
+    for k, _ in pairs(vim.lsp.protocol.CompletionItemKind) do
+        if type(k) == "string" then
+            defhl("BlinkCmpKind" .. k, { link = "CmpItemKind" .. k })
+        end
+    end
+
+    -- Reuse highlights of leap.nvim for flash.nvim.
+    defhl("FlashBackdrop", { link = "LeapBackdrop" })
+    defhl("FlashCurrent", { link = "LeapLabelSelected" })
+    defhl("FlashLabel", { link = "LeapLabel" })
+    defhl("FlashMatch", { link = "LeapMatch" })
 
     return colors
 end

@@ -86,6 +86,32 @@ function Utils.fzf_files(hidden)
     end
 end
 
+---Lists all todo comments of the specified keywords.
+---@param keywords string[]
+---@param workspace boolean
+function Utils.fzf_todo(keywords, workspace)
+    local opts = {
+        no_esc = true,
+        no_header = true,
+        search = table.concat(
+            vim.tbl_map(function(kw) return "\\b" .. kw .. ":\\s+.+" end, keywords),
+            "|"
+        ),
+    }
+    if workspace then
+        require("fzf-lua").grep(opts)
+    else
+        require("fzf-lua").grep_curbuf(opts)
+    end
+end
+
+---Returns Lua patterns used to highlight todo comments.
+---@param keywords string[]
+---@return string[]
+function Utils.hipattern_todo(keywords)
+    return vim.tbl_map(function(kw) return "%s?%f[%w]" .. kw .. ":%s+.+" end, keywords)
+end
+
 ---Returns the state of a toggler of current buffer.
 ---@param bufid integer
 ---@param key string
