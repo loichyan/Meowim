@@ -31,21 +31,39 @@ function Utils.session_get()
     -- Ignore hidden directories or non-repositories.
     if vim.startswith(name, ".") or not Utils.is_git_repo() then
         return
+    else
+        return name
+    end
+end
+
+function Utils.session_save()
+    local name = require("meowim.utils").session_get()
+    if not name then
+        return
     end
     -- Ignore an empty session.
     for _, b in ipairs(vim.api.nvim_list_bufs()) do
         if vim.bo[b].buflisted and vim.api.nvim_buf_get_name(b) ~= "" then
-            return name
+            require("mini.sessions").write(name, { force = true, verbose = false })
+            return
         end
     end
 end
 
 function Utils.session_restore()
-    local name = vim.fs.basename(vim.fn.getcwd())
+    local name = Utils.session_get()
     if not name then
         return
     end
     require("mini.sessions").read(name, { force = false, verbose = false })
+end
+
+function Utils.session_delete()
+    local name = Utils.session_get()
+    if not name then
+        return
+    end
+    require("mini.sessions").write(name, { force = true, verbose = false })
 end
 
 ---Lists files with a sensible fzf picker.

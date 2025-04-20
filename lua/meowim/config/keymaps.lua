@@ -42,6 +42,7 @@ Meow.keyset({
     -- toggles
     { "<LocalLeader>f", require("meowim.utils").create_toggler("autoformat_disabled", false), desc = "Toggle autoformat"          },
     { "<LocalLeader>F", require("meowim.utils").create_toggler("autoformat_disabled", true),  desc = "Toggle autoformat globally" },
+    { "<LocalLeader>q", function() require("quicker").toggle() end,                           desc = "Toggle quickfix"            },
 
     -- buffers/tabs/windows
     { "<Leader>n",  "<Cmd>enew<CR>",                                   desc = "New buffer"           },
@@ -52,6 +53,16 @@ Meow.keyset({
     { "<Leader>w",  function() require("mini.bufremove").delete() end, desc = "Close current buffer" },
     { "<Leader>W",  "<Cmd>close<CR>",                                  desc = "Close current window" },
     { "<Leader>Q",  "<Cmd>tabclose<CR>",                               desc = "Close current tab"    },
+
+    -- sessions
+    { "<Leader>qq",  "<Cmd>quitall<CR>",                                       desc = "Quit Neovim"              },
+    { "<Leader>qr",  function() require("meowim.utils").session_restore() end, desc = "Restore current session"  },
+    { "<Leader>qR",  function() require("mini.sessions").select("read") end,   desc = "Restore selected session" },
+    { "<Leader>qs",  function() require("meowim.utils").session_save() end,    desc = "Save current session"     },
+    { "<Leader>qS",  function() require("mini.sessions").select("write") end,  desc = "Save selected session"    },
+    { "<Leader>qd",  function() require("meowim.utils").session_delete() end,  desc = "Delete current session"   },
+    { "<Leader>qD",  function() require("mini.sessions").select("delete") end, desc = "Delete selected session"  },
+    { "<Leader>qQ",  "<Cmd>let g:minisessions_disable=v:true | quitall<CR>",   desc = "Quit Neovim quietly"      },
 
     { "[t",    "<Cmd>tabprevious<CR>",                                       desc = "Tab previous"     },
     { "[T",    "<Cmd>tabfirst<CR>",                                          desc = "Tab first"        },
@@ -69,8 +80,6 @@ Meow.keyset({
     { "<Leader>bo", function() require("meowim.utils").buffer_close_others( 0) end, desc = "Close other buffers"  },
 
     -- quickfixes/diagnostics
-    { "<Leader>q", function() require("quicker").toggle() end, desc = "Toggle quickfix" },
-
     { "<C-L>", function() vim.diagnostic.open_float() end,    desc = "Show current diagnostic" },
     { "<C-P>", create_smart_qf_jump("backward", "<C-P>"),         desc = "Quickfix backward"       },
     { "<C-N>", create_smart_qf_jump("forward", "<C-N>"),          desc = "Quickfix forward"        },
@@ -96,11 +105,12 @@ Meow.keyset({
     { "<Leader>lE", function() fzf_diagnostics(true, "ERROR") end,  desc = "Pick workspace errors"      },
 
     -- pickers
-    { "<Leader>'",        function() require("fzf-lua").marks() end,               desc = "Pick marks"     },
-    { '<Leader>"',        function() require("fzf-lua").registers() end,           desc = "Pick registers" },
-    { "<Leader>,",        function() require("fzf-lua").buffers() end,             desc = "Pick buffers"   },
-    { "<Leader>F",        function() require("fzf-lua").resume() end,              desc = "Resume picker"  },
-    { "<Leader><Leader>", function() require("meowim.utils").fzf_files(false) end, desc = "Pick files"     },
+    { "<Leader>'",        function() require("fzf-lua").marks() end,               desc = "Pick marks"           },
+    { '<Leader>"',        function() require("fzf-lua").registers() end,           desc = "Pick registers"       },
+    { "<Leader>,",        function() require("fzf-lua").buffers() end,             desc = "Pick buffers"         },
+    { "<Leader>:",        function() require("fzf-lua").command_history() end,     desc = "Pick command history" },
+    { "<Leader>F",        function() require("fzf-lua").resume() end,              desc = "Resume picker"        },
+    { "<Leader><Leader>", function() require("meowim.utils").fzf_files(false) end, desc = "Pick files"           },
 
     { "<Leader>fb", function() require("fzf-lua").buffers() end,                     desc = "Pick buffers"      },
     { "<Leader>fc", function() require("fzf-lua").commands() end,                    desc = "Pick commands"     },
@@ -114,17 +124,19 @@ Meow.keyset({
     { "<Leader>fk", function() require("fzf-lua").keymaps() end,                     desc = "Pick keymaps"      },
     { "<Leader>fm", function() require("fzf-lua").marks() end,                       desc = "Pick marks"        },
     { "<Leader>fo", function() require("fzf-lua").oldfiles() end,                    desc = "Pick recent files" },
+    { "<Leader>fq", function() require("fzf-lua").quickfix() end,                    desc = "Pick quickfix"     },
     { "<Leader>fu", function() require("fzf-lua").colorschemes() end,                desc = "Grep colorschemes" },
     { "<Leader>fU", function() require("fzf-lua").highlights() end,                  desc = "Grep highlights"   },
     { "<Leader>fr", function() require("fzf-lua").resume() end,                      desc = "Resume picker"     },
     { "<Leader>fR", function() require("fzf-lua").registers() end,                   desc = "Pick registers"    },
 
     -- git
-    { "<Leader>gb", "<Plug>(git-conflict-both)",                         desc = "Accept both changes"     },
-    { "<Leader>gB", "<Plug>(git-conflict-none)",                         desc = "Accept base changes"     },
-    { "<Leader>gc", "<Plug>(git-conflict-ours)",                         desc = "Accept current changes"  },
-    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                       desc = "Accept incoming changes" },
-    { "<Leader>gs", function() require("mini.git").show_at_cursor() end, desc = "Show Git info at cursor" },
+    { "<Leader>gb", "<Plug>(git-conflict-both)",                              desc = "Accept both changes"     },
+    { "<Leader>gB", "<Plug>(git-conflict-none)",                              desc = "Accept base changes"     },
+    { "<Leader>gc", "<Plug>(git-conflict-ours)",                              desc = "Accept current changes"  },
+    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                            desc = "Accept incoming changes" },
+    { "<Leader>gs", function() require("mini.diff").do_hunks(0, "apply") end, desc = "State buffer hunks"      },
+    { "<Leader>gl", function() require("mini.git").show_at_cursor() end,      desc = "Show Git info at cursor" },
 })
 
 -- stylua: ignore

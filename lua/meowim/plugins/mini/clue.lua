@@ -6,6 +6,7 @@ return {
         local miniclue = require("mini.clue")
         miniclue.setup({
             window = { delay = 250 },
+            -- stylua: ignore
             clues = {
                 -- Enhance this by adding descriptions for <Leader> mapping groups
                 miniclue.gen_clues.builtin_completion(),
@@ -14,10 +15,11 @@ return {
                 miniclue.gen_clues.windows(),
                 miniclue.gen_clues.g(),
                 miniclue.gen_clues.z(),
-                { mode = "n", keys = "<Leader>b", desc = "+Buffers" },
-                { mode = "n", keys = "<Leader>f", desc = "+Pickers" },
-                { mode = "n", keys = "<Leader>g", desc = "+Git" },
-                { mode = "n", keys = "<Leader>l", desc = "+LSP" },
+                { mode = "n", keys = "<Leader>b", desc = "+Buffers"  },
+                { mode = "n", keys = "<Leader>f", desc = "+Pickers"  },
+                { mode = "n", keys = "<Leader>g", desc = "+Git"      },
+                { mode = "n", keys = "<Leader>l", desc = "+LSP"      },
+                { mode = "n", keys = "<Leader>q", desc = "+Sessions" },
             },
             triggers = {
                 -- builtin_completion

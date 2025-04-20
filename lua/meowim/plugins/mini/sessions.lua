@@ -11,12 +11,7 @@ return {
         vim.api.nvim_create_autocmd("VimLeavePre", {
             desc = "Save session on exit",
             once = true,
-            callback = function()
-                local name = require("meowim.utils").session_get()
-                if name then
-                    require("mini.sessions").write(name, { force = true, verbose = false })
-                end
-            end,
+            callback = function() require("meowim.utils").session_save() end,
         })
     end,
 }
