@@ -149,4 +149,56 @@ function Utils.on_very_lazy(callback)
     })
 end
 
+---@class meowim.utils.cached_colorscheme.options
+---The name to identify this colorscheme.
+---@field name string
+---A list of runtime files used to determine whether to update the cache.
+---@field watch_paths string[]
+---The function used to set up the colorscheme. An optional colorscheme object
+---obtained from MiniColors can be returned to generate highlight groups.
+---@field setup fun():table?
+
+---@param opts meowim.utils.cached_colorscheme.options
+function Utils.cached_colorscheme(opts)
+    local cache_dir = vim.fn.stdpath("cache") .. "/colors/"
+    local cache_path = cache_dir .. opts.name .. ".lua"
+    local cache_ts_path = cache_dir .. opts.name .. "_cache"
+
+    local input_ts = vim.tbl_map(function(path)
+        local realpath = vim.api.nvim_get_runtime_file(path, false)[1]
+        if not realpath then
+            error("cannot find runtime file: " .. path)
+        end
+        return assert(vim.loop.fs_stat(realpath)).mtime.nsec
+    end, opts.watch_paths)
+
+    -- Try to load from cache.
+    local _, cache_ts_file = pcall(io.open, cache_ts_path, "r")
+    if cache_ts_file then
+        for _, ts in ipairs(input_ts) do
+            if cache_ts_file:read("*n") ~= ts then
+                goto expired
+            end
+        end
+        dofile(cache_path)
+        return
+    end
+    ::expired::
+
+    -- Cache not found or expired, compile the colorscheme.
+    -- 1) Setup mini.base16 and apply customizations.
+    local colors = opts.setup() or require("mini.colors").get_colorscheme()
+    -- 2) Dump the highlight groups.
+    colors:write({ compress = true, directory = cache_dir, name = opts.name })
+    -- 3) Re-compile the colorscheme to bytecodes.
+    local bytes = string.dump(assert(loadfile(cache_path)), true)
+    assert(io.open(cache_path, "wb"):write(bytes))
+    -- 4) Save timestamps.
+    cache_ts_file = assert(io.open(cache_ts_path, "w"))
+    vim.print(input_ts)
+    for _, ts in ipairs(input_ts) do
+        assert(cache_ts_file:write(ts, "\n"))
+    end
+end
+
 return Utils
