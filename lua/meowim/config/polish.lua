@@ -1,8 +1,13 @@
--- Other configurations thay may slow down the startup.
+-- Other configurations that may slow down the startup.
 
 -- For to use JSONC instead of bare JSON.
-vim.filetype.add({ extension = { json = "jsonc" } })
+vim.filetype.add({
+    extension = { json = "jsonc" },
+})
 
 -- Other configurations
--- TODO: enable virtual lines when diagnostics on the screen are not too many
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config({
+    -- TODO: see <https://github.com/neovim/neovim/pull/33517>
+    virtual_text = { current_line = false },
+    virtual_lines = { current_line = true },
+})
