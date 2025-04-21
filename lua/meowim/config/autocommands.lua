@@ -1,5 +1,6 @@
 local trivial_files = {
     ["checkhealth"] = true,
+    ["diff"] = true,
     ["fzf"] = true,
     ["git"] = true,
     ["help"] = true,

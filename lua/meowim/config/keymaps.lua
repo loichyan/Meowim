@@ -33,6 +33,11 @@ local super_clear = function()
     require("mini.snippets").session.stop()
 end
 
+local gitexec = function(...)
+    Meow.load("mini.git")
+    vim.cmd.Git(...)
+end
+
 -- stylua: ignore
 Meow.keyset({
     -- common mappings
@@ -133,12 +138,14 @@ Meow.keyset({
     { "<Leader>fR", function() require("fzf-lua").registers() end,                               desc = "Pick registers"       },
 
     -- git
-    { "<Leader>gb", "<Plug>(git-conflict-both)",                              desc = "Accept both changes"     },
-    { "<Leader>gB", "<Plug>(git-conflict-none)",                              desc = "Accept base changes"     },
-    { "<Leader>gc", "<Plug>(git-conflict-ours)",                              desc = "Accept current changes"  },
-    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                            desc = "Accept incoming changes" },
-    { "<Leader>gs", function() require("mini.diff").do_hunks(0, "apply") end, desc = "State buffer hunks"      },
-    { "<Leader>gl", function() require("mini.git").show_at_cursor() end,      desc = "Show Git info at cursor" },
+    { "<Leader>gb", "<Plug>(git-conflict-both)",                              desc = "Accept both changes"                   },
+    { "<Leader>gB", "<Plug>(git-conflict-none)",                              desc = "Accept base changes"                   },
+    { "<Leader>gc", "<Plug>(git-conflict-ours)",                              desc = "Accept current changes"                },
+    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                            desc = "Accept incoming changes"               },
+    { "<Leader>gd", function() gitexec("diff", "HEAD", "--", "%") end,        desc = "Show buffer changes"                   },
+    { "<Leader>gh", function() gitexec("log", "-p", "--", "%") end,           desc = "Show buffer history"                   },
+    { "<Leader>gl", function() require("mini.git").show_at_cursor() end,      desc = "Show cursor info", mode = { "n", "x" } },
+    { "<Leader>gs", function() require("mini.diff").do_hunks(0, "apply") end, desc = "State buffer hunks"                    },
 })
 
 -- stylua: ignore
