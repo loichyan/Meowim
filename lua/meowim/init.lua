@@ -7,11 +7,14 @@ function Meowim.setup()
     end
 
     require("meowim.config.options")
-    require("meowim.utils").on_very_lazy(function()
-        require("meowim.config.autocommands")
-        require("meowim.config.keymaps")
-        require("meowim.config.polish")
-    end)
+    vim.api.nvim_create_autocmd("UIEnter", {
+        once = true,
+        callback = function()
+            require("meowim.config.keymaps")
+            require("meowim.config.autocommands")
+        end,
+    })
+    MiniDeps.later(function() require("meowim.config.polish") end)
 
     did_setup = true
 end
