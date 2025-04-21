@@ -1,41 +1,22 @@
 local Utils = {}
 
----Determines whether the current working directory is a git repository.
+---Returns the top level path if the specified directory is inside a repository.
 ---@param cwd string?
----@return boolean
-function Utils.is_git_repo(cwd)
+---@return string?
+function Utils.get_git_repo(cwd)
     cwd = cwd or vim.fn.getcwd()
-    return vim.fn.executable("git") == 1 and vim.uv.fs_stat(cwd .. "/.git") ~= nil
-end
-
----Close other buffers.
----@param dir integer -1: close all left, 0: close all others, 1: close all right
-function Utils.buffer_close_others(dir)
-    local curr = vim.api.nvim_get_current_buf()
-    for _, bufid in ipairs(vim.api.nvim_list_bufs()) do
-        if curr == bufid then
-            if dir < 0 then
-                break
-            end
-            dir = 0
-        elseif vim.bo[bufid].buflisted and dir <= 0 then
-            require("mini.bufremove").delete(bufid)
-        end
-    end
+    local ok, r = pcall(vim.system, { "git", "rev-parse", "--show-toplevel" }, { cwd = cwd })
+    return ok and vim.trim(r:wait().stdout) or nil
 end
 
 ---Returns the name of current session if valid.
 ---@return string?
 function Utils.session_get()
-    local name = vim.fs.basename(vim.fn.getcwd())
-    -- Ignore hidden directories or non-repositories.
-    if vim.startswith(name, ".") or not Utils.is_git_repo() then
-        return
-    else
-        return name
-    end
+    local repo = Utils.get_git_repo()
+    return repo and vim.fs.basename(repo)
 end
 
+---Saves the current session.
 function Utils.session_save()
     local name = require("meowim.utils").session_get()
     if not name then
@@ -50,6 +31,7 @@ function Utils.session_save()
     end
 end
 
+---Restores the current session.
 function Utils.session_restore()
     local name = Utils.session_get()
     if not name then
@@ -58,6 +40,7 @@ function Utils.session_restore()
     require("mini.sessions").read(name, { force = false, verbose = false })
 end
 
+---Deletes the current session.
 function Utils.session_delete()
     local name = Utils.session_get()
     if not name then
@@ -73,7 +56,7 @@ function Utils.fzf_files(hidden)
     if hidden then
         require("fzf-lua").files({ cwd = cwd, hidden = true })
     else
-        if Utils.is_git_repo(cwd) then
+        if Utils.get_git_repo(cwd) then
             require("fzf-lua").git_files({
                 -- Show untracked files.
                 cmd = "git ls-files --exclude-standard --cached --modified --others --deduplicate",

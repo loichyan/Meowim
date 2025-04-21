@@ -1,3 +1,19 @@
+---Close other buffers.
+---@param dir integer -1: close all left, 0: close all others, 1: close all right
+local buffer_close_others = function(dir)
+    local curr = vim.api.nvim_get_current_buf()
+    for _, bufid in ipairs(vim.api.nvim_list_bufs()) do
+        if curr == bufid then
+            if dir < 0 then
+                break
+            end
+            dir = 0
+        elseif vim.bo[bufid].buflisted and dir <= 0 then
+            require("mini.bufremove").delete(bufid)
+        end
+    end
+end
+
 ---@param dir "forward"|"backward"|"first"|"last"
 ---@param severity vim.diagnostic.Severity?
 local diagnostic_jump = function(dir, severity)
@@ -80,9 +96,9 @@ Meow.keyset({
     { "<S-h>", function() require("mini.bracketed").buffer("backward") end,  desc = "Buffer left"      },
     { "<S-l>", function() require("mini.bracketed").buffer("forward") end,   desc = "Buffer right"     },
 
-    { "<Leader>bh", function() require("meowim.utils").buffer_close_others(-1) end, desc = "Close left buffers"   },
-    { "<Leader>bl", function() require("meowim.utils").buffer_close_others( 1) end, desc = "Close right buffers"  },
-    { "<Leader>bo", function() require("meowim.utils").buffer_close_others( 0) end, desc = "Close other buffers"  },
+    { "<Leader>bh", function() buffer_close_others(-1) end, desc = "Close left buffers"   },
+    { "<Leader>bl", function() buffer_close_others( 1) end, desc = "Close right buffers"  },
+    { "<Leader>bo", function() buffer_close_others( 0) end, desc = "Close other buffers"  },
 
     -- quickfixes/diagnostics
     { "<C-L>", function() vim.diagnostic.open_float() end,    desc = "Show current diagnostic" },
