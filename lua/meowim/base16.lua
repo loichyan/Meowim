@@ -112,10 +112,6 @@ function Base16.colors_customizations(opts, colors)
         ["FzfLuaBorder"]             = { link = "MiniPickBorder"    },
         ["FzfLuaNormal"]             = { link = "MiniPickNormal"    },
         ["FzfLuaTitle"]              = { link = "MiniPickHeader"    },
-
-        ["@keyword.return"]          = { link = "Keyword"           },
-        ["@module"]                  = { link = "Directory"         },
-        ["CmpItemKindModule"]        = { link = "Directory"         },
     }
     -- Reuse highlights of nvim-cmp for blink.cmp.
     for kind, _ in pairs(vim.lsp.protocol.CompletionItemKind) do
