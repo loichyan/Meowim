@@ -4,11 +4,6 @@ return {
     event = "VeryLazy",
     config = function()
         require("conform").setup({
-            format_on_save = function(bufid)
-                if not require("meowim.utils").get_toggled(bufid, "autoformat_disabled") then
-                    return { lsp_fallback = true }
-                end
-            end,
             default_format_opts = {
                 timeout_ms = 3000,
                 async = false,
@@ -19,8 +14,17 @@ return {
                 injected = { options = { ignore_errors = true } },
             },
             formatters_by_ft = {
+                ["-"] = { "trim_whitespaces", lsp_format = "prefer" },
                 lua = { "stylua" },
             },
+        })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            desc = "Format on save",
+            callback = function(ev)
+                if not require("meowim.utils").get_toggled(ev.buf, "autoformat_disabled") then
+                    require("conform").format()
+                end
+            end,
         })
     end,
 }
