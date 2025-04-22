@@ -104,11 +104,6 @@ function Base16.colors_customizations(opts, colors)
         ["MiniIndentscopeSymbolOff"] = { fg   = palette.base04      },
         ["MiniNotifyTitle"]          = { link = "MiniPickHeader"    },
 
-        ["FlashBackdrop"]            = { fg = palette.base02                      },
-        ["FlashLabel"]               = { fg = palette.base08                      },
-        ["FlashCurrent"]             = { fg = palette.base00, bg = palette.base09 },
-        ["FlashMatch"]               = { fg = palette.base00, bg = palette.base0B },
-
         ["FzfLuaBorder"]             = { link = "MiniPickBorder"    },
         ["FzfLuaNormal"]             = { link = "MiniPickNormal"    },
         ["FzfLuaTitle"]              = { link = "MiniPickHeader"    },

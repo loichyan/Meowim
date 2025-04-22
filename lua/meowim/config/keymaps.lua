@@ -154,10 +154,6 @@ Meow.keyset({
     { "<Leader>fR", function() require("fzf-lua").registers() end,                               desc = "Pick registers"       },
 
     -- git
-    { "<Leader>gb", "<Plug>(git-conflict-both)",                              desc = "Accept both changes"                   },
-    { "<Leader>gB", "<Plug>(git-conflict-none)",                              desc = "Accept base changes"                   },
-    { "<Leader>gc", "<Plug>(git-conflict-ours)",                              desc = "Accept current changes"                },
-    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                            desc = "Accept incoming changes"               },
     { "<Leader>gd", function() gitexec("diff", "HEAD", "--", "%") end,        desc = "Show buffer changes"                   },
     { "<Leader>gh", function() gitexec("log", "-p", "--", "%") end,           desc = "Show buffer history"                   },
     { "<Leader>gl", function() require("mini.git").show_at_cursor() end,      desc = "Show cursor info", mode = { "n", "x" } },
