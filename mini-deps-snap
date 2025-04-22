@@ -1,6 +1,5 @@
 return {
   ["better-escape.nvim"] = "9738a470d93e2e52815bc46b4042372ca198cbd6",
-  ["blink.cmp"] = "3ce61ae041927082f962791f59e3aadc774b206c",
   ["conform.nvim"] = "372fc521f8421b7830ea6db4d6ea3bae1c77548c",
   ["friendly-snippets"] = "fc8f183479a472df60aa86f00e295462f2308178",
   ["fzf-lua"] = "0fcb12538f1d0c32330327e0e10b3cd85dda0e38",

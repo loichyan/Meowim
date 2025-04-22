@@ -11,7 +11,6 @@ Base16.options = {
     plugins = {
         default = false,
         ["echasnovski/mini.nvim"] = true,
-        ["hrsh7th/nvim-cmp"]      = true,
         ["ibhagwan/fzf-lua"]      = true,
     },
 }
@@ -108,12 +107,6 @@ function Base16.colors_customizations(opts, colors)
         ["FzfLuaNormal"]             = { link = "MiniPickNormal"    },
         ["FzfLuaTitle"]              = { link = "MiniPickHeader"    },
     }
-    -- Reuse highlights of nvim-cmp for blink.cmp.
-    for kind, _ in pairs(vim.lsp.protocol.CompletionItemKind) do
-        if type(kind) == "string" then
-            overrides["BlinkCmpKind" .. kind] = { link = "CmpItemKind" .. kind }
-        end
-    end
     for name, hl in pairs(overrides) do
         colors.groups[name] = hl
     end
