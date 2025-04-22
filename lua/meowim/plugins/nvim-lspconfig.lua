@@ -16,11 +16,9 @@ return {
             },
         }
 
-        local lspconfig, cmp = require("lspconfig"), require("blink-cmp")
         for name, config in pairs(servers) do
-            config.capabilities = cmp.get_lsp_capabilities(config.capabilities)
-            lspconfig[name].setup(config)
+            vim.lsp.config(name, config)
+            vim.lsp.enable(name)
         end
     end,
-    dependencies = { "blink.cmp" },
 }
