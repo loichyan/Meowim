@@ -11,7 +11,7 @@ return {
                 "<Leader>e",
                 function()
                     local path = vim.api.nvim_buf_get_name(0)
-                    require("mini.files").open(vim.loop.fs_stat(path) and path or nil)
+                    require("mini.files").open(vim.uv.fs_stat(path) and path or nil)
                 end,
                 desc = "Open file explorer",
             },

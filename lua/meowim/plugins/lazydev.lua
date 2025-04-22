@@ -8,7 +8,7 @@ return {
             library = {
                 "meow.nvim",
                 "mini.nvim",
-                { path = "${3rd}/luv/library", words = { "vim%.loop" } },
+                { path = "${3rd}/luv/library", words = { "vim%.loop", "vim%.uv" } },
             },
         })
     end,

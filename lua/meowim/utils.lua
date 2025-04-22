@@ -142,7 +142,7 @@ function Utils.cached_colorscheme(opts)
         if not realpath then
             error("cannot find runtime file: " .. path)
         end
-        return assert(vim.loop.fs_stat(realpath)).mtime.nsec
+        return assert(vim.uv.fs_stat(realpath)).mtime.nsec
     end, opts.watch_paths)
 
     -- Try to load from cache.

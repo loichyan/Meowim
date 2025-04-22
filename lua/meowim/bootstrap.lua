@@ -1,7 +1,7 @@
 -- Install "mini.nvim" manually if not present.
 local pack_path = vim.fn.stdpath("data") .. "/site/"
 local mini_path = pack_path .. "pack/deps/start/mini.nvim"
-if not vim.loop.fs_stat(mini_path) then
+if not vim.uv.fs_stat(mini_path) then
     vim.cmd('echo "Installing `mini.nvim`" | redraw')
     vim.fn.system({
         "git",
@@ -15,11 +15,11 @@ if not vim.loop.fs_stat(mini_path) then
 end
 
 -- Record the startup time.
-local stime = vim.loop.hrtime()
+local stime = vim.uv.hrtime()
 vim.api.nvim_create_autocmd("VimEnter", {
     desc = "Measure startup time",
     once = true,
-    callback = function() _G.meowim_startup_time = vim.loop.hrtime() - stime end,
+    callback = function() _G.meowim_startup_time = vim.uv.hrtime() - stime end,
 })
 
 -- Enable the experimental loader and disable some useless standard plugins to
