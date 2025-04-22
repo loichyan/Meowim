@@ -76,10 +76,7 @@ function Utils.fzf_todo(keywords, workspace)
     local opts = {
         no_esc = true,
         no_header = true,
-        search = table.concat(
-            vim.tbl_map(function(kw) return "\\b" .. kw .. ":\\s+.+" end, keywords),
-            "|"
-        ),
+        search = "\\b(" .. table.concat(keywords, "|") .. "):\\s+.+",
     }
     if workspace then
         require("fzf-lua").grep(opts)
@@ -92,7 +89,11 @@ end
 ---@param keywords string[]
 ---@return string[]
 function Utils.hipattern_todo(keywords)
-    return vim.tbl_map(function(kw) return "%s?%f[%w]" .. kw .. ":%s+.+" end, keywords)
+    local kw = table.concat(keywords, "|")
+    return {
+        "%s?%f[%w]" .. kw .. ":%s+.+", -- KEYWORD: something
+        "%s?%f[%w]" .. kw .. "%(.*%):%s+.+", -- KEYWORD(@somebody): something
+    }
 end
 
 ---Returns the state of a toggler of current buffer.
