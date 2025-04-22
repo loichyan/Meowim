@@ -49,40 +49,41 @@ function Utils.session_delete()
     require("mini.sessions").write(name, { force = true, verbose = false })
 end
 
----Lists files with a sensible fzf picker.
+---Lists files with a sensible picker.
 ---@param hidden boolean whether to show hidden files
-function Utils.fzf_files(hidden)
+function Utils.pick_files(hidden)
     local cwd = vim.fn.getcwd()
+    local command
     if hidden then
-        require("fzf-lua").files({ cwd = cwd, hidden = true })
+        command = { "rg", "--files", "--no-follow", "--color=never", "--no-ignore" }
+        -- MiniExtra.pickers.git_files(local_opts, opts)
+    elseif Utils.get_git_repo(cwd) == cwd then
+        -- stylua: ignore
+        command = { "git", "ls-files", "--exclude-standard", "--cached", "--modified", "--others", "--deduplicate" }
     else
-        if Utils.get_git_repo(cwd) then
-            require("fzf-lua").git_files({
-                -- Show untracked files.
-                cmd = "git ls-files --exclude-standard --cached --modified --others --deduplicate",
-                cwd = cwd,
-                hidden = false,
-            })
-        else
-            require("fzf-lua").files({ cwd = cwd, hidden = false })
-        end
+        command = { "rg", "--files", "--no-follow", "--color=never" }
     end
+    local pick = require("mini.pick")
+    pick.builtin.cli({ command = command }, {
+        source = {
+            name = "Files",
+            cwd = cwd,
+            show = (vim.b.minipick_config or pick.config).source.show
+                or function(b, i, q) pick.default_show(b, i, q, { show_icons = true }) end,
+        },
+    })
 end
 
 ---Lists all todo comments of the specified keywords.
+---@param scope "current"|"all"
 ---@param keywords string[]
----@param workspace boolean
-function Utils.fzf_todo(keywords, workspace)
-    local opts = {
-        no_esc = true,
-        no_header = true,
-        search = "\\b(" .. table.concat(keywords, "|") .. "):\\s+.+",
-    }
-    if workspace then
-        require("fzf-lua").grep(opts)
-    else
-        require("fzf-lua").grep_curbuf(opts)
-    end
+function Utils.pick_todo(scope, keywords)
+    require("mini.pick").builtin.grep({
+        pattern = "\\b(" .. table.concat(keywords, "|") .. ")(\\(.*\\))?:\\s+.+",
+        globs = scope == "current" and { vim.fn.expand("%") } or nil,
+    }, {
+        source = { name = table.concat(keywords, "|") },
+    })
 end
 
 ---Returns Lua patterns used to highlight todo comments.

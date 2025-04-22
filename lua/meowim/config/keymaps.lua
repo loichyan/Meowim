@@ -20,14 +20,13 @@ local diagnostic_jump = function(dir, severity)
     require("mini.bracketed").diagnostic(dir, { severity = severity })
 end
 
----@param workspace boolean
+---@param scope "all"|"current"
 ---@param severity vim.diagnostic.Severity?
-local fzf_diagnostics = function(workspace, severity)
-    if workspace then
-        require("fzf-lua").diagnostics_workspace({ severity_only = severity })
-    else
-        require("fzf-lua").diagnostics_document({ severity_only = severity })
-    end
+local pick_diagnostics = function(scope, severity)
+    require("mini.pick").registry.diagnostic({
+        scope = scope,
+        get_opts = { severity = severity },
+    })
 end
 
 ---@param dir "forward"|"backward"
@@ -53,6 +52,7 @@ local gitexec = function(...)
     Meow.load("mini.git")
     vim.cmd.Git(...)
 end
+
 
 -- stylua: ignore
 Meow.keyset({
@@ -118,40 +118,38 @@ Meow.keyset({
     { "]e", function() diagnostic_jump("forward",  "ERROR") end, desc = "Error forward"       },
     { "]E", function() diagnostic_jump("last",     "ERROR") end, desc = "Error last"          },
 
-    { "<Leader>ld", function() fzf_diagnostics(false) end,          desc = "Pick document diagnostics"  },
-    { "<Leader>lD", function() fzf_diagnostics(true) end,           desc = "Pick workspace diagnostics" },
-    { "<Leader>lw", function() fzf_diagnostics(false, "WARN") end,  desc = "Pick document warnings"     },
-    { "<Leader>lW", function() fzf_diagnostics(true, "WARN") end,   desc = "Pick workspace warnings"    },
-    { "<Leader>le", function() fzf_diagnostics(false, "ERROR") end, desc = "Pick document errors"       },
-    { "<Leader>lE", function() fzf_diagnostics(true, "ERROR") end,  desc = "Pick workspace errors"      },
+    { "<Leader>ld", function() pick_diagnostics("current") end,          desc = "Pick document diagnostics"  },
+    { "<Leader>lD", function() pick_diagnostics("all") end,              desc = "Pick workspace diagnostics" },
+    { "<Leader>lw", function() pick_diagnostics("current", "WARN") end,  desc = "Pick document warnings"     },
+    { "<Leader>lW", function() pick_diagnostics("all", "WARN") end,      desc = "Pick workspace warnings"    },
+    { "<Leader>le", function() pick_diagnostics("current", "ERROR") end, desc = "Pick document errors"       },
+    { "<Leader>lE", function() pick_diagnostics("all", "ERROR") end,     desc = "Pick workspace errors"      },
 
     -- pickers
-    { "<Leader>'",        function() require("fzf-lua").marks() end,               desc = "Pick marks"           },
-    { '<Leader>"',        function() require("fzf-lua").registers() end,           desc = "Pick registers"       },
-    { "<Leader>,",        function() require("fzf-lua").buffers() end,             desc = "Pick buffers"         },
-    { "<Leader>:",        function() require("fzf-lua").command_history() end,     desc = "Pick command history" },
-    { "<Leader>F",        function() require("fzf-lua").resume() end,              desc = "Resume picker"        },
-    { "<Leader><Leader>", function() require("meowim.utils").fzf_files(false) end, desc = "Pick files"           },
+    { "<Leader>'", function() require("mini.pick").registry.marks() end,                    desc = "Pick marks"           },
+    { '<Leader>"', function() require("mini.pick").registry.registers() end,                desc = "Pick registers"       },
+    { "<Leader>,", function() require("mini.pick").registry.buffers() end,                  desc = "Pick buffers"         },
+    { "<Leader>:", function() require("mini.pick").registry.history({ scope = "cmd" }) end, desc = "Pick command history" },
+    { "<Leader>F", function() require("mini.pick").registry.resume() end,                   desc = "Resume picker"        },
+    { "<Leader><Leader>", function() require("meowim.utils").pick_files(false) end,         desc = "Pick files"           },
 
-    { "<Leader>fb", function() require("fzf-lua").buffers() end,                                 desc = "Pick buffers"         },
-    { "<Leader>fc", function() require("fzf-lua").commands() end,                                desc = "Pick commands"        },
-    { "<Leader>fC", function() require("fzf-lua").autocmds() end,                                desc = "Pick autocommands"    },
-    { "<Leader>ff", function() require("meowim.utils").fzf_files(false) end,                     desc = "Pick files"           },
-    { "<Leader>fF", function() require("meowim.utils").fzf_files(true) end,                      desc = "Pick all files"       },
-    { "<Leader>fg", function() require("fzf-lua").live_grep({ hidden = false }) end,             desc = "Grep files"           },
-    { "<Leader>fG", function() require("fzf-lua").live_grep({ hidden = true }) end,              desc = "Grep all files"       },
-    { "<Leader>fh", function() require("fzf-lua").helptags() end,                                desc = "Pick helptags"        },
-    { "<Leader>fH", function() require("fzf-lua").manpages() end,                                desc = "Pick manpages"        },
-    { "<Leader>fk", function() require("fzf-lua").keymaps() end,                                 desc = "Pick keymaps"         },
-    { "<Leader>fm", function() require("fzf-lua").marks() end,                                   desc = "Pick marks"           },
-    { "<Leader>fo", function() require("fzf-lua").oldfiles() end,                                desc = "Pick recent files"    },
-    { "<Leader>fq", function() require("fzf-lua").quickfix() end,                                desc = "Pick quickfix"        },
-    { "<Leader>ft", function() require("meowim.utils").fzf_todo({ "TODO", "FIXME" }, false) end, desc = "Pick buffer TODOs"    },
-    { "<Leader>fT", function() require("meowim.utils").fzf_todo({ "TODO", "FIXME" }, true) end,  desc = "Pick workspace TODOs" },
-    { "<Leader>fu", function() require("fzf-lua").colorschemes() end,                            desc = "Grep colorschemes"    },
-    { "<Leader>fU", function() require("fzf-lua").highlights() end,                              desc = "Grep highlights"      },
-    { "<Leader>fr", function() require("fzf-lua").resume() end,                                  desc = "Resume picker"        },
-    { "<Leader>fR", function() require("fzf-lua").registers() end,                               desc = "Pick registers"       },
+    { "<Leader>fb", function() require("mini.pick").registry.buffers() end,                           desc = "Pick buffers"         },
+    { "<Leader>fc", function() require("mini.pick").registry.commands() end,                          desc = "Pick commands"        },
+    -- TODO: add autocommands picker
+    -- { "<Leader>fC", function() require("mini.pick").registry.autocmds() end,                          desc = "Pick autocommands"    },
+    { "<Leader>ff", function() require("meowim.utils").pick_files(false) end,                         desc = "Pick files"           },
+    { "<Leader>fF", function() require("meowim.utils").pick_files(true) end,                          desc = "Pick all files"       },
+    { "<Leader>fg", function() require("mini.pick").registry.grep_live() end,                         desc = "Grep files"           },
+    { "<Leader>fh", function() require("mini.pick").registry.help() end,                              desc = "Pick helptags"        },
+    { "<Leader>fk", function() require("mini.pick").registry.keymaps() end,                           desc = "Pick keymaps"         },
+    { "<Leader>fm", function() require("mini.pick").registry.marks() end,                             desc = "Pick marks"           },
+    { "<Leader>fo", function() require("mini.pick").registry.oldfiles() end,                          desc = "Pick recent files"    },
+    { "<Leader>fq", function() require("mini.pick").registry.list({ scope = "quickfix" }) end,        desc = "Pick quickfix"        },
+    { "<Leader>ft", function() require("meowim.utils").pick_todo("current", { "TODO", "FIXME" }) end, desc = "Pick buffer TODOs"    },
+    { "<Leader>fT", function() require("meowim.utils").pick_todo("all", { "TODO", "FIXME" }) end,     desc = "Pick workspace TODOs" },
+    { "<Leader>fU", function() require("mini.pick").registry.hl_groups() end,                         desc = "Grep highlights"      },
+    { "<Leader>fr", function() require("mini.pick").builtin.resume() end,                             desc = "Resume picker"        },
+    { "<Leader>fR", function() require("mini.pick").registry.registers() end,                         desc = "Pick registers"       },
 
     -- git
     { "<Leader>gd", function() gitexec("diff", "HEAD", "--", "%") end,        desc = "Show buffer changes"                   },
@@ -166,13 +164,12 @@ vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev) Meow.keyset(e
     { "gd",  function() vim.lsp.buf.definition() end,      desc = "Goto definition"      },
     { "gD",  function() vim.lsp.buf.type_definition() end, desc = "Goto type definition" },
 
-    { "<Leader>la", function() vim.lsp.buf.code_action() end,                desc = "List code actions", mode = { "n", "x" } },
-    { "<Leader>lA", function() require("fzf-lua").lsp_code_actions() end,    desc = "Pick code actions", mode = { "n", "x" } },
-    { "<Leader>lf", function() require("conform").format() end,              desc = "Format",            mode = { "n", "x" } },
+    { "<Leader>la", function() vim.lsp.buf.code_action() end,   desc = "List code actions", mode = { "n", "x" } },
+    { "<Leader>lf", function() require("conform").format() end, desc = "Format",            mode = { "n", "x" } },
 
-    { "<Leader>ln", function() vim.lsp.buf.rename() end,                     desc = "Rename"               },
-    { "<Leader>li", function() vim.lsp.buf.implementation() end,             desc = "List implementations" },
-    { "<Leader>lI", function() require("fzf-lua").lsp_implementations() end, desc = "Pick implementations" },
-    { "<Leader>lr", function() vim.lsp.buf.references() end,                 desc = "List references"      },
-    { "<Leader>lR", function() require("fzf-lua").lsp_references() end,      desc = "Pick references"      },
+    { "<Leader>ln", function() vim.lsp.buf.rename() end,                                            desc = "Rename"               },
+    { "<Leader>li", function() vim.lsp.buf.implementation() end,                                    desc = "List implementations" },
+    { "<Leader>lI", function() require("mini.pick").registry.lsp({ scope = "implementation" }) end, desc = "Pick implementations" },
+    { "<Leader>lr", function() vim.lsp.buf.references() end,                                        desc = "List references"      },
+    { "<Leader>lR", function() require("mini.pick").registry.lsp({ scope = "references" }) end,     desc = "Pick references"      },
 }) end, desc = "Set LSP specified keymaps" })

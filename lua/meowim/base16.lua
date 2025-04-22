@@ -7,11 +7,9 @@ Base16.transparent = false
 ---@type table
 Base16.options = {
     use_cterm = false,
-    -- stylua: ignore
     plugins = {
         default = false,
         ["echasnovski/mini.nvim"] = true,
-        ["ibhagwan/fzf-lua"]      = true,
     },
 }
 
@@ -102,8 +100,6 @@ function Base16.colors_customizations(opts, colors)
         ["MiniIndentscopeSymbol"]    = { fg = palette.base04 },
         ["MiniIndentscopeSymbolOff"] = { fg = palette.base04 },
 
-        ["FzfLuaBorder"]             = { link = "NormalFloat" },
-        ["FzfLuaNormal"]             = { link = "NormalFloat" },
         ["FloatTitle"]               = { fg = get("Title").fg, bg= palette.base01 },
     }
     for name, hl in pairs(overrides) do
