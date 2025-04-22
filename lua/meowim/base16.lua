@@ -97,15 +97,14 @@ function Base16.colors_customizations(opts, colors)
     -- stylua: ignore
     ---@type table<string,vim.api.keyset.highlight>
     local overrides = {
-        ["MiniCursorword"]           = { bg   = palette.base01      },
-        ["MiniCursorwordCurrent"]    = { bg   = palette.base02      },
-        ["MiniIndentscopeSymbol"]    = { fg   = palette.base04      },
-        ["MiniIndentscopeSymbolOff"] = { fg   = palette.base04      },
-        ["MiniNotifyTitle"]          = { link = "MiniPickHeader"    },
+        ["MiniCursorword"]           = { bg = palette.base01 },
+        ["MiniCursorwordCurrent"]    = { bg = palette.base02 },
+        ["MiniIndentscopeSymbol"]    = { fg = palette.base04 },
+        ["MiniIndentscopeSymbolOff"] = { fg = palette.base04 },
 
-        ["FzfLuaBorder"]             = { link = "MiniPickBorder"    },
-        ["FzfLuaNormal"]             = { link = "MiniPickNormal"    },
-        ["FzfLuaTitle"]              = { link = "MiniPickHeader"    },
+        ["FzfLuaBorder"]             = { link = "NormalFloat" },
+        ["FzfLuaNormal"]             = { link = "NormalFloat" },
+        ["FloatTitle"]               = { fg = get("Title").fg, bg= palette.base01 },
     }
     for name, hl in pairs(overrides) do
         colors.groups[name] = hl
