@@ -10,11 +10,12 @@ return {
                 info = { border = "solid" },
                 signature = { border = "solid" },
             },
+            -- stylua: ignore
             mappings = {
-                force_twostep = "<C-K>",
+                force_twostep  = "<C-k>",
                 force_fallback = "",
-                scroll_down = "<C-F>",
-                scroll_up = "<C-B>",
+                scroll_down    = "<C-f>",
+                scroll_up      = "<C-b>",
             },
         })
     end,

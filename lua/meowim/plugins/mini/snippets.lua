@@ -8,11 +8,12 @@ return {
             snippets = {
                 snippets.gen_loader.from_lang(),
             },
+            -- stylua: ignore
             mappings = {
-                expand = "",
+                expand    = "",
                 jump_next = "<Tab>",
                 jump_prev = "<S-Tab>",
-                stop = "<C-C>",
+                stop      = "<C-c>",
             },
         })
         snippets.start_lsp_server()

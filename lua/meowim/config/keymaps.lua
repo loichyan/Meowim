@@ -57,8 +57,8 @@ end
 -- stylua: ignore
 Meow.keyset({
     -- common mappings
-    { "<Esc>", super_clear, desc = "Clear trivial items" },
-    { "<C-C>", super_clear, desc = "Clear trivial items" },
+    { "<Esc>", "<Cmd>noh<CR>", desc = "Clear highlights" },
+    { "<C-c>", super_clear,    desc = "Clear trivial items" },
 
     -- toggles
     { "<LocalLeader>f", require("meowim.utils").create_toggler("autoformat_disabled", false), desc = "Toggle autoformat"          },
@@ -85,25 +85,25 @@ Meow.keyset({
     { "<Leader>qD",  function() require("mini.sessions").select("delete") end, desc = "Delete selected session"  },
     { "<Leader>qQ",  "<Cmd>let g:minisessions_disable=v:true | quitall<CR>",   desc = "Quit Neovim quietly"      },
 
-    { "[t",    "<Cmd>tabprevious<CR>",                                       desc = "Tab previous"     },
-    { "[T",    "<Cmd>tabfirst<CR>",                                          desc = "Tab first"        },
-    { "]t",    "<Cmd>tabnext<CR>",                                           desc = "Tab next"         },
-    { "]T",    "<Cmd>tablast<CR>",                                           desc = "Tab last"         },
-    { "[b",    function() require("mini.bracketed").buffer("backward") end,  desc = "Buffer right"     },
-    { "[B",    function() require("mini.bracketed").buffer("first") end,     desc = "Buffer rightmost" },
-    { "]b",    function() require("mini.bracketed").buffer("forward") end,   desc = "Buffer left"      },
-    { "]B",    function() require("mini.bracketed").buffer("last") end,      desc = "Buffer leftmost"  },
-    { "<S-h>", function() require("mini.bracketed").buffer("backward") end,  desc = "Buffer left"      },
-    { "<S-l>", function() require("mini.bracketed").buffer("forward") end,   desc = "Buffer right"     },
+    { "[t",    "<Cmd>tabprevious<CR>",                                      desc = "Tab previous"     },
+    { "[T",    "<Cmd>tabfirst<CR>",                                         desc = "Tab first"        },
+    { "]t",    "<Cmd>tabnext<CR>",                                          desc = "Tab next"         },
+    { "]T",    "<Cmd>tablast<CR>",                                          desc = "Tab last"         },
+    { "[b",    function() require("mini.bracketed").buffer("backward") end, desc = "Buffer right"     },
+    { "[B",    function() require("mini.bracketed").buffer("first") end,    desc = "Buffer rightmost" },
+    { "]b",    function() require("mini.bracketed").buffer("forward") end,  desc = "Buffer left"      },
+    { "]B",    function() require("mini.bracketed").buffer("last") end,     desc = "Buffer leftmost"  },
+    { "<S-h>", function() require("mini.bracketed").buffer("backward") end, desc = "Buffer left"      },
+    { "<S-l>", function() require("mini.bracketed").buffer("forward") end,  desc = "Buffer right"     },
 
     { "<Leader>bh", function() buffer_close_others(-1) end, desc = "Close left buffers"   },
     { "<Leader>bl", function() buffer_close_others( 1) end, desc = "Close right buffers"  },
     { "<Leader>bo", function() buffer_close_others( 0) end, desc = "Close other buffers"  },
 
     -- quickfixes/diagnostics
-    { "<C-L>", function() vim.diagnostic.open_float() end,    desc = "Show current diagnostic" },
-    { "<C-P>", create_smart_qf_jump("backward", "<C-P>"),         desc = "Quickfix backward"       },
-    { "<C-N>", create_smart_qf_jump("forward", "<C-N>"),          desc = "Quickfix forward"        },
+    { "<C-l>", function() vim.diagnostic.open_float() end, desc = "Show current diagnostic" },
+    { "<C-p>", create_smart_qf_jump("backward", "<C-p>"),  desc = "Quickfix backward"       },
+    { "<C-n>", create_smart_qf_jump("forward", "<C-n>"),   desc = "Quickfix forward"        },
 
     { "[d", function() diagnostic_jump("backward"         ) end, desc = "Diagnostic backward" },
     { "[D", function() diagnostic_jump("first"            ) end, desc = "Diagnostic first"    },
