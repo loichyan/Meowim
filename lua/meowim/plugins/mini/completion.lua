@@ -12,8 +12,8 @@ return {
             },
             -- stylua: ignore
             mappings = {
-                force_twostep  = "<C-k>",
-                force_fallback = "",
+                force_twostep  = "<C-Space>",
+                force_fallback = "<M-Space>",
                 scroll_down    = "<C-f>",
                 scroll_up      = "<C-b>",
             },

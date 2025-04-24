@@ -19,8 +19,8 @@ return {
             mappings = {
               choose        = "<CR>",
               choose_marked = "<M-CR>",
-              refine        = "<C-y>",
-              refine_marked = "<M-y>",
+              refine        = "<C-Space>",
+              refine_marked = "<M-Space>",
 
               scroll_left   = "<C-h>",
               scroll_down   = "<C-j>",
