@@ -90,11 +90,12 @@ end
 ---@param keywords string[]
 ---@return string[]
 function Utils.hipattern_todo(keywords)
-    local kw = table.concat(keywords, "|")
-    return {
-        "%s?%f[%w]" .. kw .. ":%s+.+", -- KEYWORD: something
-        "%s?%f[%w]" .. kw .. "%(.*%):%s+.+", -- KEYWORD(@somebody): something
-    }
+    local patterns = {}
+    for _, kw in ipairs(keywords) do
+        table.insert(patterns, "%s?%f[%w]" .. kw .. ":%s+.+") -- KEYWORD: something
+        table.insert(patterns, "%s?%f[%w]" .. kw .. "%(.*%):%s+.+") -- KEYWORD(@somebody): something
+    end
+    return patterns
 end
 
 ---Returns the state of a toggler of current buffer.
