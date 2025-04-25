@@ -4,7 +4,7 @@ return {
   ["friendly-snippets"] = "fc8f183479a472df60aa86f00e295462f2308178",
   ["guess-indent.nvim"] = "84a4987ff36798c2fc1169cbaff67960aed9776f",
   ["lazydev.nvim"] = "2367a6c0a01eb9edb0464731cc0fb61ed9ab9d2c",
-  ["meow.nvim"] = "cdaa51ed9fec2514043b02f246fca2f5ad916afe",
+  ["meow.nvim"] = "730a8e748c8ba81d7bfde87a17ead5d2d2ca5a6f",
   ["mini.nvim"] = "2b3cd8127258f78c7c18b1a5d32af578389b32ce",
   ["nvim-lspconfig"] = "5dae152ee422ed9383217965aff92b331c4c248e",
   ["nvim-treesitter"] = "684eeac91ed8e297685a97ef70031d19ac1de25a",

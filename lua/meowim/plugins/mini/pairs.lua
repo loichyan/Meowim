@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.pairs",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = function()
         require("mini.pairs").setup({
             modes = { insert = true, command = false, terminal = false },

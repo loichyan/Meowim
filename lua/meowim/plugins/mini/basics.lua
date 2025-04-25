@@ -2,6 +2,7 @@
 return {
     "mini.basics",
     lazy = false,
+    priority = 90,
     config = function()
         require("mini.basics").setup({
             options = {

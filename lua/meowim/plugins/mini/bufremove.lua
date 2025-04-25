@@ -1,6 +1,6 @@
 ---@type MeoSpec
 return {
     "mini.bufremove",
-    event = "VeryLazy",
+    lazy = true,
     config = function() require("mini.bufremove").setup() end,
 }

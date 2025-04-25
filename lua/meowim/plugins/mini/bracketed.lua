@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.brackted",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = function()
         -- stylua: ignore
         require("mini.bracketed").setup({

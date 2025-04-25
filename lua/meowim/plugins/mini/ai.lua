@@ -36,7 +36,7 @@ end
 ---@type MeoSpec
 return {
     "mini.ai",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = config,
     dependencies = { "nvim-treesitter" },
 }

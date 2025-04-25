@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.surround",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = function()
         require("mini.surround").setup({
             n_lines = 500,

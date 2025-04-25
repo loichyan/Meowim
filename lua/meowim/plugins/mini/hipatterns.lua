@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.hipatterns",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = function()
         local hipatterns, Utils = require("mini.hipatterns"), require("meowim.utils")
         hipatterns.setup({

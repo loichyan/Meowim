@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "mini.completion",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = function()
         vim.o.completeopt = "fuzzy,menuone,noinsert,popup"
         vim.o.completeitemalign = "abbr,kind,menu"

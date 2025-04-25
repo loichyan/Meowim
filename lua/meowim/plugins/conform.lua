@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "stevearc/conform.nvim",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = function()
         require("conform").setup({
             default_format_opts = {

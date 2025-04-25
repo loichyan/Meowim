@@ -1,8 +1,9 @@
 ---@type MeoSpec
 return {
     "neovim/nvim-lspconfig",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = function()
+        ---@module "lspconfig"
         ---@type lspconfig.Config
         ---@diagnostic disable-next-line:missing-fields
         local servers = {

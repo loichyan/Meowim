@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "max397574/better-escape.nvim",
-    event = "VeryLazy",
+    event = "LazyFile",
     config = function()
         require("better_escape").setup({
             timeout = 300,
