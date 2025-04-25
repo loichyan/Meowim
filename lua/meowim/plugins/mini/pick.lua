@@ -9,12 +9,15 @@ return {
     end,
     config = function()
         local open_quickfix = function()
-            return MiniPick.default_choose_marked(
+            MiniPick.default_choose_marked(
                 MiniPick.get_picker_matches().all,
                 { list_type = "quickfix" }
             )
+            return true
         end
-        require("mini.pick").setup({
+
+        local pick = require("mini.pick")
+        pick.setup({
             -- stylua: ignore
             mappings = {
               choose        = "<CR>",
@@ -32,6 +35,12 @@ return {
               open_quickfix = { char = "<C-q>", func = open_quickfix },
             },
         })
+        local preview = pick.default_preview
+        ---@diagnostic disable-next-line: duplicate-set-field
+        pick.default_preview = function(b, i, o)
+            return preview(b, i, vim.tbl_extend("force", { line_position = "center" }, o or {}))
+        end
+
         Meow.load("mini.extra") -- Register extra pickers.
     end,
 }
