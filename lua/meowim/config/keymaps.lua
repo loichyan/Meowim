@@ -31,7 +31,7 @@ end
 
 ---@param dir "forward"|"backward"
 ---@param fallback string
-local create_smart_qf_jump = function(dir, fallback)
+local make_qf_jump = function(dir, fallback)
     fallback = vim.api.nvim_replace_termcodes(fallback, true, false, true)
     return function()
         if require("quicker").is_open() then
@@ -102,8 +102,8 @@ Meow.keyset({
 
     -- quickfixes/diagnostics
     { "<C-l>", function() vim.diagnostic.open_float() end, desc = "Show current diagnostic" },
-    { "<C-p>", create_smart_qf_jump("backward", "<C-p>"),  desc = "Quickfix backward"       },
-    { "<C-n>", create_smart_qf_jump("forward", "<C-n>"),   desc = "Quickfix forward"        },
+    { "<C-p>", make_qf_jump("backward", "<C-p>"),          desc = "Quickfix backward"       },
+    { "<C-n>", make_qf_jump("forward", "<C-n>"),           desc = "Quickfix forward"        },
 
     { "[d", function() diagnostic_jump("backward"         ) end, desc = "Diagnostic backward" },
     { "[D", function() diagnostic_jump("first"            ) end, desc = "Diagnostic first"    },
@@ -126,6 +126,7 @@ Meow.keyset({
     { "<Leader>lE", function() pick_diagnostics("all", "ERROR") end,     desc = "Pick workspace errors"      },
 
     -- pickers
+    { "<C-q>",     function() require("mini.pick").registry.list({ scope = "quickfix" }) end, desc = "Pick quickfix"        },
     { "<Leader>'", function() require("mini.pick").registry.marks() end,                    desc = "Pick marks"           },
     { '<Leader>"', function() require("mini.pick").registry.registers() end,                desc = "Pick registers"       },
     { "<Leader>,", function() require("mini.pick").registry.buffers() end,                  desc = "Pick buffers"         },
@@ -158,6 +159,20 @@ Meow.keyset({
     { "<Leader>gs", function() require("mini.diff").do_hunks(0, "apply") end, desc = "State buffer hunks"                    },
 })
 
+---Lists only items of current buffer.
+---@param opts vim.lsp.LocationOpts.OnList
+local list_buf = function(opts)
+    local bufnr = vim.api.nvim_get_current_buf()
+    local bufname = vim.api.nvim_buf_get_name(bufnr)
+    opts.items = vim.tbl_filter(
+        function(v) return v.bufnr == bufnr or v.filename == bufname end,
+        opts.items
+    )
+    ---@diagnostic disable-next-line: param-type-mismatch
+    vim.fn.setqflist({}, " ", opts)
+    vim.schedule(function() vim.cmd("copen") end)
+end
+
 -- stylua: ignore
 vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev) Meow.keyset(ev.buf, {
     { "K",   function() vim.lsp.buf.hover() end,           desc = "Show documentation"   },
@@ -167,9 +182,11 @@ vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev) Meow.keyset(e
     { "<Leader>la", function() vim.lsp.buf.code_action() end,   desc = "List code actions", mode = { "n", "x" } },
     { "<Leader>lf", function() require("conform").format() end, desc = "Format",            mode = { "n", "x" } },
 
-    { "<Leader>ln", function() vim.lsp.buf.rename() end,                                            desc = "Rename"               },
-    { "<Leader>li", function() vim.lsp.buf.implementation() end,                                    desc = "List implementations" },
-    { "<Leader>lI", function() require("mini.pick").registry.lsp({ scope = "implementation" }) end, desc = "Pick implementations" },
-    { "<Leader>lr", function() vim.lsp.buf.references() end,                                        desc = "List references"      },
-    { "<Leader>lR", function() require("mini.pick").registry.lsp({ scope = "references" }) end,     desc = "Pick references"      },
+    { "<Leader>ln", function() vim.lsp.buf.rename() end,                               desc = "Rename" },
+    { "<Leader>li", function() vim.lsp.buf.implementation({ on_list = list_buf }) end, desc = "List buffer implementations"    },
+    { "<Leader>lI", function() vim.lsp.buf.implementation() end,                       desc = "List workspace implementations" },
+    { "<Leader>lr", function() vim.lsp.buf.references({ includeDeclaration = false }, { on_list = list_buf }) end, desc = "List buffer references"    },
+    { "<Leader>lR", function() vim.lsp.buf.references({ includeDeclaration = false }) end,                         desc = "List workspace references" },
+    { "<Leader>ls", function() require('mini.pick').registry.lsp({ scope = "document_symbol" }) end,               desc = "Pick buffer symbols"    },
+    { "<Leader>lS", function() require('mini.pick').registry.lsp({ scope = "workspace_symbol" }) end,              desc = "Pick workspace symbols" },
 }) end, desc = "Set LSP specified keymaps" })

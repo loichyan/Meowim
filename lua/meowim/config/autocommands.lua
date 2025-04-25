@@ -21,8 +21,10 @@ local rulers = {
     ["markdown"] = 100,
 }
 
-local au = vim.api.nvim_create_autocmd
-au("FileType", {
+local group = vim.api.nvim_create_augroup("meowim.config.autocommands", {})
+local autocmd = vim.api.nvim_create_autocmd
+autocmd("FileType", {
+    group = group,
     desc = "Tweak trivial files",
     pattern = vim.tbl_keys(trivial_files),
     callback = function(ev)
@@ -36,7 +38,8 @@ au("FileType", {
         )
     end,
 })
-au("FileType", {
+autocmd("FileType", {
+    group = group,
     desc = "Configure rulers",
     callback = function()
         local ft = vim.bo.filetype
