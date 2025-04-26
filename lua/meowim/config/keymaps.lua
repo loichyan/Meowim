@@ -2,14 +2,14 @@
 ---@param dir integer -1: close all left, 0: close all others, 1: close all right
 local buffer_close_others = function(dir)
     local curr = vim.api.nvim_get_current_buf()
-    for _, bufid in ipairs(vim.api.nvim_list_bufs()) do
-        if curr == bufid then
+    for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+        if curr == bufnr then
             if dir < 0 then
                 break
             end
             dir = 0
-        elseif vim.bo[bufid].buflisted and dir <= 0 then
-            require("mini.bufremove").delete(bufid)
+        elseif vim.bo[bufnr].buflisted and dir <= 0 then
+            require("mini.bufremove").delete(bufnr)
         end
     end
 end

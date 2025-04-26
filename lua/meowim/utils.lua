@@ -100,10 +100,10 @@ function Utils.hipattern_todo(keywords)
 end
 
 ---Returns the state of a toggler of current buffer.
----@param bufid integer
+---@param bufnr integer
 ---@param key string
-function Utils.get_toggled(bufid, key)
-    local val = vim.b[bufid][key]
+function Utils.get_toggled(bufnr, key)
+    local val = vim.b[bufnr][key]
     if val == nil then
         val = vim.g[key]
     end
@@ -120,8 +120,8 @@ function Utils.create_toggler(key, global)
         return function() vim.g[key] = not vim.g[key] end
     else
         return function()
-            local bufid = vim.api.nvim_get_current_buf()
-            vim.b[bufid][key] = not Utils.get_toggled(bufid, key)
+            local bufnr = vim.api.nvim_get_current_buf()
+            vim.b[bufnr][key] = not Utils.get_toggled(bufnr, key)
         end
     end
 end
