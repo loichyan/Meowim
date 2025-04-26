@@ -5,8 +5,9 @@ local Utils = {}
 ---@return string?
 function Utils.get_git_repo(cwd)
     cwd = cwd or vim.fn.getcwd()
-    local ok, r = pcall(vim.system, { "git", "rev-parse", "--show-toplevel" }, { cwd = cwd })
-    return ok and vim.trim(r:wait().stdout) or nil
+    local ok, p = pcall(vim.system, { "git", "rev-parse", "--show-toplevel" }, { cwd = cwd })
+    local rev = ok and vim.trim(p:wait().stdout)
+    return rev and rev ~= "" and rev or nil
 end
 
 ---Returns the name of current session if valid.
