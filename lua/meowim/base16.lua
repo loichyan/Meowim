@@ -83,7 +83,6 @@ function Base16.colors_customizations(opts, colors)
         "SignColumn",
 
         "WinSeparator",
-        "Error",
         "ErrorMsg",
     }
     for _, name in ipairs(transparents) do
