@@ -5,7 +5,7 @@ return {
     config = function()
         local misc = require("mini.misc")
         misc.setup({ make_global = { "put", "put_text", "bench_time", "stat_summary" } })
-        misc.setup_auto_root()
+        misc.setup_auto_root({ ".git" })
         misc.setup_restore_cursor()
         Meow.keyset({
             {
