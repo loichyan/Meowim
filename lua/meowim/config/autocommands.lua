@@ -47,7 +47,11 @@ autocmd("FileType", {
             return
         end
         local width = rulers[ft] or rulers["*"]
-        vim.opt_local.textwidth = width
         vim.opt_local.colorcolumn = { width }
+        if ft ~= "markdown" then
+            vim.opt_local.textwidth = width
+        else
+            vim.opt_local.wrap = true
+        end
     end,
 })
