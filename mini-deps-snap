@@ -1,5 +1,4 @@
 return {
-  ["better-escape.nvim"] = "19a38aab94961016430905ebec30d272a01e9742",
   ["conform.nvim"] = "6feb2f28f9a9385e401857b21eeac3c1b66dd628",
   ["friendly-snippets"] = "572f5660cf05f8cd8834e096d7b4c921ba18e175",
   ["guess-indent.nvim"] = "84a4987ff36798c2fc1169cbaff67960aed9776f",
