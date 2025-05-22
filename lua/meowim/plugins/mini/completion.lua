@@ -3,9 +3,9 @@ return {
     "mini.completion",
     event = "LazyFile",
     config = function()
-        vim.o.completeopt = "fuzzy,menuone,noinsert,popup"
-        vim.o.completeitemalign = "abbr,kind,menu"
-        require("mini.completion").setup({
+        vim.o.completeopt = "menuone,noinsert,fuzzy"
+        local completion = require("mini.completion")
+        completion.setup({
             window = {
                 info = { border = "solid" },
                 signature = { border = "solid" },
@@ -18,6 +18,7 @@ return {
                 scroll_up      = "<C-b>",
             },
         })
+        vim.lsp.config("*", { capabilities = MiniCompletion.get_lsp_capabilities() })
     end,
     dependencies = { "mini.snippets" },
 }
