@@ -11,21 +11,24 @@ function Utils.get_git_repo(cwd)
 end
 
 ---Returns the name of current session if valid.
+---@param cwd string?
 ---@return string?
-function Utils.session_get()
-    local repo = Utils.get_git_repo()
+function Utils.session_get(cwd)
+    local repo = Utils.get_git_repo(cwd)
     return repo and vim.fs.basename(repo)
 end
 
 ---Saves the current session.
 function Utils.session_save()
-    local name = require("meowim.utils").session_get()
+    local cwd = vim.fn.getcwd()
+    local name = require("meowim.utils").session_get(cwd)
     if not name then
         return
     end
     -- Ignore an empty session.
     for _, b in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.bo[b].buflisted and vim.api.nvim_buf_get_name(b) ~= "" then
+        -- Only consider files under current directory
+        if vim.bo[b].buflisted and vim.startswith(vim.api.nvim_buf_get_name(b), cwd) then
             require("mini.sessions").write(name, { force = true, verbose = false })
             return
         end
