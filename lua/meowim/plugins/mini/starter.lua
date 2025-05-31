@@ -36,7 +36,7 @@ local config = function()
             local total = 0
             local loaded = 0
             for _, p in ipairs(Meow.manager:plugins()) do
-                if p:is_enabled() then
+                if not p:is_shadow() and p:is_enabled() then
                     total = total + 1
                     if not p:is_lazy() then
                         loaded = loaded + 1
