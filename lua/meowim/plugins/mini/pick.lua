@@ -26,9 +26,9 @@ return {
               refine_marked = "<M-Space>",
 
               scroll_left   = "<C-h>",
-              scroll_down   = "<C-j>",
-              scroll_up     = "<C-k>",
               scroll_right  = "<C-l>",
+              scroll_down   = "<C-f>",
+              scroll_up     = "<C-b>",
 
               stop          = "<Esc>",
 
