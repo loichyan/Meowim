@@ -144,6 +144,7 @@ Meow.keyset({
     { "<Leader>fh", function() require("mini.pick").registry.help() end,                              desc = "Pick helptags"        },
     { "<Leader>fk", function() require("mini.pick").registry.keymaps() end,                           desc = "Pick keymaps"         },
     { "<Leader>fm", function() require("mini.pick").registry.marks() end,                             desc = "Pick marks"           },
+    { "<Leader>fn", function() require("mini.pick").registry.notify() end,                            desc = "Pick notifications"   },
     { "<Leader>fo", function() require("mini.pick").registry.oldfiles() end,                          desc = "Pick recent files"    },
     { "<Leader>fq", function() require("mini.pick").registry.list({ scope = "quickfix" }) end,        desc = "Pick quickfix"        },
     { "<Leader>ft", function() require("meowim.utils").pick_todo("current", { "TODO", "FIXME" }) end, desc = "Pick buffer TODOs"    },

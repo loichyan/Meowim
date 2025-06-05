@@ -7,6 +7,5 @@ return {
         local notify = require("mini.notify")
         notify.setup()
         vim.notify = notify.make_notify()
-        -- TODO: add notifications picker
     end,
 }
