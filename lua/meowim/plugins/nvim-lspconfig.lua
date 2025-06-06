@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
     "neovim/nvim-lspconfig",
-    event = "LazyFile",
+    event = "VeryLazy",
     config = function()
         ---@module "lspconfig"
         ---@type lspconfig.Config
