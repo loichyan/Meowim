@@ -22,13 +22,13 @@ local config = function()
         evaluate_single = true,
         -- stylua: ignore
         items = {
-            { section = "Actions", name = "New Buffer",      action = "enew"                                                   },
-            { section = "Actions", name = "Restore Session", action = function() require("meowim.utils").session_restore() end },
-            { section = "Actions", name = "Files Picker",    action = function() require("meowim.utils").pick_files(false) end },
-            { section = "Actions", name = "Grep Picker",     action = function() require("mini.pick").registry.grep_live() end },
-            { section = "Actions", name = "Marks Picker",    action = function() require("mini.pick").registry.marks() end     },
-            { section = "Actions", name = "Oldfiles Picker", action = function() require("mini.pick").registry.oldfiles() end  },
-            { section = "Actions", name = "Quit Neovim",     action = "qall"                                                   },
+            { section = "Actions", name = "New Buffer",      action = "enew"                                                     },
+            { section = "Actions", name = "Restore Session", action = function() require("meowim.utils").session_restore() end   },
+            { section = "Actions", name = "Files Picker",    action = function() require("mini.pick").registry.smart_files() end },
+            { section = "Actions", name = "Grep Picker",     action = function() require("mini.pick").registry.grep_live() end   },
+            { section = "Actions", name = "Marks Picker",    action = function() require("mini.pick").registry.marks() end       },
+            { section = "Actions", name = "Oldfiles Picker", action = function() require("mini.pick").registry.oldfiles() end    },
+            { section = "Actions", name = "Quit Neovim",     action = "qall"                                                     },
             starter.sections.sessions(5, true),
         },
         footer = function()

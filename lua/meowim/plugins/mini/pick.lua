@@ -1,3 +1,57 @@
+local get_config = function() return vim.b.minipick_config or MiniPick.config end
+local show_with_icons = function(bufnr, items, query, opts)
+    return MiniPick.default_show(
+        bufnr,
+        items,
+        query,
+        vim.tbl_extend("force", { show_icons = true }, opts or {})
+    )
+end
+local center_preview = function(bufnr, items, opts)
+    return MiniPick.default_preview(
+        bufnr,
+        items,
+        vim.tbl_extend("force", { line_position = "center" }, opts or {})
+    )
+end
+
+---Lists files with a sensible picker.
+---@param opts? {hidden:boolean}
+local pick_smart_files = function(opts)
+    opts = vim.tbl_extend("force", { hidden = false }, opts or {})
+    local cwd = vim.fn.getcwd()
+    local command
+    if opts.hidden then
+        command = { "rg", "--files", "--no-follow", "--color=never", "--no-ignore" }
+        -- MiniExtra.pickers.git_files(local_opts, opts)
+    elseif require("meowim.utils").get_git_repo(cwd) == cwd then
+        -- stylua: ignore
+        command = { "git", "ls-files", "--exclude-standard", "--cached", "--modified", "--others", "--deduplicate" }
+    else
+        command = { "rg", "--files", "--no-follow", "--color=never" }
+    end
+
+    MiniPick.builtin.cli({ command = command }, {
+        source = {
+            name = "Files",
+            cwd = cwd,
+            show = (get_config().source or {}).show or show_with_icons,
+        },
+    })
+end
+
+---Lists all todo comments of the specified keywords.
+---@param opts? {scope:"current"|"all",keywords:string[]}
+local pick_todo = function(opts)
+    opts = vim.tbl_extend("force", { keywords = { "TODO", "FIXME" } }, opts or {})
+    require("mini.pick").builtin.grep({
+        pattern = "\\b(" .. table.concat(opts.keywords, "|") .. ")(\\(.*\\))?:\\s+.+",
+        globs = opts.scope == "current" and { vim.fn.expand("%") } or nil,
+    }, {
+        source = { name = table.concat(opts.keywords, "|") },
+    })
+end
+
 ---Lists notifications from mini.notify.
 -- TODO: contribute to mini.extra
 local pick_notify = function()
@@ -36,32 +90,32 @@ end
 local config = function()
     local pick = require("mini.pick")
     pick.setup({
-            -- stylua: ignore
-            mappings = {
-              choose        = "<CR>",
-              choose_marked = "<M-CR>",
-              refine        = "<C-Space>",
-              refine_marked = "<M-Space>",
+        -- stylua: ignore
+        mappings = {
+          choose        = "<CR>",
+          choose_marked = "<M-CR>",
+          refine        = "<C-Space>",
+          refine_marked = "<M-Space>",
 
-              scroll_left   = "<C-h>",
-              scroll_right  = "<C-l>",
-              scroll_down   = "<C-f>",
-              scroll_up     = "<C-b>",
+          scroll_left   = "<C-h>",
+          scroll_right  = "<C-l>",
+          scroll_down   = "<C-f>",
+          scroll_up     = "<C-b>",
 
-              stop          = "<Esc>",
+          stop          = "<Esc>",
 
-              open_quickfix = { char = "<C-q>", func = open_quickfix },
-            },
+          open_quickfix = { char = "<C-q>", func = open_quickfix },
+        },
+        source = {
+            preview = center_preview,
+        },
     })
-    -- TODO: use config.source.preview
-    local preview = pick.default_preview
-    ---@diagnostic disable-next-line: duplicate-set-field
-    pick.default_preview = function(b, i, o)
-        return preview(b, i, vim.tbl_extend("force", { line_position = "center" }, o or {}))
-    end
-    pick.registry.notify = pick_notify
 
-    Meow.load("mini.extra") -- Register extra pickers.
+    -- Register extra pickers.
+    Meow.load("mini.extra")
+    pick.registry.smart_files = pick_smart_files
+    pick.registry.todo = pick_todo
+    pick.registry.notify = pick_notify
 end
 
 ---@type MeoSpec
