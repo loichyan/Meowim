@@ -94,6 +94,59 @@ local pick_notify = function(local_opts, opts)
     MiniPick.start(opts)
 end
 
+---Lists registered autocmds.
+-- TODO: contribute to mini.extra
+local pick_autocmds = function(local_opts, opts)
+    -- stylua: ignore
+    local fields = {
+        { "group_name", "%-30s" },
+        { "event",      "%-20s" },
+        { "pattern",    "%-25s" },
+        { "desc",       "%s"    },
+    }
+    local format = function(autocmd)
+        return table.concat(
+            vim.tbl_map(function(f) return string.format(f[2], autocmd[f[1]] or "") end, fields)
+        )
+    end
+
+    local items = vim.tbl_map(
+        function(autocmd) return { _orig = autocmd, text = format(autocmd) } end,
+        vim.api.nvim_get_autocmds(local_opts or {})
+    )
+    table.sort(items, function(a, b)
+        if not a._orig.group then
+            return false
+        elseif not b._orig.group then
+            return true
+        elseif a._orig.group == b._orig.group then
+            return a._orig.event < b._orig.event
+        else
+            return a._orig.group < b._orig.group
+        end
+    end)
+
+    opts = vim.tbl_deep_extend("force", {
+        source = {
+            name = "Autocmds",
+            items = items,
+            preview = function(buf_id, item)
+                vim.api.nvim_buf_set_lines(
+                    buf_id,
+                    0,
+                    -1,
+                    false,
+                    vim.split(vim.inspect(item._orig), "\n")
+                )
+            end,
+            choose = function(item)
+                vim.schedule(function() vim.print(item._orig) end)
+            end,
+        },
+    }, opts or {})
+    MiniPick.start(opts)
+end
+
 ---Shows all selected items in the quickfix list.
 local open_quickfix = function()
     MiniPick.default_choose_marked(MiniPick.get_picker_matches().all, { list_type = "quickfix" })
@@ -126,9 +179,10 @@ local config = function()
 
     -- Register extra pickers.
     Meow.load("mini.extra")
+    pick.registry.autocmds = pick_autocmds
+    pick.registry.notify = pick_notify
     pick.registry.smart_files = pick_smart_files
     pick.registry.todo = pick_todo
-    pick.registry.notify = pick_notify
 end
 
 ---@type MeoSpec

@@ -136,7 +136,7 @@ Meow.keyset({
 
     { "<Leader>fb", function() require("mini.pick").registry.buffers() end,                      desc = "Pick buffers"         },
     { "<Leader>fc", function() require("mini.pick").registry.commands() end,                     desc = "Pick commands"        },
-    -- { "<Leader>fC", function() require("mini.pick").registry.autocmds() end,                  desc = "Pick autocommands"    }, -- TODO: add autocommands picker
+    { "<Leader>fC", function() require("mini.pick").registry.autocmds() end,                     desc = "Pick autocommands"    },
     { "<Leader>ff", function() require("mini.pick").registry.smart_files() end,                  desc = "Pick files"           },
     { "<Leader>fF", function() require("mini.pick").registry.smart_files({ hidden = true }) end, desc = "Pick all files"       },
     { "<Leader>fg", function() require("mini.pick").registry.grep_live() end,                    desc = "Grep files"           },
