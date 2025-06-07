@@ -138,7 +138,6 @@ function Utils.cached_colorscheme(opts)
     assert(io.open(cache_path, "w"):write(bytes))
     -- 4) Save timestamps.
     cache_ts_file = assert(io.open(cache_ts_path, "w"))
-    vim.print(input_ts)
     for _, ts in ipairs(input_ts) do
         assert(cache_ts_file:write(ts, "\n"))
     end
