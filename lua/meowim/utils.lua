@@ -68,7 +68,7 @@ end
 ---Returns the state of a toggler of current buffer.
 ---@param bufnr integer
 ---@param key string
-function Utils.get_toggled(bufnr, key)
+function Utils.is_toggle_on(bufnr, key)
     local val = vim.b[bufnr][key]
     if val == nil then
         val = vim.g[key]
@@ -76,19 +76,15 @@ function Utils.get_toggled(bufnr, key)
     return val == true
 end
 
----Creates a toggler used to toggle locally or globally configured option. The
----default of the specified option is always false.
+---Toggles the specified option. The default is always false.
 ---@param key string
 ---@param global boolean
----@return fun()
-function Utils.create_toggler(key, global)
+function Utils.toggle(key, global)
     if global then
-        return function() vim.g[key] = not vim.g[key] end
+        vim.g[key] = not vim.g[key]
     else
-        return function()
-            local bufnr = vim.api.nvim_get_current_buf()
-            vim.b[bufnr][key] = not Utils.get_toggled(bufnr, key)
-        end
+        local bufnr = vim.api.nvim_get_current_buf()
+        vim.b[bufnr][key] = not Utils.is_toggle_on(bufnr, key)
     end
 end
 

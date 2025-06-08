@@ -21,7 +21,7 @@ return {
         vim.api.nvim_create_autocmd("BufWritePre", {
             desc = "Format on save",
             callback = function(ev)
-                if not require("meowim.utils").get_toggled(ev.buf, "autoformat_disabled") then
+                if not require("meowim.utils").is_toggle_on(ev.buf, "autoformat_disabled") then
                     require("conform").format()
                 end
             end,
