@@ -6,11 +6,7 @@ vim.filetype.add({
 })
 
 -- Other configurations
-vim.diagnostic.config({
-    -- TODO: see <https://github.com/neovim/neovim/pull/33517>
-    virtual_text = { current_line = false },
-    virtual_lines = { current_line = true },
-})
+vim.diagnostic.config({ virtual_text = true })
 
 vim.api.nvim_create_user_command("Cat", function(ctx)
     local output = vim.api.nvim_exec2(ctx.args, { output = true }).output
