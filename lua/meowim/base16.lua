@@ -3,7 +3,7 @@ local Base16 = {}
 ---Whether to enable transparent background in the default customization.
 Base16.transparent = false
 
----The default options used to set up mini.base16.
+---The default options used to setup mini.base16.
 ---@type table
 Base16.options = {
     use_cterm = false,

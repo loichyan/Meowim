@@ -7,13 +7,13 @@ function Meowim.setup()
     end
 
     require("meowim.config.options")
-    -- Set up keymaps and autocommands once we enter the UI.
+    -- Setup keymaps and autocommands once we enter the UI.
     vim.api.nvim_create_autocmd("UIEnter", {
         once = true,
         desc = "meowim.config",
         callback = function()
             require("meowim.config.keymaps")
-            require("meowim.config.autocommands")
+            require("meowim.config.autocmds")
             require("meowim.config.polish")
         end,
     })

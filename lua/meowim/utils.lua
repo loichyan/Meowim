@@ -97,7 +97,7 @@ end
 ---@field name string
 ---A list of runtime files used to determine whether to update the cache.
 ---@field watch_paths string[]
----The function used to set up the colorscheme. An optional colorscheme object
+---The function used to setup the colorscheme. An optional colorscheme object
 ---obtained from MiniColors can be returned to generate highlight groups.
 ---@field setup fun():table?
 
