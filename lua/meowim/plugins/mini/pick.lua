@@ -25,8 +25,8 @@ local config = function()
 
           scroll_left   = "<C-h>",
           scroll_right  = "<C-l>",
-          scroll_down   = "<C-f>",
-          scroll_up     = "<C-b>",
+          scroll_down   = "<C-d>",
+          scroll_up     = "<C-u>",
 
           stop          = "<Esc>",
 
