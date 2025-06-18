@@ -19,13 +19,20 @@ end
 function Pickers.smart_files(local_opts, opts)
     local_opts = vim.tbl_extend("force", { hidden = false }, local_opts or {})
     local cwd = vim.fn.getcwd()
-    local command
+    local command, postprocess
+
     if local_opts.hidden then
         command = { "rg", "--files", "--no-follow", "--color=never", "--no-ignore" }
-        -- MiniExtra.pickers.git_files(local_opts, opts)
     elseif require("meowim.utils").get_git_repo(cwd) == cwd then
         -- stylua: ignore
-        command = { "git", "ls-files", "--exclude-standard", "--cached", "--modified", "--others", "--deduplicate" }
+        command = { "git", "-c", "core.quotepath=false", "ls-files", "--exclude-standard", "--cached", "--others" }
+        ---Filters out missing files.
+        postprocess = function(items)
+            return vim.tbl_filter(
+                function(item) return item ~= "" and vim.uv.fs_stat(item) ~= nil end,
+                items
+            )
+        end
     else
         command = { "rg", "--files", "--no-follow", "--color=never" }
     end
@@ -37,7 +44,7 @@ function Pickers.smart_files(local_opts, opts)
             show = (get_config().source or {}).show or show_with_icons,
         },
     }, opts or {})
-    MiniPick.builtin.cli({ command = command }, opts)
+    MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
 end
 
 ---Lists all todo comments of the specified keywords.

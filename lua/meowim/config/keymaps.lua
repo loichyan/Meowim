@@ -221,6 +221,7 @@ end
 -- stylua: ignore
 vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev) Meow.keyset(ev.buf, {
     { "K",  function() vim.lsp.buf.hover() end,                desc = "Show documentation"   },
+    -- TODO: filter out useless definitions
     { "gd", function() vim.lsp.buf.definition() end,           desc = "Goto definition"      },
     { "gD", function() vim.lsp.buf.type_definition() end,      desc = "Goto type definition" },
 
