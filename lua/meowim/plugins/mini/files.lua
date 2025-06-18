@@ -6,6 +6,7 @@ return {
         require("mini.files").setup({
             options = { use_as_default_explorer = true },
         })
+        -- TODO: move to keymaps, enable lazy loading
         Meow.keyset({
             {
                 "<Leader>e",

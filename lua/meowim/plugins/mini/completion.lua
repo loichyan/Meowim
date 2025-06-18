@@ -20,7 +20,19 @@ return {
                 scroll_up      = "<C-u>",
             },
         })
-        vim.lsp.config("*", { capabilities = MiniCompletion.get_lsp_capabilities() })
+        vim.lsp.config("*", { capabilities = completion.get_lsp_capabilities() })
+
+        vim.keymap.set("i", "<C-d>", function()
+            if vim.fn.pumvisible() == 0 or not MiniCompletion.scroll("down") then
+                -- Ported from vim-rsi
+                return (vim.fn.col(".") > #vim.fn.getline(".")) and "<C-d>" or "<Del>"
+            end
+        end, { expr = true, desc = "Scroll signature/info down" })
+        vim.keymap.set("i", "<C-u>", function()
+            if vim.fn.pumvisible() == 0 or not MiniCompletion.scroll("up") then
+                return "<C-u>"
+            end
+        end, { expr = true, desc = "Scroll signature/info up" })
     end,
     dependencies = { "mini.snippets" },
 }
