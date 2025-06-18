@@ -6,7 +6,6 @@ return {
         require("mini.files").setup({
             options = { use_as_default_explorer = true },
         })
-        -- TODO: move to keymaps, enable lazy loading
         Meow.keyset({
             {
                 "<Leader>e",
@@ -14,12 +13,15 @@ return {
                     local path = vim.api.nvim_buf_get_name(0)
                     require("mini.files").open(vim.uv.fs_stat(path) and path or nil)
                 end,
-                desc = "Open file explorer",
+                desc = "Explore file directory",
             },
             {
                 "<Leader>E",
-                function() require("mini.files").open() end,
-                desc = "Open file explorer at root",
+                function()
+                    local cwd = vim.fn.getcwd()
+                    require("mini.files").open(require("meowim.utils").get_git_repo(cwd) or cwd)
+                end,
+                desc = "Explore project root",
             },
         })
     end,
