@@ -218,9 +218,12 @@ end
 
 -- stylua: ignore
 vim.api.nvim_create_autocmd("LspAttach", { callback = function(ev) Meow.keyset(ev.buf, {
-    { "K",   function() vim.lsp.buf.hover() end,                desc = "Show documentation"   },
-    { "gd",  function() vim.lsp.buf.definition() end,           desc = "Goto definition"      },
-    { "gD",  function() vim.lsp.buf.type_definition() end,      desc = "Goto type definition" },
+    { "K",  function() vim.lsp.buf.hover() end,                desc = "Show documentation"   },
+    { "gd", function() vim.lsp.buf.definition() end,           desc = "Goto definition"      },
+    { "gD", function() vim.lsp.buf.type_definition() end,      desc = "Goto type definition" },
+
+    { "]r", function() require("snacks.words").jump( vim.v.count1, true) end, desc = "Reference forward"  },
+    { "[r", function() require("snacks.words").jump(-vim.v.count1, true) end, desc = "Reference backward" },
 
     { "<Leader>la", function() vim.lsp.buf.code_action() end,   desc = "List code actions", mode = { "n", "x" } },
     { "<Leader>lf", function() require("conform").format() end, desc = "Format",            mode = { "n", "x" } },
