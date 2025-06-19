@@ -23,8 +23,8 @@ local config = function()
             -- stylua: ignore
             move = {
                 enable = true,
-                goto_next_start     = { ["]f"] = "@function.outer", ["]]"] = "@class.outer" },
-                goto_previous_start = { ["[f"] = "@function.outer", ["[["] = "@class.outer" },
+                goto_next_start     = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+                goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
             },
         },
     })

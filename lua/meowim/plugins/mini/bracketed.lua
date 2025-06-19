@@ -6,7 +6,7 @@ return {
         -- stylua: ignore
         require("mini.bracketed").setup({
             buffer     = { suffix = ""  },
-            comment    = { suffix = "c" },
+            comment    = { suffix = ""  },
             conflict   = { suffix = "x" },
             diagnostic = { suffix = ""  },
             file       = { suffix = ""  },
