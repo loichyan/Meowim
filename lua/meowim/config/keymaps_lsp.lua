@@ -38,10 +38,10 @@ end
 
 -- stylua: ignore
 local keymaps = {
-    { "K",  function() vim.lsp.buf.hover() end,                desc = "Show documentation"   },
+    { "K",  function() vim.lsp.buf.hover() end,           has = "textDocument/hover",          desc = "Show documentation"   },
     -- TODO: filter out useless definitions
-    { "gd", function() vim.lsp.buf.definition() end,           desc = "Goto definition"      },
-    { "gD", function() vim.lsp.buf.type_definition() end,      desc = "Goto type definition" },
+    { "gd", function() vim.lsp.buf.definition() end,      has = "textDocument/definition",     desc = "Goto definition"      },
+    { "gD", function() vim.lsp.buf.type_definition() end, has = "textDocument/typeDefinition", desc = "Goto type definition" },
 
     { "]r", function() require("snacks.words").jump( vim.v.count1, true) end, desc = "Reference forward"  },
     { "[r", function() require("snacks.words").jump(-vim.v.count1, true) end, desc = "Reference backward" },
@@ -62,7 +62,15 @@ return {
     ---@param bufnr integer
     ---@param client vim.lsp.Client
     setup = function(bufnr, client)
-        _ = client
-        Meow.keyset(bufnr, keymaps)
+        local specs = {}
+        for _, spec in ipairs(keymaps) do
+            -- Setup certain keymaps only if the client supports it
+            if not spec.has or client:supports_method(spec.has, bufnr) then
+                spec = vim.tbl_extend("force", spec, { buffer = bufnr })
+                spec.has = nil
+                table.insert(specs, spec)
+            end
+        end
+        Meow.keyset(bufnr, specs)
     end,
 }
