@@ -8,6 +8,28 @@ local H = {}
 ---@param opts? table
 function H.pick(picker, opts) require("mini.pick").registry[picker](opts) end
 
+---Jumps to the first item if it is the only one. Otherwise, lists all items in
+---quickfix.
+---@param opts vim.lsp.LocationOpts.OnList
+local list_locations = function(opts)
+    if #opts.items > 1 then
+        ---@diagnostic disable-next-line: param-type-mismatch
+        vim.fn.setqflist({}, " ", opts)
+        vim.cmd("copen | cfirst")
+        return
+    end
+
+    local loc = opts.items[1]
+    if not loc then
+        return
+    end
+    local buf_id = loc.bufnr or vim.fn.bufadd(loc.filename)
+    vim.bo[buf_id].buflisted = true
+    vim.api.nvim_win_set_buf(0, buf_id)
+    vim.api.nvim_win_set_cursor(0, { loc.lnum, loc.col - 1 })
+    return vim.cmd("normal! zv")
+end
+
 ---Lists only items of current buffer.
 ---@param opts vim.lsp.LocationOpts.OnList
 function H.lsp_list_buf(opts)
@@ -17,9 +39,30 @@ function H.lsp_list_buf(opts)
         function(v) return v.bufnr == bufnr or v.filename == bufname end,
         opts.items
     )
-    ---@diagnostic disable-next-line: param-type-mismatch
-    vim.fn.setqflist({}, " ", opts)
-    vim.schedule(function() vim.cmd("copen") end)
+    list_locations(opts)
+end
+
+---Lists only the first one of items locate in consecutive lines.
+---@param opts vim.lsp.LocationOpts.OnList
+function H.lsp_list_unique(opts)
+    local items = opts.items
+    table.sort(items, function(a, b)
+        if a.filename ~= b.filename then
+            return a.filename < b.filename
+        else
+            return a.lnum < b.lnum
+        end
+    end)
+
+    local new_items = { items[1] }
+    for i = 2, #items do
+        local curr, prev = items[i], items[i - 1]
+        if curr.filename ~= prev.filename or (curr.lnum - prev.lnum) > 1 then
+            table.insert(new_items, curr)
+        end
+    end
+    opts.items = new_items
+    list_locations(opts)
 end
 
 ---@param scope "current"|"all"
@@ -28,7 +71,6 @@ function H.lsp_implementation(scope)
         on_list = scope == "current" and H.lsp_list_buf or nil,
     })
 end
-
 ---@param scope "current"|"all"
 function H.lsp_references(scope)
     vim.lsp.buf.references({ includeDeclaration = false }, {
@@ -36,12 +78,15 @@ function H.lsp_references(scope)
     })
 end
 
+function H.lsp_definition() return vim.lsp.buf.definition({ on_list = H.lsp_list_unique }) end
+function H.lsp_type_definition() return vim.lsp.buf.type_definition({ on_list = H.lsp_list_unique }) end
+
+
 -- stylua: ignore
 local keymaps = {
-    { "K",  function() vim.lsp.buf.hover() end,           has = "textDocument/hover",          desc = "Show documentation"   },
-    -- TODO: filter out useless definitions
-    { "gd", function() vim.lsp.buf.definition() end,      has = "textDocument/definition",     desc = "Goto definition"      },
-    { "gD", function() vim.lsp.buf.type_definition() end, has = "textDocument/typeDefinition", desc = "Goto type definition" },
+    { "K",  function() vim.lsp.buf.hover() end,     has = "textDocument/hover",          desc = "Show documentation"   },
+    { "gd", function() H.lsp_definition() end,      has = "textDocument/definition",     desc = "Goto definition"      },
+    { "gD", function() H.lsp_type_definition() end, has = "textDocument/typeDefinition", desc = "Goto type definition" },
 
     { "]r", function() require("snacks.words").jump( vim.v.count1, true) end, desc = "Reference forward"  },
     { "[r", function() require("snacks.words").jump(-vim.v.count1, true) end, desc = "Reference backward" },
