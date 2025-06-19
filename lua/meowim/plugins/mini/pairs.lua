@@ -39,10 +39,14 @@ return {
             end
 
             -- Emit a opening only if unbalanced
-            if o ~= c and line:sub(col + 1, #line) then
+            if #line < 500 then
                 local _, opened = line:gsub("%" .. o, "")
-                local _, closed = line:gsub("%" .. c, "")
-                if closed > opened then
+                if o ~= c then
+                    local _, closed = line:gsub("%" .. c, "")
+                    if closed > opened then
+                        return o
+                    end
+                elseif opened % 2 ~= 0 then
                     return o
                 end
             end
