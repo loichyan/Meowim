@@ -6,6 +6,7 @@ return {
         vim.o.completeopt = "menuone,noinsert,fuzzy"
         local completion = require("mini.completion")
         completion.setup({
+            -- 'completefunc' conflicts with `Ctrl+U` in insert mode
             lsp_completion = { source_func = "omnifunc" },
             window = {
                 info = { border = "solid" },
