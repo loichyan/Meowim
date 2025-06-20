@@ -17,15 +17,15 @@ local smart_pairs = function(pair, neigh_pattern)
     end
 
     -- Skip next if there's already a pair.
-    if o == line:sub(col + 1, col + 1) then
+    if line:sub(col + 1, col + 1) == o then
         return vim.api.nvim_replace_termcodes("<Right>", true, true, true)
     end
 
     -- Emit a opening only if unbalanced
     if #line < 500 then
-        local _, opened = line:gsub("%" .. o, "")
+        local _, opened = line:sub(1, col):gsub("%" .. o, "")
         if o ~= c then
-            local _, closed = line:gsub("%" .. c, "")
+            local _, closed = line:sub(col + 1):gsub("%" .. c, "")
             if closed > opened then
                 return o
             end
