@@ -1,3 +1,24 @@
+---Counts unlanced open or close characters.
+---@param line string
+---@param op string # open character
+---@param cl string # close character
+---@return integer,integer # count of open and close characters
+local count_unlanced = function(line, op, cl)
+    local no, nc = 0, 0
+    for i = 1, #line do
+        local ch = line:sub(i, i)
+        if ch == op then
+            no = no + 1
+        elseif ch ~= cl then
+        elseif no > 0 then
+            no = no - 1
+        else
+            nc = nc + 1
+        end
+    end
+    return no, nc
+end
+
 -- Credit: https://github.com/LazyVim/LazyVim/blob/25abbf546d564dc484cf903804661ba12de45507/lua/lazyvim/util/mini.lua#L97
 -- License: Apache-2.0
 local open
@@ -7,30 +28,34 @@ local smart_pairs = function(pair, neigh_pattern)
     if vim.fn.getcmdline() ~= "" then
         return open(pair, neigh_pattern)
     end
-    local o, c = pair:sub(1, 1), pair:sub(2, 2)
+    local op, cl = pair:sub(1, 1), pair:sub(2, 2)
     local line = vim.api.nvim_get_current_line()
     local col = vim.api.nvim_win_get_cursor(0)[2]
 
     -- Skip next if there's already a pair.
-    if line:sub(col + 1, col + 1) == o then
+    if line:sub(col + 1, col + 1) == op then
         return vim.api.nvim_replace_termcodes("<Right>", true, true, true)
     end
 
     -- Handle codeblocks and Python's doc strings
-    if o == c and line:sub(col - 1, col) == o:rep(2) then
-        return o .. "\n" .. o:rep(3) .. vim.api.nvim_replace_termcodes("<Up>", true, true, true)
+    if op == cl and line:sub(col - 1, col) == op:rep(2) then
+        return op .. "\n" .. op:rep(3) .. vim.api.nvim_replace_termcodes("<Up>", true, true, true)
     end
 
     -- Emit a opening only if unbalanced
     if #line < 500 then
-        local _, opened = line:sub(1, col):gsub("%" .. o, "")
-        if o ~= c then
-            local _, closed = line:sub(col + 1):gsub("%" .. c, "")
-            if closed > opened then
-                return o
+        if op ~= cl then
+            local left, right = line:sub(1, col), line:sub(col + 1)
+            local no, _ = count_unlanced(left, op, cl)
+            local _, nc = count_unlanced(right, op, cl)
+            if no < nc then
+                return op
             end
-        elseif opened % 2 ~= 0 then
-            return o
+        else
+            local _, n = line:gsub("%" .. op, "")
+            if n % 2 ~= 0 then
+                return op
+            end
         end
     end
 
