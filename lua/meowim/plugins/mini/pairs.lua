@@ -11,14 +11,14 @@ local smart_pairs = function(pair, neigh_pattern)
     local line = vim.api.nvim_get_current_line()
     local col = vim.api.nvim_win_get_cursor(0)[2]
 
-    -- Handle codeblocks in Markdown files
-    if o == "`" and vim.bo.filetype == "markdown" and line:sub(1, col):match("^%s*``") then
-        return "`\n```" .. vim.api.nvim_replace_termcodes("<Up>", true, true, true)
-    end
-
     -- Skip next if there's already a pair.
     if line:sub(col + 1, col + 1) == o then
         return vim.api.nvim_replace_termcodes("<Right>", true, true, true)
+    end
+
+    -- Handle codeblocks and Python's doc strings
+    if o == c and line:sub(col - 1, col) == o:rep(2) then
+        return o .. "\n" .. o:rep(3) .. vim.api.nvim_replace_termcodes("<Up>", true, true, true)
     end
 
     -- Emit a opening only if unbalanced
