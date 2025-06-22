@@ -42,9 +42,11 @@ Meow.keyset({
     { "<C-c>", function() H.clear_ui() end, desc = "Clear trivial UI items" },
 
     -- Toggles
-    { "<LocalLeader>f", function() H.toggle("autoformat_disabled", false) end, desc = "Toggle autoformat"          },
-    { "<LocalLeader>F", function() H.toggle("autoformat_disabled", true) end,  desc = "Toggle autoformat globally" },
-    { "<LocalLeader>q", function() require("quicker").toggle() end,            desc = "Toggle quickfix"            },
+    { "<LocalLeader>k", function() H.toggle("minicompletion_disable", false) end, desc = "Toggle completion"          },
+    { "<LocalLeader>K", function() H.toggle("minicompletion_disable", true) end,  desc = "Toggle completion globally" },
+    { "<LocalLeader>f", function() H.toggle("autoformat_disabled", false) end, desc = "Toggle autoformat"             },
+    { "<LocalLeader>F", function() H.toggle("autoformat_disabled", true) end,  desc = "Toggle autoformat globally"    },
+    { "<LocalLeader>q", function() require("quicker").toggle() end,            desc = "Toggle quickfix"               },
 
     -- Buffers/Tabs/Windows
     { "<Leader>n",  "<Cmd>enew<CR>",                                   desc = "New buffer"           },
