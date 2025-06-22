@@ -35,6 +35,8 @@ end
 ---@param global boolean
 function H.toggle(key, global) require("meowim.utils").toggle(key, global) end
 
+function H.toggle_conceal() vim.opt_local.conceallevel = 2 - vim.opt_local.conceallevel end
+
 -- stylua: ignore
 Meow.keyset({
     -- Common mappings
@@ -44,9 +46,10 @@ Meow.keyset({
     -- Toggles
     { "<LocalLeader>k", function() H.toggle("minicompletion_disable", false) end, desc = "Toggle completion"          },
     { "<LocalLeader>K", function() H.toggle("minicompletion_disable", true) end,  desc = "Toggle completion globally" },
-    { "<LocalLeader>f", function() H.toggle("autoformat_disabled", false) end, desc = "Toggle autoformat"             },
-    { "<LocalLeader>F", function() H.toggle("autoformat_disabled", true) end,  desc = "Toggle autoformat globally"    },
-    { "<LocalLeader>q", function() require("quicker").toggle() end,            desc = "Toggle quickfix"               },
+    { "<LocalLeader>f", function() H.toggle("autoformat_disabled", false) end,    desc = "Toggle autoformat"          },
+    { "<LocalLeader>F", function() H.toggle("autoformat_disabled", true) end,     desc = "Toggle autoformat globally" },
+    { "<LocalLeader>q", function() require("quicker").toggle() end,               desc = "Toggle quickfix"            },
+    { "<LocalLeader>v", function() H.toggle_conceal() end,                        desc = "Toggle conceal"             },
 
     -- Buffers/Tabs/Windows
     { "<Leader>n",  "<Cmd>enew<CR>",                                   desc = "New buffer"           },
