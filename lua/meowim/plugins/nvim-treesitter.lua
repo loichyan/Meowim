@@ -18,13 +18,15 @@ local config = function()
         auto_install = true,
         highlight = { enable = true, additional_vim_regex_highlighting = false },
         incremental_selection = { enable = false },
-        indent = { enable = false },
+        indent = { enable = true },
         textobjects = {
             -- stylua: ignore
             move = {
                 enable = true,
-                goto_next_start     = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-                goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+                goto_next_start     = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
+                goto_next_end       = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
+                goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
+                goto_previous_end   = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
             },
         },
     })
