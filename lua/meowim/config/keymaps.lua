@@ -35,7 +35,7 @@ end
 ---@param global boolean
 function H.toggle(key, global) require("meowim.utils").toggle(key, global) end
 
-function H.toggle_conceal() vim.opt_local.conceallevel = 2 - vim.opt_local.conceallevel end
+function H.toggle_conceal() vim.wo.conceallevel = 2 - vim.wo.conceallevel end
 
 -- stylua: ignore
 Meow.keyset({
