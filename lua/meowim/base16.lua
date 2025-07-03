@@ -97,6 +97,13 @@ function Base16.colors_customizations(opts, colors)
     local overrides = {
         ["FloatTitle"]               = { fg = get("Title").fg, bg= palette.base01 },
 
+        ["GitConflictCurrent"]       = { fg = palette.base05, bg = lighten(palette.base0D, -37) },
+        ["GitConflictCurrentLabel"]  = { fg = palette.base05, bg = lighten(palette.base0D, -23) },
+        ["GitConflictAncestor"]      = { fg = palette.base05, bg = lighten(palette.base0E, -37) },
+        ["GitConflictAncestorLabel"] = { fg = palette.base05, bg = lighten(palette.base0E, -23) },
+        ["GitConflictIncoming"]      = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
+        ["GitConflictIncomingLabel"] = { fg = palette.base05, bg = lighten(palette.base0B, -23) },
+
         ["MiniDiffOverAdd"]        = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
         ["MiniDiffOverDelete"]     = { fg = palette.base05, bg = lighten(palette.base08, -37) },
         ["MiniDiffOverChange"]     = { fg = palette.base05, bg = lighten(palette.base08, -37) },

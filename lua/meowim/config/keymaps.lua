@@ -87,6 +87,11 @@ Meow.keyset({
     { "<Leader>qQ",  "<Cmd>let g:minisessions_disable=v:true | quitall<CR>",   desc = "Quit Neovim quietly"      },
 
     -- Git
+    { "<Leader>gb", "<Plug>(git-conflict-both)",                              desc = "Accept both changes"     },
+    { "<Leader>gB", "<Plug>(git-conflict-none)",                              desc = "Accept base changes"     },
+    { "<Leader>gc", "<Plug>(git-conflict-ours)",                              desc = "Accept current changes"  },
+    { "<Leader>gi", "<Plug>(git-conflict-theirs)",                            desc = "Accept incoming changes" },
+
     { "<Leader>gd", function() require("mini.diff").toggle_overlay(0) end,    desc = "Show buffer changes overlay"           },
     { "<Leader>gD", function() H.gitexec("diff", "HEAD", "--", "%") end,      desc = "Show buffer changes diff"              },
     { "<Leader>gh", function() H.pick("git_hunks")   end,                     desc = "Pick buffer hunks"                     },
