@@ -6,6 +6,11 @@ return {
         require("mini.files").setup({
             options = { use_as_default_explorer = true },
         })
+        vim.api.nvim_create_autocmd("FileType", {
+            desc = "Improve motions in the explorer",
+            pattern = "minifiles",
+            command = "setlocal iskeyword-=_",
+        })
         Meow.keyset({
             {
                 "<Leader>e",
