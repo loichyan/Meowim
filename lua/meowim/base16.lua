@@ -97,15 +97,15 @@ function Base16.colors_customizations(opts, colors)
     local overrides = {
         ["FloatTitle"]               = { fg = get("Title").fg, bg= palette.base01 },
 
-        ["MiniIndentscopeSymbol"]    = { fg = palette.base04 },
-        ["MiniIndentscopeSymbolOff"] = { fg = palette.base04 },
-
         ["MiniDiffOverAdd"]        = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
         ["MiniDiffOverDelete"]     = { fg = palette.base05, bg = lighten(palette.base08, -37) },
         ["MiniDiffOverChange"]     = { fg = palette.base05, bg = lighten(palette.base08, -37) },
         ["MiniDiffOverChangeBuf"]  = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
         ["MiniDiffOverContext"]    = { bg = palette.base01, fg = lighten(palette.base08, -23) },
         ["MiniDiffOverContextBuf"] = {},
+
+        ["MiniIndentscopeSymbol"]    = { fg = palette.base04 },
+        ["MiniIndentscopeSymbolOff"] = { fg = palette.base04 },
     }
     for name, hl in pairs(overrides) do
         colors.groups[name] = hl

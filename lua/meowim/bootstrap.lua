@@ -1,4 +1,4 @@
--- Install "mini.nvim" manually if not present.
+-- Install mini.nvim manually if not present.
 local pack_path = vim.fn.stdpath("data") .. "/site/"
 local mini_path = pack_path .. "pack/deps/start/mini.nvim"
 if not vim.uv.fs_stat(mini_path) then
