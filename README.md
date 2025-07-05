@@ -3,6 +3,18 @@
 Meowim is a [mini.nvim](https://github.com/echasnovski/mini.nvim) powered launch point for your
 personal development environment.
 
+![showcase](https://github.com/user-attachments/assets/18deae4b-9ba2-4c03-83de-cc31b65e7cf0)
+
+<details>
+<summary>Information</summary>
+<br>
+
+- font: [Rec Mono Duotone](https://www.recursive.design)
+- tmux: [tmux-base16](https://github.com/loichyan/tmux-base16)
+- Neovim: [Meowim](https://github.com/loichyan/Meowim)
+
+</details>
+
 ## ✨ Features
 
 - 🔋 20+ pre-configured mini modules
