@@ -30,7 +30,7 @@ personal development environment.
 - a C compiler for nvim-treesitter (see
   [here](https://github.com/nvim-treesitter/nvim-treesitter#requirements))
 - [ripgrep](https://github.com/BurntSushi/ripgrep) (*required by mini.pick*)
-- a [NerdFont](https://www.nerdfonts.com/) (v3.0 or greater) (*optional but highly recommended*)
+- a [NerdFont](https://www.nerdfonts.com/) >= **3.0** (*optional but highly recommended*)
 
 ## 🚗 Quick start
 
@@ -45,7 +45,19 @@ mv ~/.local/share/nvim ~/.local/share/nvim
 git clone https://github.com/<your_id>/Meowim ~/.config/nvim
 ```
 
-Additionally, you can check out my own fork for inspiration.
+Additionally, you can check out [my own fork](https://github.com/loichyan/nvim) for inspiration.
+
+## 🎯 Goals
+
+Meowim aims to provide some tweaks to the defaults of mini.nvim, along with several useful plugins
+that aren't included in mini.nvim. As a result, new plugins generally won't be added to the
+codebase. Moreover, if a non-mini plugin eventually has a mini alternative, it may be replaced by
+that.
+
+On the other hand, Meowim won't offer an extendable layer over its codebase like
+[LazyVim](https://www.lazyvim.org/). It more or less follows the philosophy of
+[kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim), because no distribution meets
+everyone's needs (which is also one reason this project exists).
 
 ## ♥️ Special Thanks
 
