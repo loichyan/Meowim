@@ -23,10 +23,14 @@ local list_locations = function(opts)
     if not loc then
         return
     end
+    -- Save position in jumplist
+    vim.cmd("normal! m'")
+    -- Open and jump to the target position
     local buf_id = loc.bufnr or vim.fn.bufadd(loc.filename)
     vim.bo[buf_id].buflisted = true
     vim.api.nvim_win_set_buf(0, buf_id)
     vim.api.nvim_win_set_cursor(0, { loc.lnum, loc.col - 1 })
+    -- Open folds under the cursor
     return vim.cmd("normal! zv")
 end
 
