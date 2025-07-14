@@ -105,21 +105,6 @@ Meow.keyset({
 ---------- PICKERS & DIAGNOSTICS ----------
 -------------------------------------------
 
----@param dir "forward"|"backward"|"first"|"last"
----@param severity vim.diagnostic.Severity?
-function H.jump_diagnostic(dir, severity)
-    require("mini.bracketed").diagnostic(dir, { severity = severity })
-end
-
----@param scope "all"|"current"
----@param severity vim.diagnostic.Severity?
-function H.pick_diagnostics(scope, severity)
-    require("mini.pick").registry.diagnostic({
-        scope = scope,
-        get_opts = { severity = severity },
-    })
-end
-
 ---@param dir "forward"|"backward"
 ---@param fallback string
 function H.jump_quickfix(dir, fallback)
@@ -131,9 +116,31 @@ function H.jump_quickfix(dir, fallback)
     end
 end
 
+---@param dir "forward"|"backward"|"first"|"last"
+---@param severity vim.diagnostic.Severity?
+function H.jump_diagnostic(dir, severity)
+    require("mini.bracketed").diagnostic(dir, { severity = severity })
+end
+
 function H.pick_quickfix()
     require("quicker").close()
     require("mini.pick").registry.list({ scope = "quickfix" })
+end
+
+---@param scope "all"|"current"
+---@param severity vim.diagnostic.Severity?
+function H.pick_diagnostics(scope, severity)
+    require("mini.pick").registry.diagnostic({
+        scope = scope,
+        get_opts = { severity = severity },
+    })
+end
+
+---@param scope "all"|"current"
+function H.pick_lgrep(scope)
+    require("mini.pick").registry.grep_live({
+        globs = scope == "current" and { require("meowim.utils").buf_path_rel() } or nil,
+    })
 end
 
 ---@param picker string
@@ -182,7 +189,8 @@ Meow.keyset({
     { "<Leader>fC", function() H.pick("autocmds") end,                       desc = "Pick autocommands"    },
     { "<Leader>ff", function() H.pick("smart_files") end,                    desc = "Pick files"           },
     { "<Leader>fF", function() H.pick("smart_files", { hidden = true }) end, desc = "Pick all files"       },
-    { "<Leader>fg", function() H.pick("grep_live") end,                      desc = "Grep files"           },
+    { "<Leader>fg", function() H.pick_lgrep("current") end,                  desc = "Grep current buffer"  },
+    { "<Leader>fG", function() H.pick_lgrep("all") end,                      desc = "Grep workspace files" },
     { "<Leader>fh", function() H.pick("help") end,                           desc = "Pick helptags"        },
     { "<Leader>fk", function() H.pick("keymaps") end,                        desc = "Pick keymaps"         },
     { "<Leader>fm", function() H.pick("marks") end,                          desc = "Pick marks"           },
