@@ -31,6 +31,7 @@ local config = function()
     }
 
     -- Eviline-like statusline
+    local last_cwd, last_file
     local active = function()
         local groups = {}
         local add = function(hi, string)
@@ -46,14 +47,19 @@ local config = function()
         local _, mode_hl = ministl.section_mode({})
         add(mode_hl, " %##")
 
+        if vim.o.buftype == "" or not last_cwd then
+            last_cwd = vim.fn.getcwd()
+            last_file = vim.api.nvim_get_current_buf()
+        end
+
         ----------------------
         --- Project status ---
         ----------------------
-        local project = vim.fs.basename(vim.fn.getcwd())
-        local git = vim.b.minigit_summary
-        if git and git.head_name then
-            local head = git.head_name
-            head = head == "HEAD" and git.head:sub(1, 7) or head
+        local project = vim.fn.fnamemodify(last_cwd, ":t")
+        local git_summary = vim.b[last_file].minigit_summary
+        if git_summary and git_summary.head_name then
+            local head = git_summary.head_name
+            head = head == "HEAD" and git_summary.head:sub(1, 7) or head
             add("gitcommitBranch", " " .. project .. ":" .. head)
         else
             add("gitcommitBranch", " " .. project)
@@ -80,10 +86,10 @@ local config = function()
         -------------
         --- Git Diffs
         -------------
-        local diff = vim.b.minidiff_summary
-        if diff then
+        local git_diff = vim.b[last_file].minidiff_summary
+        if git_diff then
             for _, sec in ipairs(diff_sections) do
-                local count = diff[sec[1]]
+                local count = git_diff[sec[1]]
                 if count and count ~= 0 then
                     add(sec[3], string.format("%s%d", sec[2], count))
                 end
