@@ -1,9 +1,5 @@
 local Utils = {}
 
----Returns the buffer path relative to current working directory.
----@return string
-function Utils.buf_path_rel() return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.") end
-
 ---Returns the top level path if the specified directory is inside a repository.
 ---@param cwd string?
 ---@return string?

@@ -139,7 +139,7 @@ end
 ---@param scope "all"|"current"
 function H.pick_lgrep(scope)
     require("mini.pick").registry.grep_live({
-        globs = scope == "current" and { require("meowim.utils").buf_path_rel() } or nil,
+        globs = scope == "current" and { vim.fn.expand("%") } or nil,
     })
 end
 
