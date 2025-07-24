@@ -31,7 +31,7 @@ local config = function()
     }
 
     -- Eviline-like statusline
-    local last_cwd, last_file
+    local last_cwd, last_file, last_buf
     local active = function()
         local groups = {}
         local add = function(hi, string)
@@ -50,6 +50,10 @@ local config = function()
         if vim.o.buftype == "" or not last_cwd then
             last_cwd = vim.fn.getcwd()
             last_file = vim.api.nvim_get_current_buf()
+            last_buf = vim.api.nvim_get_current_buf()
+        elseif vim.api.nvim_win_get_config(0).relative == "" then
+            -- Display the filename anyway for buffers open with splits or tabs.
+            last_buf = vim.api.nvim_get_current_buf()
         end
 
         ----------------------
@@ -99,15 +103,17 @@ local config = function()
         ----------------
         --- Filename ---
         ----------------
-        local filename
-        if vim.bo.buftype == "terminal" then
-            filename = "%t"
-        elseif ministl.is_truncated(80) then
-            filename = "%t%m%r"
+        local filename = vim.api.nvim_buf_get_name(last_buf)
+        local bo = vim.bo[last_buf]
+        if bo.buftype == "terminal" then
+            filename = vim.fn.fnamemodify(filename, ":t")
         else
-            filename = "%f%m%r"
+            local mods = ministl.is_truncated(80) and ":t" or ":~:."
+            filename = vim.fn.fnamemodify(filename, mods)
+                .. (bo.modified and "[+]" or not bo.modifiable and "[-]" or "")
+                .. (bo.readonly and "[RO]" or "")
         end
-        add("", filename)
+        add("", filename:gsub("%%", "%%%%"))
 
         add(nil, "%<%=") -- End left section
 
