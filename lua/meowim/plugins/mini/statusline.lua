@@ -46,9 +46,9 @@ local config = function()
         local _, mode_hl = ministl.section_mode({})
         add(mode_hl, " %##")
 
-        ------------------
-        --- Project status
-        ------------------
+        ----------------------
+        --- Project status ---
+        ----------------------
         local project = vim.fs.basename(vim.fn.getcwd())
         local git = vim.b.minigit_summary
         if git and git.head_name then
@@ -59,17 +59,17 @@ local config = function()
             add("gitcommitBranch", " " .. project)
         end
 
-        -------------------
-        --- Macro Recording
-        -------------------
+        -----------------------
+        --- Macro Recording ---
+        -----------------------
         local macro_rec = vim.fn.reg_recording()
         if macro_rec ~= "" then
             add("Function", "󰵝 Recording @" .. macro_rec)
         end
 
-        -------------------------
-        --- Workspace diagnostics
-        -------------------------
+        -----------------------------
+        --- Workspace diagnostics ---
+        -----------------------------
         for _, sec in ipairs(diagnostic_sections) do
             local count = diagnostic_counts[sec[1]]
             if count then
@@ -90,9 +90,9 @@ local config = function()
             end
         end
 
-        ------------
-        --- Filename
-        ------------
+        ----------------
+        --- Filename ---
+        ----------------
         local filename
         if vim.bo.buftype == "terminal" then
             filename = "%t"
@@ -105,9 +105,9 @@ local config = function()
 
         add(nil, "%<%=") -- End left section
 
-        --------------
-        --- File infos
-        --------------
+        ------------------
+        --- File infos ---
+        ------------------
         add("", ministl.section_lsp({ trunc_width = 100 }))
         add("", ministl.section_fileinfo({ trunc_width = 120 }))
 
