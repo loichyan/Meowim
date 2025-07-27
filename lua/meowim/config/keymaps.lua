@@ -146,10 +146,14 @@ function H.pick_diagnostics(scope, severity)
 end
 
 ---@param scope "all"|"current"
-function H.pick_lgrep(scope)
-  require("mini.pick").registry.grep_live({
-    globs = scope == "current" and { vim.fn.expand("%") } or nil,
-  })
+---@param tool? "rg"|"git"|"ast-grep"
+function H.pick_lgrep(scope, tool)
+  local globs = scope == "current" and { vim.fn.expand("%") } or nil
+  if tool == "ast-grep" then
+    require("mini.pick").registry.ast_grep_live({ globs = globs })
+  else
+    require("mini.pick").registry.grep_live({ tool = tool, globs = globs })
+  end
 end
 
 ---@param picker string
@@ -184,34 +188,36 @@ Meow.keyset({
   { "<Leader>lE", function() H.pick_diagnostics("all",     "ERROR") end, desc = "Pick workspace errors"      },
 
   -- Pickers
-  { "<C-q>",            function() H.pick_quickfix() end,                  desc = "Pick quickfix"        },
-  { "<Leader><Leader>", function() H.pick("smart_files") end,              desc = "Pick files"           },
+  { "<C-q>",            function() H.pick_quickfix() end,                  desc = "Pick quickfix"            },
+  { "<Leader><Leader>", function() H.pick("smart_files") end,              desc = "Pick files"               },
 
-  { "<Leader>'", function() H.pick("marks") end,                           desc = "Pick marks"           },
-  { '<Leader>"', function() H.pick("registers") end,                       desc = "Pick registers"       },
-  { "<Leader>,", function() H.pick("buffers") end,                         desc = "Pick buffers"         },
-  { "<Leader>:", function() H.pick("history", { scope = "cmd" }) end,      desc = "Pick command history" },
-  { "<Leader>F", function() H.pick("resume") end,                          desc = "Resume picker"        },
+  { "<Leader>'", function() H.pick("marks") end,                           desc = "Pick marks"               },
+  { '<Leader>"', function() H.pick("registers") end,                       desc = "Pick registers"           },
+  { "<Leader>,", function() H.pick("buffers") end,                         desc = "Pick buffers"             },
+  { "<Leader>:", function() H.pick("history", { scope = "cmd" }) end,      desc = "Pick command history"     },
+  { "<Leader>F", function() H.pick("resume") end,                          desc = "Resume picker"            },
 
-  { "<Leader>fb", function() H.pick("buffers") end,                        desc = "Pick buffers"         },
-  { "<Leader>fc", function() H.pick("commands") end,                       desc = "Pick commands"        },
-  { "<Leader>fC", function() H.pick("autocmds") end,                       desc = "Pick autocommands"    },
-  { "<Leader>ff", function() H.pick("smart_files") end,                    desc = "Pick files"           },
-  { "<Leader>fF", function() H.pick("smart_files", { hidden = true }) end, desc = "Pick all files"       },
-  { "<Leader>fg", function() H.pick_lgrep("current") end,                  desc = "Grep current buffer"  },
-  { "<Leader>fG", function() H.pick_lgrep("all") end,                      desc = "Grep workspace files" },
-  { "<Leader>fh", function() H.pick("help") end,                           desc = "Pick helptags"        },
-  { "<Leader>fk", function() H.pick("keymaps") end,                        desc = "Pick keymaps"         },
-  { "<Leader>fm", function() H.pick("marks") end,                          desc = "Pick marks"           },
-  { "<Leader>fn", function() H.pick("notify") end,                         desc = "Pick notifications"   },
-  { "<Leader>fo", function() H.pick("oldfiles") end,                       desc = "Pick recent files"    },
-  { "<Leader>fq", function() H.pick("list", { scope = "quickfix" }) end,   desc = "Pick quickfix"        },
-  { "<Leader>ft", function() H.pick("todo", { scope = "current" }) end,    desc = "Pick buffer TODOs"    },
-  { "<Leader>fT", function() H.pick("todo", { scope = "all" }) end,        desc = "Pick workspace TODOs" },
-  { "<Leader>fu", function() H.pick("hl_groups") end,                      desc = "Pick highlights"      },
-  { "<Leader>fU", function() H.pick("colorschemes") end,                   desc = "Pick colorschemes"    },
-  { "<Leader>fr", function() H.pick("resume") end,                         desc = "Resume picker"        },
-  { "<Leader>fR", function() H.pick("registers") end,                      desc = "Pick registers"       },
+  { "<Leader>fb", function() H.pick("buffers") end,                        desc = "Pick buffers"             },
+  { "<Leader>fc", function() H.pick("commands") end,                       desc = "Pick commands"            },
+  { "<Leader>fC", function() H.pick("autocmds") end,                       desc = "Pick autocommands"        },
+  { "<Leader>ff", function() H.pick("smart_files") end,                    desc = "Pick files"               },
+  { "<Leader>fF", function() H.pick("smart_files", { hidden = true }) end, desc = "Pick all files"           },
+  { "<Leader>fg", function() H.pick_lgrep("current") end,                  desc = "Grep current buffer"      },
+  { "<Leader>fG", function() H.pick_lgrep("all") end,                      desc = "Grep workspace files"     },
+  { "<Leader>fh", function() H.pick("help") end,                           desc = "Pick helptags"            },
+  { "<Leader>fk", function() H.pick("keymaps") end,                        desc = "Pick keymaps"             },
+  { "<Leader>fm", function() H.pick("marks") end,                          desc = "Pick marks"               },
+  { "<Leader>fn", function() H.pick("notify") end,                         desc = "Pick notifications"       },
+  { "<Leader>fo", function() H.pick("oldfiles") end,                       desc = "Pick recent files"        },
+  { "<Leader>fq", function() H.pick("list", { scope = "quickfix" }) end,   desc = "Pick quickfix"            },
+  { "<Leader>fs", function() H.pick_lgrep("current", "ast-grep") end,      desc = "Ast-grep current buffer"  },
+  { "<Leader>fS", function() H.pick_lgrep("all", "ast-grep") end,          desc = "Ast-grep workspace files" },
+  { "<Leader>ft", function() H.pick("todo", { scope = "current" }) end,    desc = "Pick buffer TODOs"        },
+  { "<Leader>fT", function() H.pick("todo", { scope = "all" }) end,        desc = "Pick workspace TODOs"     },
+  { "<Leader>fu", function() H.pick("hl_groups") end,                      desc = "Pick highlights"          },
+  { "<Leader>fU", function() H.pick("colorschemes") end,                   desc = "Pick colorschemes"        },
+  { "<Leader>fr", function() H.pick("resume") end,                         desc = "Resume picker"            },
+  { "<Leader>fR", function() H.pick("registers") end,                      desc = "Pick registers"           },
 })
 
 -------------------

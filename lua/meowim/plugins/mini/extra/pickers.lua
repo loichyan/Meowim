@@ -52,7 +52,73 @@ function Pickers.smart_files(local_opts, opts)
       show = (get_config().source or {}).show or show_with_icons,
     },
   }, opts or {})
-  MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
+  return MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
+end
+
+---@param pattern string
+---@param globs string[]
+local ast_grep_command = function(pattern, globs)
+  local res =
+    { "ast-grep", "run", "--color=never", "--context=0", "--json=stream", "--pattern", pattern }
+  for _, g in ipairs(globs) do
+    table.insert(res, "--globs")
+    table.insert(res, g)
+  end
+  local postprocess = function(lines)
+    local items = {}
+    for _, line in ipairs(lines) do
+      if line == "" then break end
+      local raw = vim.json.decode(line)
+      local item = {
+        path = raw.file,
+        lnum = raw.range.start.line + 1,
+        col = raw.range.start.column + 1,
+        lnum_end = raw.range["end"].line + 1,
+        col_end = raw.range["end"].column + 1,
+      }
+      item.text = string.format("%s|%s|%s|%s", item.path, item.lnum, item.col, raw.lines)
+      table.insert(items, item)
+    end
+    return items
+  end
+  return res, postprocess
+end
+
+---Grep live with ast-grep.
+---@param local_opts? {globs:string[]}
+-- TODO: contribute to mini.pick
+-- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1364>
+function Pickers.ast_grep_live(local_opts, opts)
+  local tool = "ast-grep"
+  local_opts = vim.tbl_extend("force", { globs = {} }, local_opts or {})
+
+  local globs = local_opts.globs
+  local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
+  local default_source = {
+    name = string.format("Grep live (%s%s)", tool, name_suffix),
+    show = (get_config().source or {}).show or show_with_icons,
+  }
+  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
+
+  local cwd = opts.source.cwd or vim.fn.getcwd()
+  local set_items_opts = { do_match = false, querytick = MiniPick.get_querytick() }
+  local spawn_opts = { cwd = cwd }
+  local process
+  local match = function(_, _, query)
+    pcall(vim.loop.process_kill, process)
+    local querytick = MiniPick.get_querytick()
+    if querytick == set_items_opts.querytick then return end
+    if #query == 0 then return MiniPick.set_picker_items({}, set_items_opts) end
+
+    set_items_opts.querytick = querytick
+    local command, postprocess = ast_grep_command(table.concat(query), globs)
+    local cli_opts =
+      { postprocess = postprocess, set_items_opts = set_items_opts, spawn_opts = spawn_opts }
+    process = MiniPick.set_picker_items_from_cli(command, cli_opts)
+  end
+
+  opts = vim.tbl_deep_extend("force", opts or {}, { source = { items = {}, match = match } })
+  return MiniPick.start(opts)
 end
 
 ---Lists Git conflicts.
@@ -67,7 +133,7 @@ function Pickers.git_conflicts(local_opts, opts)
       show = (get_config().source or {}).show or show_with_icons,
     },
   }, opts or {})
-  MiniPick.builtin.grep({ tool = local_opts.tool, pattern = "^<<<<<<< HEAD$" })
+  return MiniPick.builtin.grep({ tool = local_opts.tool, pattern = "^<<<<<<< HEAD$" })
 end
 
 ---Lists all todo comments of the specified keywords.
@@ -75,7 +141,7 @@ end
 function Pickers.todo(opts)
   opts = vim.tbl_extend("force", { keywords = { "TODO", "FIXME" } }, opts or {})
   local keywords = table.concat(opts.keywords, "|")
-  require("mini.pick").builtin.grep({
+  return require("mini.pick").builtin.grep({
     pattern = "\\b(" .. keywords .. ")(\\(.*\\))?:\\s+.+",
     globs = opts.scope == "current" and { vim.fn.expand("%") } or nil,
   }, {
@@ -114,7 +180,7 @@ function Pickers.notify(local_opts, opts)
       end,
     },
   }, opts or {})
-  MiniPick.start(opts)
+  return MiniPick.start(opts)
 end
 
 ---Lists registered autocmds.
@@ -162,7 +228,7 @@ function Pickers.autocmds(local_opts, opts)
       end,
     },
   }, opts or {})
-  MiniPick.start(opts)
+  return MiniPick.start(opts)
 end
 
 return Pickers
