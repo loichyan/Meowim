@@ -101,6 +101,7 @@ Meow.keyset({
 
   { "<Leader>gd", function() require("mini.diff").toggle_overlay(0) end,    desc = "Show buffer changes overlay"           },
   { "<Leader>gD", function() H.gitexec("diff", "HEAD", "--", "%") end,      desc = "Show buffer changes diff"              },
+  { "<Leader>gf", function() H.pick("git_conflicts") end,                   desc = "Pick Git conflicts"                    },
   { "<Leader>gh", function() H.pick("git_hunks")   end,                     desc = "Pick buffer hunks"                     },
   { "<Leader>gH", function() H.pick("git_commits") end,                     desc = "Pick Git commits"                      },
   { "<Leader>gl", function() require("mini.git").show_at_cursor() end,      desc = "Show cursor info", mode = { "n", "x" } },

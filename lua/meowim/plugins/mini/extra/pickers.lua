@@ -55,6 +55,21 @@ function Pickers.smart_files(local_opts, opts)
   MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
 end
 
+---Lists Git conflicts.
+---@param local_opts? {tool:string}
+function Pickers.git_conflicts(local_opts, opts)
+  local_opts = vim.tbl_extend("force", {}, local_opts or {})
+  local cwd = vim.fn.getcwd()
+  opts = vim.tbl_deep_extend("force", {
+    source = {
+      name = "Git Conflicts",
+      cwd = cwd,
+      show = (get_config().source or {}).show or show_with_icons,
+    },
+  }, opts or {})
+  MiniPick.builtin.grep({ tool = local_opts.tool, pattern = "^<<<<<<< HEAD$" })
+end
+
 ---Lists all todo comments of the specified keywords.
 ---@param opts? {scope:"current"|"all",keywords:string[]}
 function Pickers.todo(opts)
