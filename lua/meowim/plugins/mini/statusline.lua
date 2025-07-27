@@ -31,7 +31,7 @@ local config = function()
   }
 
   -- Eviline-like statusline
-  local last_cwd, last_file, last_buf
+  local last_cwd, last_file, last_buf = vim.fn.getcwd(), 0, 0
   local active = function()
     local groups = {}
     local add = function(hi, string)
@@ -47,7 +47,7 @@ local config = function()
     local _, mode_hl = ministl.section_mode({})
     add(mode_hl, " %##")
 
-    if vim.o.buftype == "" or not last_cwd then
+    if vim.o.buftype == "" then
       last_cwd = vim.fn.getcwd()
       last_file = vim.api.nvim_get_current_buf()
       last_buf = vim.api.nvim_get_current_buf()
