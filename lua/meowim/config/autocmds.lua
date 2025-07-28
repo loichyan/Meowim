@@ -52,3 +52,21 @@ autocmd("FileType", {
   pattern = "qf",
   command = "wincmd J",
 })
+-- Taken from <https://github.com/neovim/neovim/issues/12374#issuecomment-2121867087>
+autocmd("ModeChanged", {
+  group = group,
+  desc = "Preserve cursor position when yanking",
+  pattern = { "n:no", "no:n" },
+  callback = function(ev)
+    if vim.v.operator == "y" then
+      if ev.match == "n:no" then
+        vim.b.yank_last_pos = vim.fn.getpos(".")
+      else
+        if vim.b.yank_last_pos then
+          vim.fn.setpos(".", vim.b.yank_last_pos)
+          vim.b.yank_last_pos = nil
+        end
+      end
+    end
+  end,
+})
