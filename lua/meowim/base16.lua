@@ -16,14 +16,17 @@ Base16.options = {
 ---@class meowim.base16.options
 ---The name to identify this colorscheme.
 ---@field name string
+---THe variant of this colorscheme.
+---@field variant? string
 ---Base16 palette.
 ---@field palette table<string,string>
 
 ---Apply a customized mini.base16 colorscheme.
 ---@param opts meowim.base16.options
 function Base16.setup(opts)
+  local suffix = opts.variant and "-" .. opts.variant or ""
   require("meowim.utils").cached_colorscheme({
-    name = opts.name,
+    name = opts.name .. suffix,
     watch_paths = {
       "/lua/mini/base16.lua", -- upstream
       "/lua/meowim/base16.lua", -- ourself
@@ -38,6 +41,7 @@ function Base16.setup(opts)
       return colors:apply()
     end,
   })
+  vim.g.colors_name = opts.name
 end
 
 ---Some opinionated customizations on mini.base16.

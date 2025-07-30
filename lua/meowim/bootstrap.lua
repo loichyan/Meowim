@@ -44,7 +44,7 @@ local deps = require("mini.deps")
 deps.setup({ path = { package = pack_path } })
 deps.add("loichyan/meow.nvim")
 deps.now(function()
-  vim.cmd.colorscheme("base16-gruvbox-dark") -- Configure the preferred colorscheme.
+  vim.cmd.colorscheme("base16-gruvbox") -- Configure the preferred colorscheme.
   require("meow").setup({
     specs = { import = "meowim.plugins" },
     patch_mini = true,
