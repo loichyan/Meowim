@@ -9,7 +9,11 @@ end
 
 ---Shows all selected items in the quickfix list.
 local open_quickfix = function()
-  MiniPick.default_choose_marked(MiniPick.get_picker_matches().all, { list_type = "quickfix" })
+  local matches = MiniPick.get_picker_matches()
+  if not matches then return end
+  local marked, all = matches.marked, matches.all
+  local items = (marked and #marked > 0) and marked or all
+  MiniPick.default_choose_marked(items, { list_type = "quickfix" })
   vim.schedule(function() vim.cmd("cfirst") end)
   return true
 end
