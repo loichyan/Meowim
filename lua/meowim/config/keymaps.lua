@@ -156,6 +156,18 @@ function H.pick_lgrep(scope, tool)
   end
 end
 
+---@param scope "all"|"current"
+---@param tool? "rg"|"git"|"ast-grep"
+function H.grep_word(scope, tool)
+  local globs = scope == "current" and { vim.fn.expand("%") } or nil
+  local pattern = vim.fn.expand("<cword>")
+  if tool == "ast-grep" then
+    require("mini.pick").registry.ast_grep({ pattern = pattern, globs = globs })
+  else
+    require("mini.pick").registry.grep({ tool = tool, pattern = pattern, globs = globs })
+  end
+end
+
 ---@param picker string
 ---@param opts? table
 function H.pick(picker, opts) require("mini.pick").registry[picker](opts) end
@@ -218,6 +230,8 @@ Meow.keyset({
   { "<Leader>fU", function() H.pick("colorschemes") end,                   desc = "Pick colorschemes"        },
   { "<Leader>fr", function() H.pick("resume") end,                         desc = "Resume picker"            },
   { "<Leader>fR", function() H.pick("registers") end,                      desc = "Pick registers"           },
+  { "<Leader>fw", function() H.grep_word("current", "ast-grep") end,       desc = "Grep buffer <cword>"      },
+  { "<Leader>fW", function() H.grep_word("all", "ast-grep") end,           desc = "Grep workspace <cword>"   },
 })
 
 -------------------

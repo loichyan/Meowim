@@ -85,14 +85,14 @@ local ast_grep_command = function(pattern, globs)
 end
 
 ---Grep live with ast-grep.
----@param local_opts? {globs:string[]}
+---@param local_opts? {globs?:string[]}
 -- TODO: contribute to mini.pick
 -- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1364>
 function Pickers.ast_grep_live(local_opts, opts)
   local tool = "ast-grep"
   local_opts = vim.tbl_extend("force", { globs = {} }, local_opts or {})
 
-  local globs = local_opts.globs
+  local globs = local_opts.globs or {}
   local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
   local default_source = {
     name = string.format("Grep live (%s%s)", tool, name_suffix),
@@ -119,6 +119,27 @@ function Pickers.ast_grep_live(local_opts, opts)
 
   opts = vim.tbl_deep_extend("force", opts or {}, { source = { items = {}, match = match } })
   return MiniPick.start(opts)
+end
+
+---Grep with ast-grep.
+---@param local_opts? {pattern?:string,globs?:string[]}
+-- TODO: contribute to mini.pick
+-- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1328>
+function Pickers.ast_grep(local_opts, opts)
+  local tool = "ast-grep"
+  local_opts = vim.tbl_extend("force", { pattern = nil, globs = {} }, local_opts or {})
+
+  local globs = local_opts.globs or {}
+  local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
+  local show = get_config().source.show or show_with_icons
+  local default_opts =
+    { source = { name = string.format("Grep (%s%s)", tool, name_suffix), show = show } }
+  opts = vim.tbl_deep_extend("force", default_opts, opts or {})
+
+  local pattern = type(local_opts.pattern) == "string" and local_opts.pattern
+    or vim.fn.input("Grep pattern: ")
+  local command, postprocess = ast_grep_command(pattern, globs)
+  return MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
 end
 
 ---Lists Git conflicts.
