@@ -154,20 +154,21 @@ function Pickers.git_conflicts(local_opts, opts)
       show = (get_config().source or {}).show or show_with_icons,
     },
   }, opts or {})
-  return MiniPick.builtin.grep({ tool = local_opts.tool, pattern = "^<<<<<<< HEAD$" })
+  local grep_opts = { tool = local_opts.tool, pattern = "^<<<<<<< HEAD$" }
+  return MiniPick.builtin.grep(grep_opts, opts)
 end
 
 ---Lists all todo comments of the specified keywords.
----@param opts? {scope:"current"|"all",keywords:string[]}
-function Pickers.todo(opts)
-  opts = vim.tbl_extend("force", { keywords = { "TODO", "FIXME" } }, opts or {})
-  local keywords = table.concat(opts.keywords, "|")
-  return require("mini.pick").builtin.grep({
+---@param local_opts? {scope:"current"|"all",keywords:string[]}
+function Pickers.todo(local_opts, opts)
+  local_opts = vim.tbl_extend("force", { keywords = { "TODO", "FIXME" } }, local_opts or {})
+  local keywords = table.concat(local_opts.keywords, "|")
+  local grep_opts = {
     pattern = "\\b(" .. keywords .. ")(\\(.*\\))?:\\s+.+",
-    globs = opts.scope == "current" and { vim.fn.expand("%") } or nil,
-  }, {
-    source = { name = keywords },
-  })
+    globs = local_opts.scope == "current" and { vim.fn.expand("%") } or nil,
+  }
+  opts = vim.tbl_deep_extend("force", { source = { name = keywords } }, opts)
+  return require("mini.pick").builtin.grep(grep_opts, opts)
 end
 
 ---Lists notifications from mini.notify.
