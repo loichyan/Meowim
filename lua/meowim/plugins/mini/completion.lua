@@ -11,7 +11,7 @@ return {
       return MiniCompletion.default_process_items(items, base, opts)
     end
 
-    vim.o.completeopt = "menuone,noinsert,fuzzy"
+    vim.o.completeopt = "menuone,noinsert,fuzzy,nosort"
     completion.setup({
       lsp_completion = {
         -- 'completefunc' conflicts with `Ctrl+U` in insert mode
