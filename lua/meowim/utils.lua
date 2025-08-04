@@ -93,19 +93,19 @@ end
 function Utils.cached_colorscheme(opts)
   local cache_dir = vim.fn.stdpath("cache") .. "/colors/"
   local cache_path = cache_dir .. opts.name .. ".lua"
-  local cache_ts_path = cache_dir .. opts.name .. "_cache"
+  local cache_token_path = cache_dir .. opts.name .. "_cache"
 
-  local input_ts = vim.tbl_map(function(path)
+  local input_token = vim.tbl_map(function(path)
     local realpath = vim.api.nvim_get_runtime_file(path, false)[1]
     if not realpath then error("cannot find runtime file: " .. path) end
     return assert(vim.uv.fs_stat(realpath)).mtime.nsec
   end, opts.watch_paths)
 
   -- Try to load from cache.
-  local _, cache_ts_file = pcall(io.open, cache_ts_path, "r")
-  if cache_ts_file then
-    for _, ts in ipairs(input_ts) do
-      if cache_ts_file:read("*n") ~= ts then goto expired end
+  local cache_token_file, _ = io.open(cache_token_path, "r")
+  if cache_token_file then
+    for _, ts in ipairs(input_token) do
+      if cache_token_file:read("*n") ~= ts then goto expired end
     end
     dofile(cache_path)
     return
@@ -118,12 +118,12 @@ function Utils.cached_colorscheme(opts)
   -- 2) Dump the highlight groups.
   colors:write({ compress = true, directory = cache_dir, name = opts.name })
   -- 3) Re-compile the colorscheme to bytecodes.
-  local bytes = string.dump(assert(loadfile(cache_path)), true)
-  assert(io.open(cache_path, "w"):write(bytes))
+  local bytes = string.dump(assert(loadfile(cache_path)))
+  assert(assert(io.open(cache_path, "w")):write(bytes))
   -- 4) Save timestamps.
-  cache_ts_file = assert(io.open(cache_ts_path, "w"))
-  for _, ts in ipairs(input_ts) do
-    assert(cache_ts_file:write(ts, "\n"))
+  cache_token_file = assert(io.open(cache_token_path, "w"))
+  for _, token in ipairs(input_token) do
+    assert(cache_token_file:write(token, "\n"))
   end
 end
 
