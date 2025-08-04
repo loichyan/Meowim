@@ -46,7 +46,10 @@ deps.add("loichyan/meow.nvim")
 deps.now(function()
   vim.cmd.colorscheme("base16-gruvbox") -- Configure the preferred colorscheme.
   require("meow").setup({
-    specs = { import = "meowim.plugins" },
+    specs = {
+      import = "meowim.plugins",
+      import_cache = function() return require("meowim.cache_token") end,
+    },
     patch_mini = true,
     enable_snapshot = vim.env["MEO_DISABLE_SNAPSHOT"] == nil,
   })
