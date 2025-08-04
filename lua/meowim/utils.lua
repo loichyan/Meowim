@@ -83,8 +83,10 @@ end
 ---@class meowim.utils.cached_colorscheme.options
 ---The name to identify this colorscheme.
 ---@field name string
+---A token to identify the latest cache.
+---@field cache_token string
 ---A list of runtime files used to determine whether to update the cache.
----@field watch_paths string[]
+---@field watch_paths? string[]
 ---The function used to setup the colorscheme. An optional colorscheme object
 ---obtained from MiniColors can be returned to generate highlight groups.
 ---@field setup fun():table?
@@ -95,22 +97,22 @@ function Utils.cached_colorscheme(opts)
   local cache_path = cache_dir .. opts.name .. ".lua"
   local cache_token_path = cache_dir .. opts.name .. "_cache"
 
-  local input_token = vim.tbl_map(function(path)
-    local realpath = vim.api.nvim_get_runtime_file(path, false)[1]
-    if not realpath then error("cannot find runtime file: " .. path) end
-    return assert(vim.uv.fs_stat(realpath)).mtime.nsec
-  end, opts.watch_paths)
+  local cache_token = opts.cache_token
+  if opts.watch_paths then
+    for _, path in ipairs(opts.watch_paths) do
+      local realpath = vim.api.nvim_get_runtime_file(path, false)[1]
+      if not realpath then error("cannot find runtime file: " .. path) end
+      local timestamp = assert(vim.uv.fs_stat(realpath)).mtime.nsec
+      cache_token = cache_token .. " " .. timestamp
+    end
+  end
 
   -- Try to load from cache.
   local cache_token_file, _ = io.open(cache_token_path, "r")
-  if cache_token_file then
-    for _, ts in ipairs(input_token) do
-      if cache_token_file:read("*n") ~= ts then goto expired end
-    end
+  if cache_token_file and cache_token_file:read("*a") == cache_token then
     dofile(cache_path)
     return
   end
-  ::expired::
 
   -- Cache not found or expired, compile the colorscheme.
   -- 1) Setup mini.base16 and apply customizations.
@@ -120,11 +122,8 @@ function Utils.cached_colorscheme(opts)
   -- 3) Re-compile the colorscheme to bytecodes.
   local bytes = string.dump(assert(loadfile(cache_path)))
   assert(assert(io.open(cache_path, "w")):write(bytes))
-  -- 4) Save timestamps.
-  cache_token_file = assert(io.open(cache_token_path, "w"))
-  for _, token in ipairs(input_token) do
-    assert(cache_token_file:write(token, "\n"))
-  end
+  -- 4) Save cache tokens
+  assert(assert(io.open(cache_token_path, "w")):write(cache_token))
 end
 
 ---Increases the lightness of the specified color.
