@@ -108,22 +108,29 @@ function Utils.cached_colorscheme(opts)
   end
 
   -- Try to load from cache.
-  local cache_token_file, _ = io.open(cache_token_path, "r")
-  if cache_token_file and cache_token_file:read("*a") == cache_token then
-    dofile(cache_path)
-    return
+  if cache_token ~= "" then
+    local cache_token_file, _ = io.open(cache_token_path, "r")
+    if cache_token_file and cache_token_file:read("*a") == cache_token then
+      dofile(cache_path)
+      return
+    end
   end
 
   -- Cache not found or expired, compile the colorscheme.
   -- 1) Setup mini.base16 and apply customizations.
   local colors = opts.setup() or require("mini.colors").get_colorscheme()
-  -- 2) Dump the highlight groups.
-  colors:write({ compress = true, directory = cache_dir, name = opts.name })
-  -- 3) Re-compile the colorscheme to bytecodes.
-  local bytes = string.dump(assert(loadfile(cache_path)))
-  assert(assert(io.open(cache_path, "w")):write(bytes))
-  -- 4) Save cache tokens
-  assert(assert(io.open(cache_token_path, "w")):write(cache_token))
+  -- Defer cache rebuilding to speed up startup
+  if cache_token ~= "" then
+    vim.schedule(function()
+      -- 2) Dump the highlight groups.
+      colors:write({ compress = true, directory = cache_dir, name = opts.name })
+      -- 3) Re-compile the colorscheme to bytecodes.
+      local bytes = string.dump(assert(loadfile(cache_path)))
+      assert(assert(io.open(cache_path, "w")):write(bytes))
+      -- 4) Save cache tokens
+      assert(assert(io.open(cache_token_path, "w")):write(cache_token))
+    end)
+  end
 end
 
 ---Increases the lightness of the specified color.
