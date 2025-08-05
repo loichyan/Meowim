@@ -29,7 +29,7 @@ local config = function()
       { section = "Actions", name = "Marks Picker",    action = function() require("mini.pick").registry.marks() end       },
       { section = "Actions", name = "Oldfiles Picker", action = function() require("mini.pick").registry.oldfiles() end    },
       { section = "Actions", name = "Quit Neovim",     action = "qall"                                                     },
-      starter.sections.sessions(5, true),
+      function() Meow.load("mini.sessions") return starter.sections.sessions(5, true) end,
     },
     footer = function()
       local time = _G.meowim_startup_time or 0
@@ -53,9 +53,4 @@ local config = function()
 end
 
 ---@type MeoSpec
-return {
-  "mini.starter",
-  lazy = false,
-  config = config,
-  dependencies = { "mini.sessions" },
-}
+return { "mini.starter", lazy = false, config = config }

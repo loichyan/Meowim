@@ -1,7 +1,7 @@
 ---@type MeoSpec
 return {
   "mini.sessions",
-  lazy = false,
+  event = "VeryLazy",
   config = function()
     require("mini.sessions").setup({
       autoread = false,
