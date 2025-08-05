@@ -42,9 +42,17 @@ end
 -- Install the plugin manager and load our plugin specs.
 local deps = require("mini.deps")
 deps.setup({ path = { package = pack_path } })
+
+-- Enable profiler for debug/benchmark
+if vim.env["MEO_ENABLE_PROFILE"] ~= nil then
+  deps.add("folke/snacks.nvim")
+  require("snacks.profiler").startup({ startup = { event = "UIEnter" } })
+end
+
 deps.add("loichyan/meow.nvim")
 deps.now(function()
-  vim.cmd.colorscheme("base16-gruvbox") -- Configure the preferred colorscheme.
+  -- Configure the preferred colorscheme
+  vim.cmd.colorscheme("base16-gruvbox")
   require("meow").setup({
     specs = {
       import = "meowim.plugins",
