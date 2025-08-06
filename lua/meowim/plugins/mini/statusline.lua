@@ -68,13 +68,19 @@ Spec.config = function()
     local _, mode_hl = ministl.section_mode({})
     add(mode_hl, " %##")
 
+    local buf = vim.api.nvim_get_current_buf()
     if vim.o.buftype == "" then
       last_cwd = vim.fn.getcwd()
-      last_file = vim.api.nvim_get_current_buf()
-      last_buf = vim.api.nvim_get_current_buf()
-    elseif vim.api.nvim_win_get_config(0).relative == "" then
+      last_file = buf
+      last_buf = buf
+    else
+      last_file = vim.api.nvim_buf_is_valid(last_file) and last_file or buf
       -- Display the filename anyway for buffers open with splits or tabs.
-      last_buf = vim.api.nvim_get_current_buf()
+      if vim.api.nvim_win_get_config(0).relative == "" then
+        last_buf = buf
+      else
+        last_buf = vim.api.nvim_buf_is_valid(last_buf) and last_buf or buf
+      end
     end
 
     ----------------------
