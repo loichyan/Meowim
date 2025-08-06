@@ -1,4 +1,7 @@
-local config = function()
+---@type MeoSpec
+local Spec = { "mini.clue", event = "VeryLazy" }
+
+Spec.config = function()
   local miniclue = require("mini.clue")
   miniclue.setup({
     window = { delay = 250 },
@@ -49,5 +52,4 @@ local config = function()
   })
 end
 
----@type MeoSpec
-return { "mini.clue", event = "VeryLazy", config = config }
+return Spec

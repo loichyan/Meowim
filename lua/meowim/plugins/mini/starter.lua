@@ -1,4 +1,9 @@
-local config = function()
+---@type MeoSpec
+local Spec = { "mini.starter", lazy = false }
+
+Spec.config = function()
+  local ministarter = require("mini.starter")
+
   local prev_laststatus
   local hide_statusline = function(content)
     if not prev_laststatus then
@@ -7,18 +12,20 @@ local config = function()
     end
     return content
   end
-  vim.api.nvim_create_autocmd("BufWinEnter", {
-    desc = "Restore statusline",
-    callback = function()
-      if prev_laststatus and vim.bo.filetype ~= "ministarter" then
-        vim.o.laststatus = prev_laststatus
-        prev_laststatus = nil
-      end
-    end,
+  Meow.autocmd("meowim.plugins.mini.starter", {
+    {
+      event = "BufWinEnter",
+      desc = "Autohide statusline",
+      callback = function()
+        if prev_laststatus and vim.bo.filetype ~= "ministarter" then
+          vim.o.laststatus = prev_laststatus
+          prev_laststatus = nil
+        end
+      end,
+    },
   })
 
-  local starter = require("mini.starter")
-  starter.setup({
+  ministarter.setup({
     evaluate_single = true,
     -- stylua: ignore
     items = {
@@ -29,7 +36,7 @@ local config = function()
       { section = "Actions", name = "Marks Picker",    action = function() require("mini.pick").registry.marks() end       },
       { section = "Actions", name = "Oldfiles Picker", action = function() require("mini.pick").registry.oldfiles() end    },
       { section = "Actions", name = "Quit Neovim",     action = "qall"                                                     },
-      function() Meow.load("mini.sessions") return starter.sections.sessions(5, true) end,
+      function() Meow.load("mini.sessions") return ministarter.sections.sessions(5, true) end,
     },
     footer = function()
       local time = _G.meowim_startup_time or 0
@@ -45,12 +52,11 @@ local config = function()
     end,
     content_hooks = {
       hide_statusline,
-      starter.gen_hook.adding_bullet(),
-      starter.gen_hook.indexing("all", { "Actions" }),
-      starter.gen_hook.aligning("center", "center"),
+      ministarter.gen_hook.adding_bullet(),
+      ministarter.gen_hook.indexing("all", { "Actions" }),
+      ministarter.gen_hook.aligning("center", "center"),
     },
   })
 end
 
----@type MeoSpec
-return { "mini.starter", lazy = false, config = config }
+return Spec

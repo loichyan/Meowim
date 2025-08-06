@@ -1,16 +1,17 @@
 ---@type MeoSpec
-return {
-  "mini.misc",
-  event = "VeryLazy",
-  config = function()
-    local misc = require("mini.misc")
-    misc.setup({ make_global = { "put", "put_text", "bench_time", "stat_summary" } })
-    misc.setup_restore_cursor()
+local Spec = { "mini.misc", event = "VeryLazy" }
 
-    -- Setup auto root directory discovery
-    local root_patterns = { ".git" }
-    vim.o.autochdir = false
-    vim.api.nvim_create_autocmd("BufEnter", {
+Spec.config = function()
+  local minimisc = require("mini.misc")
+  minimisc.setup({ make_global = { "put", "put_text", "bench_time", "stat_summary" } })
+  minimisc.setup_restore_cursor()
+
+  -- Setup auto root directory discovery
+  local root_patterns = { ".git" }
+  vim.o.autochdir = false
+  Meow.autocmd("meowim.plugins.mini.misc", {
+    {
+      event = "BufEnter",
       desc = "Find root and change current directory",
       nested = true,
       callback = vim.schedule_wrap(function(data)
@@ -20,14 +21,12 @@ return {
         local root = MiniMisc.find_root(data.buf, root_patterns)
         if root ~= nil then vim.fn.chdir(root) end
       end),
-    })
+    },
+  })
 
-    Meow.keymap({
-      {
-        "<Leader>m",
-        function() require("mini.misc").zoom() end,
-        desc = "Zoom current buffer",
-      },
-    })
-  end,
-}
+  Meow.keymap({
+    { "<Leader>m", function() require("mini.misc").zoom() end, desc = "Zoom current buffer" },
+  })
+end
+
+return Spec

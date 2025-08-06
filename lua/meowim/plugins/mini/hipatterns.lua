@@ -1,18 +1,19 @@
 ---@type MeoSpec
-return {
-  "mini.hipatterns",
-  event = "LazyFile",
-  config = function()
-    local hipatterns, Utils = require("mini.hipatterns"), require("meowim.utils")
-    hipatterns.setup({
-      -- stylua: ignore
-      highlighters = {
-        hex_color = hipatterns.gen_highlighter.hex_color(),
-        fixme = { pattern = Utils.hipattern_todo({ "FIXME"}), group = "MiniHipatternsFixme" },
-        hack  = { pattern = Utils.hipattern_todo({ "HACK" }),  group = "MiniHipatternsHack"  },
-        todo  = { pattern = Utils.hipattern_todo({ "TODO" }),  group = "MiniHipatternsTodo"  },
-        note  = { pattern = Utils.hipattern_todo({ "NOTE" }),  group = "MiniHipatternsNote"  },
-      },
-    })
-  end,
-}
+local Spec = { "mini.hipatterns", event = "LazyFile" }
+
+Spec.config = function()
+  local minihipat = require("mini.hipatterns")
+  local hitodo = require("meowim.utils").hipattern_todo
+  minihipat.setup({
+    -- stylua: ignore
+    highlighters = {
+      hex_color = minihipat.gen_highlighter.hex_color(),
+      fixme = { pattern = hitodo({ "FIXME" }), group = "MiniHipatternsFixme" },
+      hack  = { pattern = hitodo({ "HACK" }),  group = "MiniHipatternsHack"  },
+      todo  = { pattern = hitodo({ "TODO" }),  group = "MiniHipatternsTodo"  },
+      note  = { pattern = hitodo({ "NOTE" }),  group = "MiniHipatternsNote"  },
+    },
+  })
+end
+
+return Spec

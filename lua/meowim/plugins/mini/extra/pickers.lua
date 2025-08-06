@@ -168,7 +168,7 @@ function Pickers.todo(local_opts, opts)
     globs = local_opts.scope == "current" and { vim.fn.expand("%") } or nil,
   }
   opts = vim.tbl_deep_extend("force", { source = { name = keywords } }, opts)
-  return require("mini.pick").builtin.grep(grep_opts, opts)
+  return MiniPick.builtin.grep(grep_opts, opts)
 end
 
 ---Lists notifications from mini.notify.

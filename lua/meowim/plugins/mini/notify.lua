@@ -1,11 +1,10 @@
 ---@type MeoSpec
-return {
-  "mini.notify",
-  lazy = false,
-  priority = 95,
-  config = function()
-    local notify = require("mini.notify")
-    notify.setup()
-    vim.notify = notify.make_notify()
-  end,
-}
+local Spec = { "mini.notify", lazy = false, priority = 95 }
+
+Spec.config = function()
+  local mininotify = require("mini.notify")
+  mininotify.setup()
+  vim.notify = mininotify.make_notify()
+end
+
+return Spec

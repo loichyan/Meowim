@@ -1,4 +1,12 @@
-local config = function()
+---@type MeoSpec
+local Spec = {
+  "nvim-treesitter/nvim-treesitter",
+  checkout = "master",
+  build = function() vim.cmd("TSUpdate") end,
+  event = "VeryLazy",
+}
+
+Spec.config = function()
   ---@diagnostic disable-next-line:missing-fields
   require("nvim-treesitter.configs").setup({
     sync_install = false,
@@ -32,11 +40,4 @@ local config = function()
   })
 end
 
----@type MeoSpec
-return {
-  "nvim-treesitter/nvim-treesitter",
-  checkout = "master",
-  build = function() vim.cmd("TSUpdate") end,
-  event = "VeryLazy",
-  config = config,
-}
+return Spec

@@ -1,8 +1,7 @@
 ---@type MeoSpec
-return {
-  "mini.brackted",
-  event = "LazyFile",
-  config = function()
+local Spec = { "mini.brackted", event = "LazyFile" }
+
+Spec.config = function()
     -- stylua: ignore
     require("mini.bracketed").setup({
       buffer     = { suffix = ""  },
@@ -20,5 +19,6 @@ return {
       window     = { suffix = ""  },
       yank       = { suffix = ""  },
     })
-  end,
-}
+end
+
+return Spec

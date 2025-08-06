@@ -1,3 +1,6 @@
+---@type MeoSpec
+local Spec = { "mini.pick", event = "VeryLazy" }
+
 ---Shows preview at center.
 local center_preview = function(bufnr, item, opts)
   return MiniPick.default_preview(
@@ -18,9 +21,9 @@ local open_quickfix = function()
   return true
 end
 
-local config = function()
-  local pick = require("mini.pick")
-  pick.setup({
+Spec.config = function()
+  local minipick = require("mini.pick")
+  minipick.setup({
     -- stylua: ignore
     mappings = {
       choose        = "<CR>",
@@ -45,18 +48,12 @@ local config = function()
   -- Register extra pickers.
   Meow.load("mini.extra")
   for name, picker in pairs(require("meowim.plugins.mini.extra.pickers")) do
-    pick.registry[name] = picker
+    minipick.registry[name] = picker
   end
+
+  -- Replace vim.ui.select with mini's picker.
+  ---@diagnostic disable-next-line: duplicate-set-field
+  vim.ui.select = function(...) minipick.ui_select(...) end
 end
 
----@type MeoSpec
-return {
-  "mini.pick",
-  event = "VeryLazy",
-  init = function()
-    -- Replace vim.ui.select with mini's picker.
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.ui.select = function(...) require("mini.pick").ui_select(...) end
-  end,
-  config = config,
-}
+return Spec

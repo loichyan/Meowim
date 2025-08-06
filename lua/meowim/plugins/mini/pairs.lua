@@ -1,3 +1,6 @@
+---@type MeoSpec
+local Spec = { "mini.pairs", event = "LazyFile" }
+
 ---Counts unlanced open or close characters.
 ---@param line string
 ---@param op string # open character
@@ -21,11 +24,11 @@ end
 
 -- Credit: https://github.com/LazyVim/LazyVim/blob/25abbf546d564dc484cf903804661ba12de45507/lua/lazyvim/util/mini.lua#L97
 -- License: Apache-2.0
-local open
+local orig_open
 ---@param pair string
 ---@param neigh_pattern string
 local smart_pairs = function(pair, neigh_pattern)
-  if vim.fn.getcmdline() ~= "" then return open(pair, neigh_pattern) end
+  if vim.fn.getcmdline() ~= "" then return orig_open(pair, neigh_pattern) end
   local op, cl = pair:sub(1, 1), pair:sub(2, 2)
   local line = vim.api.nvim_get_current_line()
   local col = vim.api.nvim_win_get_cursor(0)[2]
@@ -53,12 +56,12 @@ local smart_pairs = function(pair, neigh_pattern)
     end
   end
 
-  return open(pair, neigh_pattern)
+  return orig_open(pair, neigh_pattern)
 end
 
-local config = function()
-  local pairs = require("mini.pairs")
-  pairs.setup({
+Spec.config = function()
+  local minipairs = require("mini.pairs")
+  minipairs.setup({
     modes = { insert = true, command = false, terminal = false },
     mappings = {
       [">"] = {
@@ -70,10 +73,9 @@ local config = function()
     },
   })
 
-  open = pairs.open
+  orig_open = minipairs.open
   ---@diagnostic disable-next-line: duplicate-set-field
-  pairs.open = smart_pairs
+  minipairs.open = smart_pairs
 end
 
----@type MeoSpec
-return { "mini.pairs", event = "LazyFile", config = config }
+return Spec

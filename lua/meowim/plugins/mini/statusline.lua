@@ -1,17 +1,38 @@
-local config = function()
+---@type MeoSpec
+local Spec = { "mini.statusline", lazy = false }
+
+Spec.config = function()
   local ministl = require("mini.statusline")
 
   ---@type table<vim.diagnostic.Severity,integer>
   local diagnostic_counts = {}
-  vim.api.nvim_create_autocmd("DiagnosticChanged", {
-    desc = "Track workspace diagnostics",
-    pattern = "*",
-    callback = function()
-      diagnostic_counts = {}
-      for _, diag in ipairs(vim.diagnostic.get()) do
-        diagnostic_counts[diag.severity] = (diagnostic_counts[diag.severity] or 0) + 1
-      end
-    end,
+  local cmdheight_was_zero
+  Meow.autocmd("meowim.plugins.mini.statusline", {
+    {
+      event = "DiagnosticChanged",
+      desc = "Track workspace diagnostics",
+      callback = function()
+        diagnostic_counts = {}
+        for _, diag in ipairs(vim.diagnostic.get()) do
+          diagnostic_counts[diag.severity] = (diagnostic_counts[diag.severity] or 0) + 1
+        end
+      end,
+    },
+    {
+      event = { "CmdlineEnter", "CmdlineLeave" },
+      desc = "Show statusline when in cmdline",
+      callback = function(ev)
+        if ev.event == "CmdlineEnter" then
+          if vim.o.cmdheight ~= 0 then return end
+          vim.o.cmdheight = 1
+          cmdheight_was_zero = true
+        elseif cmdheight_was_zero then
+          -- Suppress statusline redrawing when typing in cmdline.
+          vim.o.cmdheight = 0
+          cmdheight_was_zero = nil
+        end
+      end,
+    },
   })
 
   -- stylua: ignore
@@ -135,23 +156,6 @@ local config = function()
       inactive = function() end,
     },
   })
-
-  -- Suppress statusline redrawing when typing in cmdline.
-  local cmdheight_was_zero
-  vim.api.nvim_create_autocmd({ "CmdlineEnter", "CmdlineLeave" }, {
-    desc = "Show statusline when in cmdline",
-    callback = function(ev)
-      if ev.event == "CmdlineEnter" then
-        if vim.o.cmdheight ~= 0 then return end
-        vim.o.cmdheight = 1
-        cmdheight_was_zero = true
-      elseif cmdheight_was_zero then
-        vim.o.cmdheight = 0
-        cmdheight_was_zero = nil
-      end
-    end,
-  })
 end
 
----@type MeoSpec
-return { "mini.statusline", lazy = false, config = config }
+return Spec

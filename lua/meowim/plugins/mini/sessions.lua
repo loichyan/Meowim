@@ -1,17 +1,20 @@
 ---@type MeoSpec
-return {
-  "mini.sessions",
-  event = "VeryLazy",
-  config = function()
-    require("mini.sessions").setup({
-      autoread = false,
-      autowrite = false,
-    })
+local Spec = { "mini.sessions", event = "VeryLazy" }
 
-    vim.api.nvim_create_autocmd("VimLeavePre", {
+Spec.config = function()
+  require("mini.sessions").setup({
+    autoread = false,
+    autowrite = false,
+  })
+
+  Meow.autocmd("meowim.plugins.mini.sessions", {
+    {
+      event = "VimLeavePre",
       desc = "Save session on exit",
       once = true,
       callback = function() require("meowim.utils").session_save() end,
-    })
-  end,
-}
+    },
+  })
+end
+
+return Spec
