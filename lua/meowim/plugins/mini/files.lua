@@ -11,7 +11,7 @@ return {
       pattern = "minifiles",
       command = "setlocal iskeyword-=_",
     })
-    Meow.keyset({
+    Meow.keymap({
       {
         "<Leader>e",
         function()

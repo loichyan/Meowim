@@ -10,7 +10,7 @@ return {
     })
 
     -- stylua: ignore
-    Meow.keyset({
+    Meow.keymap({
       { "<M-h>", function() require("smart-splits").move_cursor_left() end,  desc = "Goto left window" },
       { "<M-j>", function() require("smart-splits").move_cursor_down() end,  desc = "Goto down window" },
       { "<M-k>", function() require("smart-splits").move_cursor_up() end,    desc = "Goto up window" },

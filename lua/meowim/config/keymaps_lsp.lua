@@ -118,6 +118,6 @@ return {
         table.insert(specs, spec)
       end
     end
-    Meow.keyset(bufnr, specs)
+    Meow.keymap(bufnr, specs)
   end,
 }

@@ -45,7 +45,7 @@ function H.apply_hunk(scope)
 end
 
 -- stylua: ignore
-Meow.keyset({
+Meow.keymap({
   -- Common mappings
   { "<Esc>", "<Cmd>noh<CR>",              desc = "Clear highlights"       },
   { "<C-c>", function() H.clear_ui() end, desc = "Clear trivial UI items" },
@@ -173,7 +173,7 @@ end
 function H.pick(picker, opts) require("mini.pick").registry[picker](opts) end
 
 -- stylua: ignore
-Meow.keyset({
+Meow.keymap({
   -- Diagnostics
   { "<C-l>", function() vim.diagnostic.open_float() end,          desc = "Show current diagnostic" },
   { "<C-p>", function() H.jump_quickfix("backward", "<C-p>") end, desc = "Quickfix backward"       },

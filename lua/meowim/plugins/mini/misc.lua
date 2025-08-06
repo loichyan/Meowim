@@ -22,7 +22,7 @@ return {
       end),
     })
 
-    Meow.keyset({
+    Meow.keymap({
       {
         "<Leader>m",
         function() require("mini.misc").zoom() end,

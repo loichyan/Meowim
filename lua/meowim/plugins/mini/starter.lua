@@ -35,7 +35,7 @@ local config = function()
       local time = _G.meowim_startup_time or 0
       local total = 0
       local loaded = 0
-      for _, p in ipairs(Meow.manager:plugins()) do
+      for _, p in ipairs(Meow:plugins()) do
         if not p:is_shadow() and p:is_enabled() then
           total = total + 1
           if not p:is_lazy() then loaded = loaded + 1 end
