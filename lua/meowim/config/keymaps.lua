@@ -234,14 +234,4 @@ Meow.keymap({
   { "<Leader>fW", function() H.grep_word("all", "ast-grep") end,           desc = "Grep workspace <cword>"   },
 })
 
--------------------
---- LSP KEYMAPS ---
--------------------
-
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    require("meowim.config.keymaps_lsp").setup(ev.buf, assert(client))
-  end,
-  desc = "Setup LSP specified keymaps",
-})
+require("meowim.config.keymaps_lsp")

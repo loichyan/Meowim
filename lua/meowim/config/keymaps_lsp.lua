@@ -105,19 +105,24 @@ local keymaps = {
   { "<Leader>lS", function() H.pick("lsp", { scope = "workspace_symbol" }) end, desc = "Pick workspace symbols" },
 }
 
-return {
-  ---@param bufnr integer
-  ---@param client vim.lsp.Client
-  setup = function(bufnr, client)
-    local specs = {}
-    for _, spec in ipairs(keymaps) do
-      -- Setup certain keymaps only if the client supports it
-      if not spec.has or client:supports_method(spec.has, bufnr) then
-        spec = vim.tbl_extend("force", spec, { buffer = bufnr })
-        spec.has = nil
-        table.insert(specs, spec)
+Meow.autocmd("meowim.config.keymaps_lsp", {
+  {
+    event = "LspAttach",
+    desc = "Setup LSP specified keymaps",
+    callback = function(ev)
+      local client = vim.lsp.get_client_by_id(ev.data.client_id)
+      if not client then return end
+
+      local specs, bufnr = {}, ev.buf
+      for _, spec in ipairs(keymaps) do
+        -- Setup certain keymaps only if the client supports it
+        if spec.has and client:supports_method(spec.has, bufnr) then
+          spec = vim.deepcopy(spec, true)
+          spec.has = nil
+        end
+        if not spec.has then table.insert(specs, spec) end
       end
-    end
-    Meow.keymap(bufnr, specs)
-  end,
-}
+      Meow.keymap(bufnr, specs)
+    end,
+  },
+})
