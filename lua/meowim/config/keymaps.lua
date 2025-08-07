@@ -34,6 +34,17 @@ function H.zoom()
   end
 end
 
+---@param scope "current"|"all"
+function H.explorer(scope)
+  local cwd, path = vim.fn.getcwd()
+  if scope == "current" then
+    path = vim.api.nvim_buf_get_name(0)
+    path = vim.uv.fs_stat(path) and path or nil
+  end
+  local dir = path or require("meowim.utils").get_git_repo(cwd) or cwd
+  require("mini.files").open(dir)
+end
+
 function H.gitexec(...)
   Meow.load("mini.git")
   vim.cmd.Git(...)
@@ -59,6 +70,9 @@ Meow.keymap({
   -- Common mappings
   { "<Esc>", "<Cmd>noh<CR>",              desc = "Clear highlights"       },
   { "<C-c>", function() H.clear_ui() end, desc = "Clear trivial UI items" },
+
+  { "<Leader>e", function() H.exlorer("current") end, desc = "Explore buffer directory" },
+  { "<Leader>E", function() H.exlorer("all") end,     desc = "Explore workspace root"   },
 
   -- Toggles
   { "<LocalLeader>k", function() H.toggle("minicompletion_disable", false) end, desc = "Toggle completion"          },
@@ -168,7 +182,7 @@ end
 
 ---@param scope "all"|"current"
 ---@param tool? "rg"|"git"|"ast-grep"
-function H.grep_word(scope, tool)
+function H.pick_word(scope, tool)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
   local pattern = vim.fn.expand("<cword>")
   if tool == "ast-grep" then
@@ -240,8 +254,8 @@ Meow.keymap({
   { "<Leader>fU", function() H.pick("colorschemes") end,                   desc = "Pick colorschemes"        },
   { "<Leader>fr", function() H.pick("resume") end,                         desc = "Resume picker"            },
   { "<Leader>fR", function() H.pick("registers") end,                      desc = "Pick registers"           },
-  { "<Leader>fw", function() H.grep_word("current", "ast-grep") end,       desc = "Grep buffer <cword>"      },
-  { "<Leader>fW", function() H.grep_word("all", "ast-grep") end,           desc = "Grep workspace <cword>"   },
+  { "<Leader>fw", function() H.pick_word("current", "ast-grep") end,       desc = "Grep buffer <cword>"      },
+  { "<Leader>fW", function() H.pick_word("all", "ast-grep") end,           desc = "Grep workspace <cword>"   },
 })
 
 require("meowim.config.keymaps_lsp")
