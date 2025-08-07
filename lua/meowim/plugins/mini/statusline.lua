@@ -1,5 +1,5 @@
 ---@type MeoSpec
-local Spec = { "mini.statusline", lazy = false }
+local Spec = { "mini.statusline", event = "UIEnter" }
 
 Spec.config = function()
   local ministl = require("mini.statusline")
@@ -154,8 +154,6 @@ Spec.config = function()
     return table.concat(groups, " ")
   end
 
-  vim.o.cmdheight = 0 -- Hide cmdline
-  vim.o.laststatus = 3 -- Show global statusline
   ministl.setup({
     content = {
       active = active,

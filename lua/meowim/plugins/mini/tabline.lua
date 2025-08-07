@@ -1,6 +1,6 @@
 ---@type MeoSpec
 return {
   "mini.tabline",
-  lazy = false,
+  event = "UIEnter",
   config = function() require("mini.tabline").setup() end,
 }

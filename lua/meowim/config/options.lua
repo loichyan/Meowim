@@ -5,9 +5,12 @@ local g, o = vim.g, vim.o
 g.mapleader = " "
 g.localleader = "\\"
 
-o.clipboard = "unnamed" -- Use tmux's clipboard
-o.relativenumber = true -- Show relative numbers
+o.clipboard = "unnamed"
 o.expandtab = true
 o.tabstop = 4
 o.shiftwidth = 4
-o.conceallevel = 2
+
+o.cmdheight = 0 -- Hide cmdline
+o.laststatus = 3 -- Show global statusline
+o.conceallevel = 2 -- Improve rendering for Markdown
+o.relativenumber = true -- Show relative numbers
