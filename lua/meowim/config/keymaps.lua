@@ -24,6 +24,16 @@ function H.clear_ui()
   require("mini.snippets").session.stop()
 end
 
+function H.zoom()
+  local title = " Zoom |" .. vim.fn.expand(".") .. " "
+  require("mini.misc").zoom(0, { title = title })
+  -- Differentiate between zooming in and zooming out
+  -- See <https://github.com/echasnovski/mini.nvim/issues/1911#issuecomment-3112985891>
+  if vim.api.nvim_win_get_config(0).relative ~= "" then
+    vim.wo.winhighlight = "NormalFloat:Normal"
+  end
+end
+
 function H.gitexec(...)
   Meow.load("mini.git")
   vim.cmd.Git(...)
@@ -63,7 +73,7 @@ Meow.keymap({
   { "<Leader>N",  "<Cmd>tabnew<CR>",                                 desc = "New tab"              },
   { "<Leader>-",  "<Cmd>split<CR>",                                  desc = "Split horizontal"     },
   { "<Leader>\\", "<Cmd>vsplit<CR>",                                 desc = "Split vertical"       },
-  { "<Leader>m",  function() require("mini.misc").zoom() end,        desc = "Zoom current buffer"  },
+  { "<Leader>m",  function() H.zoom() end,                           desc = "Zoom current buffer"  },
   { "<Leader>w",  function() require("mini.bufremove").delete() end, desc = "Close current buffer" },
   { "<Leader>W",  "<Cmd>close<CR>",                                  desc = "Close current window" },
   { "<Leader>Q",  "<Cmd>tabclose<CR>",                               desc = "Close current tab"    },

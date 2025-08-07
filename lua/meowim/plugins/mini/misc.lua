@@ -23,10 +23,6 @@ Spec.config = function()
       end),
     },
   })
-
-  Meow.keymap({
-    { "<Leader>m", function() require("mini.misc").zoom() end, desc = "Zoom current buffer" },
-  })
 end
 
 return Spec
