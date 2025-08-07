@@ -10,55 +10,6 @@ function Utils.get_git_repo(cwd)
   return rev and rev ~= "" and rev or nil
 end
 
----Returns the name of current session if valid.
----@param cwd string?
----@return string?
-function Utils.session_get(cwd)
-  local repo = Utils.get_git_repo(cwd)
-  return repo and vim.fs.basename(repo)
-end
-
----Saves the current session.
-function Utils.session_save()
-  local cwd = vim.fn.getcwd()
-  local name = require("meowim.utils").session_get(cwd)
-  if not name then return end
-  -- Ignore an empty session.
-  for _, b in ipairs(vim.api.nvim_list_bufs()) do
-    -- Only consider files under current directory
-    if vim.bo[b].buflisted and vim.startswith(vim.api.nvim_buf_get_name(b), cwd) then
-      require("mini.sessions").write(name, { force = true, verbose = false })
-      return
-    end
-  end
-end
-
----Restores the current session.
-function Utils.session_restore()
-  local name = Utils.session_get()
-  if not name then return end
-  require("mini.sessions").read(name, { force = false, verbose = false })
-end
-
----Deletes the current session.
-function Utils.session_delete()
-  local name = Utils.session_get()
-  if not name then return end
-  require("mini.sessions").write(name, { force = true, verbose = false })
-end
-
----Returns Lua patterns used to highlight todo comments.
----@param keywords string[]
----@return string[]
-function Utils.hipattern_todo(keywords)
-  local patterns = {}
-  for _, kw in ipairs(keywords) do
-    table.insert(patterns, "%s?%f[%w]" .. kw .. ":%s+.+") -- KEYWORD: something
-    table.insert(patterns, "%s?%f[%w]" .. kw .. "%(.*%):%s+.+") -- KEYWORD(@somebody): something
-  end
-  return patterns
-end
-
 ---Returns the state of a toggler of current buffer.
 ---@param bufnr integer
 ---@param key string
@@ -78,6 +29,65 @@ function Utils.toggle(key, global)
     local bufnr = vim.api.nvim_get_current_buf()
     vim.b[bufnr][key] = not Utils.is_toggle_on(bufnr, key)
   end
+end
+
+---Jumps to the first item if it is the only one. Otherwise, lists all items in
+---quickfix.
+---@param opts vim.lsp.LocationOpts.OnList
+function Utils.loclist_or_jump(opts)
+  if #opts.items > 1 then
+    ---@diagnostic disable-next-line: param-type-mismatch
+    vim.fn.setqflist({}, " ", opts)
+    vim.cmd("copen | cfirst")
+    return
+  end
+
+  local loc = opts.items[1]
+  if not loc then return end
+  -- Save position in jumplist
+  vim.cmd("normal! m'")
+  -- Open and jump to the target position
+  local buf_id = loc.bufnr or vim.fn.bufadd(loc.filename)
+  vim.bo[buf_id].buflisted = true
+  vim.api.nvim_win_set_buf(0, buf_id)
+  vim.api.nvim_win_set_cursor(0, { loc.lnum, loc.col - 1 })
+  -- Open folds under the cursor
+  return vim.cmd("normal! zv")
+end
+
+---Lists only items of current buffer.
+---@param opts vim.lsp.LocationOpts.OnList
+function Utils.loclist_buf(opts)
+  local bufnr = vim.api.nvim_get_current_buf()
+  local bufname = vim.api.nvim_buf_get_name(bufnr)
+  opts.items = vim.tbl_filter(
+    function(v) return v.bufnr == bufnr or v.filename == bufname end,
+    opts.items
+  )
+  Utils.loclist_or_jump(opts)
+end
+
+---Lists only the first one of items locate in consecutive lines.
+---@param opts vim.lsp.LocationOpts.OnList
+function Utils.loclist_unique(opts)
+  local items = opts.items
+  table.sort(items, function(a, b)
+    if a.filename ~= b.filename then
+      return a.filename < b.filename
+    else
+      return a.lnum < b.lnum
+    end
+  end)
+
+  local new_items = { items[1] }
+  for i = 2, #items do
+    local curr, prev = items[i], items[i - 1]
+    if curr.filename ~= prev.filename or (curr.lnum - prev.lnum) > 1 then
+      table.insert(new_items, curr)
+    end
+  end
+  opts.items = new_items
+  Utils.loclist_or_jump(opts)
 end
 
 ---@class meowim.utils.cached_colorscheme.options

@@ -1,5 +1,6 @@
 ---@type MeoSpec
 local Spec = { "mini.misc", event = "VeryLazy" }
+local M = {}
 
 Spec.config = function()
   local minimisc = require("mini.misc")
@@ -25,4 +26,16 @@ Spec.config = function()
   })
 end
 
-return Spec
+---Zooms in/out current buffer.
+function M.zoom()
+  local title = " Zoom |" .. vim.fn.expand(".") .. " "
+  require("mini.misc").zoom(0, { title = title })
+  -- Differentiate between zooming in and zooming out
+  -- See <https://github.com/echasnovski/mini.nvim/issues/1911#issuecomment-3112985891>
+  if vim.api.nvim_win_get_config(0).relative ~= "" then
+    vim.wo.winhighlight = "NormalFloat:Normal"
+  end
+end
+
+M[1] = Spec
+return M

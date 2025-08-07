@@ -11,8 +11,8 @@ Meow.keymap({
   { "<Esc>",                 "<Cmd>noh<CR>",                                                                 desc = "Clear highlights"                        },
   { "<C-c>",                 function() H.clear_ui() end,                                                    desc = "Clear trivial UI items"                  },
 
-  { "<Leader>e",             function() H.explorer("current") end,                                           desc = "Explore buffer directory"                },
-  { "<Leader>E",             function() H.explorer("all") end,                                               desc = "Explore workspace root"                  },
+  { "<Leader>e",             function() require("meowim.plugins.mini.files").open("buffer") end,             desc = "Explore buffer directory"                },
+  { "<Leader>E",             function() require("meowim.plugins.mini.files").open("workspace") end,          desc = "Explore workspace root"                  },
 
   -- Toggles
   { "<LocalLeader>k",        function() H.toggle("minicompletion_disable", false) end,                       desc = "Toggle completion"                       },
@@ -20,15 +20,15 @@ Meow.keymap({
   { "<LocalLeader>f",        function() H.toggle("autoformat_disabled", false) end,                          desc = "Toggle autoformat"                       },
   { "<LocalLeader>F",        function() H.toggle("autoformat_disabled", true) end,                           desc = "Toggle autoformat globally"              },
   { "<LocalLeader>q",        function() require("quicker").toggle() end,                                     desc = "Toggle quickfix"                         },
-  { "<LocalLeader>v",        function() H.toggle_conceal() end,                                              desc = "Toggle conceal"                          },
+  { "<LocalLeader>v",        "<Cmd>lua vim.wo.conceallevel = 2 - vim.wo.conceallevel",                       desc = "Toggle conceallevel"                     },
 
   -- Buffers/Tabs/Windows
   { "<Leader>n",             "<Cmd>enew<CR>",                                                                desc = "New buffer"                              },
   { "<Leader>N",             "<Cmd>tabnew<CR>",                                                              desc = "New tab"                                 },
   { "<Leader>-",             "<Cmd>split<CR>",                                                               desc = "Split horizontal"                        },
   { "<Leader>\\",            "<Cmd>vsplit<CR>",                                                              desc = "Split vertical"                          },
-  { "<Leader>m",             function() H.zoom() end,                                                        desc = "Zoom current buffer"                     },
-  { "<Leader>w",             function() require("mini.bufremove").delete() end,                              desc = "Close current buffer"                    },
+  { "<Leader>m",             function() require("meowim.plugins.mini.misc").zoom() end,                      desc = "Zoom current buffer"                     },
+  { "<Leader>w",             function() require("meowim.plugins.mini.bufremove").close() end,                desc = "Close current buffer"                    },
   { "<Leader>W",             "<Cmd>close<CR>",                                                               desc = "Close current window"                    },
   { "<Leader>Q",             "<Cmd>tabclose<CR>",                                                            desc = "Close current tab"                       },
 
@@ -43,17 +43,17 @@ Meow.keymap({
   { "<S-h>",                 function() require("mini.bracketed").buffer("backward") end,                    desc = "Buffer left"                             },
   { "<S-l>",                 function() require("mini.bracketed").buffer("forward") end,                     desc = "Buffer right"                            },
 
-  { "<Leader>bh",            function() H.buffer_close_others(-1) end,                                       desc = "Close left buffers"                      },
-  { "<Leader>bl",            function() H.buffer_close_others( 1) end,                                       desc = "Close right buffers"                     },
-  { "<Leader>bo",            function() H.buffer_close_others( 0) end,                                       desc = "Close other buffers"                     },
+  { "<Leader>bh",            function() require("meowim.plugins.mini.bufremove").close_others("left") end,   desc = "Close left buffers"                      },
+  { "<Leader>bl",            function() require("meowim.plugins.mini.bufremove").close_others("right") end,  desc = "Close right buffers"                     },
+  { "<Leader>bo",            function() require("meowim.plugins.mini.bufremove").close_others("all") end,    desc = "Close other buffers"                     },
 
   -- Sessions
   { "<Leader>qq",            "<Cmd>quitall<CR>",                                                             desc = "Quit Neovim"                             },
-  { "<Leader>qr",            function() require("meowim.utils").session_restore() end,                       desc = "Restore current session"                 },
+  { "<Leader>qr",            function() require("meowim.plugins.mini.sessions").restore() end,               desc = "Restore current session"                 },
   { "<Leader>qR",            function() require("mini.sessions").select("read") end,                         desc = "Restore selected session"                },
-  { "<Leader>qs",            function() require("meowim.utils").session_save() end,                          desc = "Save current session"                    },
+  { "<Leader>qs",            function() require("meowim.plugins.mini.sessions").save() end,                  desc = "Save current session"                    },
   { "<Leader>qS",            function() require("mini.sessions").select("write") end,                        desc = "Save selected session"                   },
-  { "<Leader>qd",            function() require("meowim.utils").session_delete() end,                        desc = "Delete current session"                  },
+  { "<Leader>qd",            function() require("meowim.plugins.mini.sessions").delete() end,                desc = "Delete current session"                  },
   { "<Leader>qD",            function() require("mini.sessions").select("delete") end,                       desc = "Delete selected session"                 },
   { "<Leader>qQ",            "<Cmd>let g:minisessions_disable=v:true | quitall<CR>",                         desc = "Quit Neovim quietly"                     },
 
@@ -70,8 +70,8 @@ Meow.keymap({
   { "<Leader>gH",            function() H.pick("git_commits") end,                                           desc = "Pick Git commits"                        },
   { "<Leader>gl",            function() require("mini.git").show_at_cursor() end, mode = nx,                 desc = "Show cursor info"                        },
   { "<Leader>gL",            function() H.gitexec("log", "-p", "--", "%") end,                               desc = "Show buffer history"                     },
-  { "<Leader>gs",            function() return H.apply_hunk("cursor") end, expr = true,                      desc = "State cursor hunks"                      },
-  { "<Leader>gS",            function() return H.apply_hunk("buffer") end,                                   desc = "State buffer hunks"                      },
+  { "<Leader>gs",            function() return H.stage_hunk("cursor") end, expr = true,                      desc = "State cursor hunks"                      },
+  { "<Leader>gS",            function() return H.stage_hunk("buffer") end,                                   desc = "State buffer hunks"                      },
 
   -- Diagnostics
   { "<C-l>",                 function() vim.diagnostic.open_float() end,                                     desc = "Show current diagnostic"                 },
