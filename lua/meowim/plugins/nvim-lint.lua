@@ -10,7 +10,7 @@ Spec.config = function()
 
   Meow.autocmd("meowim.plugins.nvim-lint", {
     {
-      event = { "BufWritePost", "BufReadPost", "InsertLeave" },
+      event = { "BufReadPost", "BufWritePost", "InsertLeave" },
       desc = "Lint current buffer",
       -- stylua: ignore
       callback = require("snacks").util.debounce(function() require("lint").try_lint() end, { ms = 150 }),

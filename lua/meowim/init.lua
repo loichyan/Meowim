@@ -12,22 +12,30 @@ function Meowim.setup()
   if has_file then
     require("meowim.config.polish")
     require("meowim.config.autocmds")
+    -- Load treesitter (for highlighting) and LSP configurations immediately to
+    -- make sure they can work properly.
+    Meow.load("nvim-treesitter")
+    Meow.load("nvim-lspconfig")
   end
 
   -- Setup keymaps and autocommands once we enter the UI.
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    once = true,
-    desc = "meowim.config",
-    callback = function()
-      require("meowim.config.keymaps")
-      if has_file then return end
-      require("meowim.config.polish")
-      require("meowim.config.autocmds")
-    end,
+  Meow.autocmd("meowim.setup", {
+    {
+      event = "User",
+      pattern = "VeryLazy",
+      desc = "Load user configurations",
+      once = true,
+      callback = function()
+        require("meowim.config.keymaps")
+        if has_file then return end
+        require("meowim.config.polish")
+        require("meowim.config.autocmds")
+      end,
+    },
   })
+
   -- See <https://github.com/LazyVim/LazyVim/blob/ec5981dfb1222c3bf246d9bcaa713d5cfa486fbd/lua/lazyvim/util/plugin.lua#L10>
-  Meow.config.event_aliases["LazyFile"] = { "BufReadPre", "BufNewFile" }
+  Meow.config.event_aliases["LazyFile"] = { "BufReadPost", "BufWritePre", "BufNewFile" }
 end
 
 return Meowim

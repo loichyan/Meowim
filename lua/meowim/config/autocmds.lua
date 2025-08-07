@@ -23,8 +23,8 @@ local rulers = {
 Meow.autocmd("meowim.config.autocmds", {
   {
     event = "FileType",
-    desc = "Tweak trivial files",
     pattern = vim.tbl_keys(trivial_files),
+    desc = "Tweak trivial files",
     callback = function(ev)
       vim.b.miniindentscope_disable = true
       vim.bo.buflisted = false
@@ -46,15 +46,15 @@ Meow.autocmd("meowim.config.autocmds", {
   -- See <https://stackoverflow.com/a/6728687>
   {
     event = "FileType",
-    desc = "Move quickfix window to very bottom",
     pattern = "qf",
+    desc = "Move quickfix window to very bottom",
     command = "wincmd J",
   },
   -- Taken from <https://github.com/neovim/neovim/issues/12374#issuecomment-2121867087>
   {
     event = "ModeChanged",
-    desc = "Preserve cursor position when yanking",
     pattern = { "n:no", "no:n" },
+    desc = "Preserve cursor position when yanking",
     callback = function(ev)
       if vim.v.operator == "y" then
         if ev.match == "n:no" then

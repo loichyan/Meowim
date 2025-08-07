@@ -1,5 +1,5 @@
 ---@type MeoSpec
-local Spec = { "mini.keymap", event = "VeryLazy" }
+local Spec = { "mini.keymap", event = "LazyFile" }
 
 Spec.config = function()
   local minikeymap = require("mini.keymap")

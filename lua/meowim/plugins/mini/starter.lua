@@ -5,17 +5,10 @@ Spec.config = function()
   local ministarter = require("mini.starter")
 
   local prev_laststatus
-  local hide_statusline = function(content)
-    if not prev_laststatus then
-      prev_laststatus = vim.o.laststatus
-      vim.o.laststatus = 0
-    end
-    return content
-  end
   Meow.autocmd("meowim.plugins.mini.starter", {
     {
       event = "BufWinEnter",
-      desc = "Autohide statusline",
+      desc = "Restore statusline when MiniStater closed",
       callback = function()
         if prev_laststatus and vim.bo.filetype ~= "ministarter" then
           vim.o.laststatus = prev_laststatus
@@ -39,6 +32,12 @@ Spec.config = function()
       function() Meow.load("mini.sessions") return ministarter.sections.sessions(5, true) end,
     },
     footer = function()
+      -- Hide statusline
+      if not prev_laststatus then
+        prev_laststatus = vim.o.laststatus
+        vim.o.laststatus = 0
+      end
+
       local time = _G.meowim_startup_time or 0
       local total = 0
       local loaded = 0
@@ -51,7 +50,6 @@ Spec.config = function()
       return ("Loaded %d/%d plugins  in %.2fms"):format(loaded, total, time / 1000000)
     end,
     content_hooks = {
-      hide_statusline,
       ministarter.gen_hook.adding_bullet(),
       ministarter.gen_hook.indexing("all", { "Actions" }),
       ministarter.gen_hook.aligning("center", "center"),
