@@ -3,6 +3,7 @@ local Meowim = {}
 local did_setup = false
 function Meowim.setup()
   if did_setup then return end
+  did_setup = true
 
   require("meowim.config.options")
   -- Setup keymaps and autocommands once we enter the UI.
@@ -16,9 +17,7 @@ function Meowim.setup()
     end,
   })
   -- See <https://github.com/LazyVim/LazyVim/blob/ec5981dfb1222c3bf246d9bcaa713d5cfa486fbd/lua/lazyvim/util/plugin.lua#L10>
-  Meow.manager.event_aliases["LazyFile"] = { "BufReadPre", "BufNewFile" }
-
-  did_setup = true
+  Meow.config.event_aliases["LazyFile"] = { "BufReadPre", "BufNewFile" }
 end
 
 return Meowim
