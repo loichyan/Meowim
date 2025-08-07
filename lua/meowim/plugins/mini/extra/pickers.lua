@@ -167,7 +167,7 @@ function Pickers.todo(local_opts, opts)
     pattern = "\\b(" .. keywords .. ")(\\(.*\\))?:\\s+.+",
     globs = local_opts.scope == "current" and { vim.fn.expand("%") } or nil,
   }
-  opts = vim.tbl_deep_extend("force", { source = { name = keywords } }, opts)
+  opts = vim.tbl_deep_extend("force", { source = { name = keywords } }, opts or {})
   return MiniPick.builtin.grep(grep_opts, opts)
 end
 
