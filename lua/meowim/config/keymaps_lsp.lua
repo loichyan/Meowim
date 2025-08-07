@@ -117,7 +117,7 @@ Meow.autocmd("meowim.config.keymaps_lsp", {
       for _, spec in ipairs(keymaps) do
         -- Setup certain keymaps only if the client supports it
         if spec.has and client:supports_method(spec.has, bufnr) then
-          spec = vim.deepcopy(spec, true)
+          spec = vim.deepcopy(spec)
           spec.has = nil
         end
         if not spec.has then table.insert(specs, spec) end

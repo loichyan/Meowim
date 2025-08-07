@@ -1,4 +1,15 @@
--- Install mini.nvim manually if not present.
+-- Enable the experimental loader for faster `require`s.
+vim.loader.enable(true)
+
+-- Record the startup time.
+local stime = vim.uv.hrtime()
+vim.api.nvim_create_autocmd("VimEnter", {
+  desc = "Measure startup time",
+  once = true,
+  callback = function() _G.meowim_startup_time = vim.uv.hrtime() - stime end,
+})
+
+-- Install mini.nvim if not present.
 local pack_path = vim.fn.stdpath("data") .. "/site/"
 local mini_path = pack_path .. "pack/deps/start/mini.nvim"
 if not vim.uv.fs_stat(mini_path) then
@@ -14,17 +25,17 @@ if not vim.uv.fs_stat(mini_path) then
   vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
--- Record the startup time.
-local stime = vim.uv.hrtime()
-vim.api.nvim_create_autocmd("VimEnter", {
-  desc = "Measure startup time",
-  once = true,
-  callback = function() _G.meowim_startup_time = vim.uv.hrtime() - stime end,
-})
+-- Setup the plugin installer.
+local deps = require("mini.deps")
+deps.setup({ path = { package = pack_path } })
 
--- Enable the experimental loader and disable some useless standard plugins to
--- speed up the startup.
-vim.loader.enable(true)
+-- Enable profiler for debug/benchmark
+if vim.env["MEO_ENABLE_PROFILE"] ~= nil then
+  deps.add("folke/snacks.nvim")
+  require("snacks.profiler").startup({ startup = { event = "UIEnter" } })
+end
+
+-- Disable some useless standard plugins to speed up the startup.
 local disabled_builtins = {
   "gzip",
   -- "matchit",
@@ -39,16 +50,7 @@ for _, p in ipairs(disabled_builtins) do
   vim.g["loaded_" .. p] = true
 end
 
--- Install the plugin manager and load our plugin specs.
-local deps = require("mini.deps")
-deps.setup({ path = { package = pack_path } })
-
--- Enable profiler for debug/benchmark
-if vim.env["MEO_ENABLE_PROFILE"] ~= nil then
-  deps.add("folke/snacks.nvim")
-  require("snacks.profiler").startup({ startup = { event = "UIEnter" } })
-end
-
+-- Install the plugin manager and then load our plugin specs.
 deps.add("loichyan/meow.nvim")
 deps.now(function()
   -- Configure the preferred colorscheme
