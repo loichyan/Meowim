@@ -91,10 +91,9 @@ Spec.config = function()
     if git_summary and git_summary.head_name then
       local head = git_summary.head_name
       head = head == "HEAD" and git_summary.head:sub(1, 7) or head
-      add("gitcommitBranch", " " .. project .. ":" .. head)
-    else
-      add("gitcommitBranch", " " .. project)
+      project = project .. ":" .. head
     end
+    add("gitcommitBranch", " " .. project)
 
     -----------------------
     --- Macro Recording ---
