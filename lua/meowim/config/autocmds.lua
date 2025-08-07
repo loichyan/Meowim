@@ -18,7 +18,6 @@ local rulers = {
   ["*"] = 80,
   ["git"] = 72,
   ["gitcommit"] = 72,
-  ["markdown"] = 100,
 }
 
 Meow.autocmd("meowim.config.autocmds", {

@@ -1,7 +1,7 @@
 # 😺 Meowim
 
-Meowim is a [mini.nvim](https://github.com/echasnovski/mini.nvim) powered launch point for your
-personal development environment.
+Meowim is a [mini.nvim](https://github.com/echasnovski/mini.nvim) powered launch
+point for your personal development environment.
 
 [![showcase](https://github.com/user-attachments/assets/18deae4b-9ba2-4c03-83de-cc31b65e7cf0)](https://github.com/loichyan/dotfiles)
 
@@ -29,12 +29,13 @@ personal development environment.
 - a C compiler for nvim-treesitter (see
   [here](https://github.com/nvim-treesitter/nvim-treesitter#requirements))
 - [ripgrep](https://github.com/BurntSushi/ripgrep) (*required by mini.pick*)
-- a [NerdFont](https://www.nerdfonts.com/) >= **3.0** (*optional but highly recommended*)
+- a [NerdFont](https://www.nerdfonts.com/) >= **3.0** (*optional but highly
+  recommended*)
 
 ## 🚗 Quick start
 
-[Fork](https://github.com/loichyan/Meowim/fork) this repo so that you have your own copy that you
-can modify, then install by:
+[Fork](https://github.com/loichyan/Meowim/fork) this repo so that you have your
+own copy that you can modify, then install by:
 
 ```sh
 # 1) Make a backup for your current configurations
@@ -44,26 +45,28 @@ mv ~/.local/share/nvim ~/.local/share/nvim.bak
 git clone https://github.com/<your_id>/Meowim ~/.config/nvim
 ```
 
-Additionally, you can check out [my own fork](https://github.com/loichyan/nvim) for inspiration.
+Additionally, you can check out [my own fork](https://github.com/loichyan/nvim)
+for inspiration.
 
 ## 🎯 Goals
 
-Meowim aims to provide some tweaks to the defaults of mini.nvim, along with several useful plugins
-that aren't included in mini.nvim. As a result, new plugins generally won't be added to the
-codebase. Moreover, if a non-mini plugin eventually has a mini alternative, it may be replaced by
-that.
+Meowim aims to provide some tweaks to the defaults of mini.nvim, along with
+several useful plugins that aren't included in mini.nvim. As a result, new
+plugins generally won't be added to the codebase. Moreover, if a non-mini plugin
+eventually has a mini alternative, it may be replaced by that.
 
 On the other hand, Meowim won't offer an extendable layer over its codebase like
 [LazyVim](https://www.lazyvim.org/). It more or less follows the philosophy of
-[kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim), because no distribution meets
-everyone's needs (which is also one reason this project exists).
+[kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim), because no
+distribution meets everyone's needs (which is also one reason this project
+exists).
 
 ## ♥️ Special Thanks
 
-- [mini.nvim](https://github.com/echasnovski/mini.nvim) for the fundamental contribution to the
-  birth of this project.
-- [LazyVim](https://github.com/LazyVim/LazyVim) for providing many excellent configuration snippets
-  used in this project.
+- [mini.nvim](https://github.com/echasnovski/mini.nvim) for the fundamental
+  contribution to the birth of this project.
+- [LazyVim](https://github.com/LazyVim/LazyVim) for providing many excellent
+  configuration snippets used in this project.
 
 ## ⚖️ License
 
