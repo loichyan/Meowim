@@ -87,12 +87,17 @@ Spec.config = function()
     --- Project status ---
     ----------------------
     local project = vim.fn.fnamemodify(last_cwd, ":t")
-    local git_summary = vim.b[last_file].minigit_summary
-    if git_summary and git_summary.head_name then
-      local head = git_summary.head_name
+    local git_summary = vim.b[last_file].minigit_summary or {}
+    -- branch name or a detached head
+    local head = git_summary.head_name or "HEAD"
+    if git_summary.head then
       head = head == "HEAD" and git_summary.head:sub(1, 7) or head
+      head = head:gsub("^heads/", "") -- remove `heads/` prefixes
       project = project .. ":" .. head
     end
+    -- rebasing, merging, etc.
+    local in_progress = git_summary.in_progress or ""
+    if in_progress ~= "" then project = project .. "|" .. in_progress end
     add("gitcommitBranch", " " .. project)
 
     -----------------------
