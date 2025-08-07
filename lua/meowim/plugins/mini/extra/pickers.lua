@@ -23,7 +23,7 @@ function Pickers.smart_files(local_opts, opts)
 
   if local_opts.hidden then
     command = { "rg", "--files", "--no-follow", "--color=never", "--no-ignore" }
-  elseif require("meowim.utils").get_git_repo(cwd) == cwd then
+  elseif Meowim.utils.get_git_repo(cwd) == cwd then
     command = {
       "git",
       "-c",

@@ -4,6 +4,9 @@
 
 local H = {}
 
+H.plugins = Meowim.plugins
+H.utils = Meowim.utils
+
 function H.clear_ui()
   vim.cmd("noh")
   require("quicker").close()
@@ -14,13 +17,6 @@ function H.gitexec(...)
   Meow.load("mini.git")
   vim.cmd.Git(...)
 end
-
----@param key string
----@param global boolean
-function H.toggle(key, global) require("meowim.utils").toggle(key, global) end
-
----@param scope "cursor"|"buffer"
-function H.stage_hunk(scope) return require("meowim.plugins.mini.diff").stage_hunk(scope) end
 
 -----------------------------
 --- PICKERS & DIAGNOSTICS ---
@@ -91,26 +87,26 @@ end
 ---@param scope "current"|"all"
 function H.lsp_implementation(scope)
   vim.lsp.buf.implementation({
-    on_list = scope == "current" and require("meowim.utils").loclist_buf or nil,
+    on_list = scope == "current" and Meowim.utils.loclist_buf or nil,
   })
 end
 
 ---@param scope "current"|"all"
 function H.lsp_references(scope)
   vim.lsp.buf.references({ includeDeclaration = false }, {
-    on_list = scope == "current" and require("meowim.utils").loclist_buf or nil,
+    on_list = scope == "current" and Meowim.utils.loclist_buf or nil,
   })
 end
 
 function H.lsp_definition()
   vim.lsp.buf.definition({
-    on_list = require("meowim.utils").loclist_unique,
+    on_list = Meowim.utils.loclist_unique,
   })
 end
 
 function H.lsp_type_definition()
   vim.lsp.buf.type_definition({
-    on_list = require("meowim.utils").loclist_unique,
+    on_list = Meowim.utils.loclist_unique,
   })
 end
 

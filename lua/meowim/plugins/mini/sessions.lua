@@ -22,7 +22,7 @@ end
 ---@param cwd string?
 ---@return string?
 function M.get_name(cwd)
-  local repo = require("meowim.utils").get_git_repo(cwd)
+  local repo = Meowim.utils.get_git_repo(cwd)
   return repo and vim.fs.basename(repo)
 end
 

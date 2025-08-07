@@ -24,7 +24,7 @@ function M.open(scope)
     path = vim.api.nvim_buf_get_name(0)
     path = vim.uv.fs_stat(path) and path or nil
   end
-  local dir = path or require("meowim.utils").get_git_repo(cwd) or cwd
+  local dir = path or Meowim.utils.get_git_repo(cwd) or cwd
   require("mini.files").open(dir)
 end
 
