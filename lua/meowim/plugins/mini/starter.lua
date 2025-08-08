@@ -57,7 +57,7 @@ function H.footer()
   end
 
   -- Meature startup time
-  local time = (_G.meowim_startup_time or 0) / 1000000
+  local time = (vim.g.meowim_startup_time or 0) / 1000000
   return ("Loaded %d/%d plugins  in %.2fms"):format(loaded, total, time)
 end
 

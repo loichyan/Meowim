@@ -1,13 +1,8 @@
+-- Bootstrap begin
+local start_time = vim.uv.hrtime()
+
 -- Enable the experimental loader for faster `require`s.
 vim.loader.enable(true)
-
--- Record the startup time.
-local stime = vim.uv.hrtime()
-vim.api.nvim_create_autocmd("VimEnter", {
-  desc = "Measure startup time",
-  once = true,
-  callback = function() _G.meowim_startup_time = vim.uv.hrtime() - stime end,
-})
 
 -- Install mini.nvim if not present.
 local pack_path = vim.fn.stdpath("data") .. "/site/"
@@ -63,3 +58,6 @@ deps.now(function()
     enable_snapshot = vim.env["MEO_DISABLE_SNAPSHOT"] == nil,
   })
 end)
+
+-- Bootstrap end
+vim.g.meowim_startup_time = vim.uv.hrtime() - start_time
