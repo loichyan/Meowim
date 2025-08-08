@@ -38,17 +38,18 @@ function H.smart_pairs(pair, neigh_pattern)
   if vim.fn.getcmdline() ~= "" then return H.orig_open(pair, neigh_pattern) end
 
   local op, cl = pair:sub(1, 1), pair:sub(2, 2)
-  local line = vim.api.nvim_get_current_line()
-  local col = vim.api.nvim_win_get_cursor(0)[2]
-
-  -- Skip next if there's already a pair.
-  if line:sub(col + 1, col + 1) == op then
-    return vim.api.nvim_replace_termcodes("<Right>", true, true, true)
-  end
+  local line, cur = vim.api.nvim_get_current_line(), vim.api.nvim_win_get_cursor(0)
+  local row, col = cur[1], cur[2]
 
   -- Handle codeblocks and Python's doc strings
   if op == cl and line:sub(col - 1, col) == op:rep(2) then
     return op .. "\n" .. op:rep(3) .. vim.api.nvim_replace_termcodes("<Up>", true, true, true)
+  end
+
+  -- Disable pairing in string nodes
+  local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, row - 1, math.max(col - 1, 0))
+  for _, capture in ipairs(ok and captures or {}) do
+    if capture.capture == "string" then return op end
   end
 
   -- Emit a opening only if unbalanced
@@ -63,8 +64,6 @@ function H.smart_pairs(pair, neigh_pattern)
       if n % 2 ~= 0 then return op end
     end
   end
-
-  -- TODO: skip string nodes
 
   return H.orig_open(pair, neigh_pattern)
 end
