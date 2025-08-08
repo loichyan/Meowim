@@ -13,8 +13,8 @@ vim.api.nvim_create_user_command("Cat", function(ctx)
   local lines = vim.split(output, "\n", { plain = true })
   vim.cmd(ctx.mods .. " new")
   vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
-  vim.opt_local.buflisted = false
-  vim.opt_local.buftype = "nofile"
-  vim.opt_local.filetype = "nofile"
-  vim.opt_local.modified = false
+  vim.bo.buflisted = false
+  vim.bo.buftype = "nofile"
+  vim.bo.filetype = "nofile"
+  vim.bo.modified = false
 end, { nargs = "+", complete = "command" })

@@ -38,8 +38,8 @@ Meow.autocmd("meowim.config.autocmds", {
       local ft = vim.bo.filetype
       if trivial_files[ft] then return end
       local width = rulers[ft] or rulers["*"]
-      vim.opt_local.colorcolumn = { width }
-      vim.opt_local.textwidth = width
+      vim.wo.colorcolumn = tostring(width)
+      vim.bo.textwidth = width
       if ft == "markdown" then vim.opt_local.wrap = true end
     end,
   },
