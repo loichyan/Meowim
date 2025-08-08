@@ -12,7 +12,7 @@ Spec.config = function()
     mappings = {
       object_scope = "ii",
       object_scope_with_border = "ai",
-      -- configured in mini.bracked
+      -- already set in mini.bracked
       goto_top = "",
       goto_bottom = "",
     },

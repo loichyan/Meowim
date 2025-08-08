@@ -1,34 +1,42 @@
 ---@type MeoSpec
 local Spec = { "mini.pairs", event = "LazyFile" }
+local H = {}
 
----Counts unlanced open or close characters.
----@param line string
----@param op string # open character
----@param cl string # close character
----@return integer,integer # count of open and close characters
-local count_unlanced = function(line, op, cl)
-  local no, nc = 0, 0
-  for i = 1, #line do
-    local ch = line:sub(i, i)
-    if ch == op then
-      no = no + 1
-    elseif ch ~= cl then
-    elseif no > 0 then
-      no = no - 1
-    else
-      nc = nc + 1
-    end
-  end
-  return no, nc
+Spec.config = function()
+  local minipairs = require("mini.pairs")
+  minipairs.setup({
+    modes = { insert = true, command = false, terminal = false },
+    mappings = {
+      [">"] = {
+        action = "close",
+        pair = "<>",
+        neigh_pattern = "[^\\].",
+        register = { cr = false },
+      },
+    },
+  })
+
+  H.orig_open = minipairs.open
+  ---@diagnostic disable-next-line: duplicate-set-field
+  minipairs.open = H.smart_pairs
+
+  Meow.autocmd("meowim.plugins.mini.pairs", {
+    {
+      event = "FileType",
+      pattern = "rust",
+      desc = "Disable annoying pairs for certain languages",
+      callback = function(ev) vim.keymap.set("i", "'", "'", { buffer = ev.buf }) end,
+    },
+  })
 end
 
 -- Credit: https://github.com/LazyVim/LazyVim/blob/25abbf546d564dc484cf903804661ba12de45507/lua/lazyvim/util/mini.lua#L97
 -- License: Apache-2.0
-local orig_open
 ---@param pair string
 ---@param neigh_pattern string
-local smart_pairs = function(pair, neigh_pattern)
-  if vim.fn.getcmdline() ~= "" then return orig_open(pair, neigh_pattern) end
+function H.smart_pairs(pair, neigh_pattern)
+  if vim.fn.getcmdline() ~= "" then return H.orig_open(pair, neigh_pattern) end
+
   local op, cl = pair:sub(1, 1), pair:sub(2, 2)
   local line = vim.api.nvim_get_current_line()
   local col = vim.api.nvim_win_get_cursor(0)[2]
@@ -47,8 +55,8 @@ local smart_pairs = function(pair, neigh_pattern)
   if #line < 500 then
     if op ~= cl then
       local left, right = line:sub(1, col), line:sub(col + 1)
-      local no, _ = count_unlanced(left, op, cl)
-      local _, nc = count_unlanced(right, op, cl)
+      local no, _ = H.count_unlanced(left, op, cl)
+      local _, nc = H.count_unlanced(right, op, cl)
       if no < nc then return op end
     else
       local _, n = line:gsub("%" .. op, "")
@@ -56,26 +64,30 @@ local smart_pairs = function(pair, neigh_pattern)
     end
   end
 
-  return orig_open(pair, neigh_pattern)
+  -- TODO: skip string nodes
+
+  return H.orig_open(pair, neigh_pattern)
 end
 
-Spec.config = function()
-  local minipairs = require("mini.pairs")
-  minipairs.setup({
-    modes = { insert = true, command = false, terminal = false },
-    mappings = {
-      [">"] = {
-        action = "close",
-        pair = "<>",
-        neigh_pattern = "[^\\].",
-        register = { cr = false },
-      },
-    },
-  })
-
-  orig_open = minipairs.open
-  ---@diagnostic disable-next-line: duplicate-set-field
-  minipairs.open = smart_pairs
+---Counts unlanced open or close characters.
+---@param line string
+---@param op string # open character
+---@param cl string # close character
+---@return integer,integer # count of open and close characters
+function H.count_unlanced(line, op, cl)
+  local no, nc = 0, 0
+  for i = 1, #line do
+    local ch = line:sub(i, i)
+    if ch == op then
+      no = no + 1
+    elseif ch ~= cl then
+    elseif no > 0 then
+      no = no - 1
+    else
+      nc = nc + 1
+    end
+  end
+  return no, nc
 end
 
 return Spec

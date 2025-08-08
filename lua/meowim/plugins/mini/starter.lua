@@ -1,18 +1,18 @@
 ---@type MeoSpec
 local Spec = { "mini.starter", lazy = false }
+local H = {}
 
 Spec.config = function()
   local ministarter = require("mini.starter")
 
-  local prev_laststatus
   Meow.autocmd("meowim.plugins.mini.starter", {
     {
       event = "BufWinEnter",
       desc = "Restore statusline when MiniStater closed",
       callback = function()
-        if prev_laststatus and vim.bo.filetype ~= "ministarter" then
-          vim.o.laststatus = prev_laststatus
-          prev_laststatus = nil
+        if H.prev_laststatus and vim.bo.filetype ~= "ministarter" then
+          vim.o.laststatus = H.prev_laststatus
+          H.prev_laststatus = nil
         end
       end,
     },
@@ -31,30 +31,34 @@ Spec.config = function()
       { section = "Actions", name = "Quit Neovim",     action = "qall"                                                     },
       function() Meow.load("mini.sessions") return ministarter.sections.sessions(5, true) end,
     },
-    footer = function()
-      -- Hide statusline
-      if not prev_laststatus then
-        prev_laststatus = vim.o.laststatus
-        vim.o.laststatus = 0
-      end
-
-      local time = _G.meowim_startup_time or 0
-      local total = 0
-      local loaded = 0
-      for _, p in ipairs(Meow:plugins()) do
-        if not p:is_shadow() and p:is_enabled() then
-          total = total + 1
-          if not p:is_lazy() then loaded = loaded + 1 end
-        end
-      end
-      return ("Loaded %d/%d plugins  in %.2fms"):format(loaded, total, time / 1000000)
-    end,
+    footer = H.footer,
     content_hooks = {
       ministarter.gen_hook.adding_bullet(),
       ministarter.gen_hook.indexing("all", { "Actions" }),
       ministarter.gen_hook.aligning("center", "center"),
     },
   })
+end
+
+function H.footer()
+  -- Hide statusline
+  if not H.prev_laststatus then
+    H.prev_laststatus = vim.o.laststatus
+    vim.o.laststatus = 0
+  end
+
+  -- Count loaded plugins
+  local total, loaded = 0, 0
+  for _, p in ipairs(Meow:plugins()) do
+    if not p:is_shadow() and p:is_enabled() then
+      total = total + 1
+      if not p:is_lazy() then loaded = loaded + 1 end
+    end
+  end
+
+  -- Meature startup time
+  local time = (_G.meowim_startup_time or 0) / 1000000
+  return ("Loaded %d/%d plugins  in %.2fms"):format(loaded, total, time)
 end
 
 return Spec

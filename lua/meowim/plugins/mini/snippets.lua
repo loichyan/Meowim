@@ -8,9 +8,7 @@ local Spec = {
 Spec.config = function()
   local minisnp = require("mini.snippets")
   minisnp.setup({
-    snippets = {
-      minisnp.gen_loader.from_lang(),
-    },
+    snippets = { minisnp.gen_loader.from_lang() },
     -- stylua: ignore
     mappings = {
       expand    = "",
