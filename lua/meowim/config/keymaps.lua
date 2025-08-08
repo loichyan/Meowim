@@ -70,8 +70,8 @@ Meow.keymap({
   { "<Leader>gH",          function() H.pick("git_commits") end,                                                   desc = "Pick Git commits"                  },
   { "<Leader>gl",          function() require("mini.git").show_at_cursor() end, mode = nx,                         desc = "Show cursor info"                  },
   { "<Leader>gL",          function() H.gitexec("log", "-p", "--", "%") end,                                       desc = "Show buffer history"               },
-  { "<Leader>gs",          function() return H.plugins.mini.diff.stage_hunk("cursor") end, expr = true,            desc = "State cursor hunks"                },
-  { "<Leader>gS",          function() return H.plugins.mini.diff.stage_hunk("buffer") end,                         desc = "State buffer hunks"                },
+  { "<Leader>gs",          function() H.plugins.mini.diff.stage_hunk("cursor") end,                                desc = "State cursor hunks"                },
+  { "<Leader>gS",          function() H.plugins.mini.diff.stage_hunk("buffer") end,                                desc = "State buffer hunks"                },
 
   -- Diagnostics
   { "<C-l>",               function() vim.diagnostic.open_float() end,                                             desc = "Show current diagnostic"           },

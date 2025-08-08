@@ -21,7 +21,10 @@ end
 ---@param scope "cursor"|"buffer"
 function M.stage_hunk(scope)
   if scope == "cursor" then
-    return require("mini.diff").operator("apply") .. "<Cmd>lua MiniDiff.textobject()<CR>"
+    local trigger = require("mini.diff").operator("apply")
+    local textobject = trigger .. "<Cmd>lua MiniDiff.textobject()<CR>"
+    local keys = vim.api.nvim_replace_termcodes(textobject, true, true, true)
+    vim.api.nvim_feedkeys(keys, "n", false)
   else
     require("mini.diff").do_hunks(0, "apply")
   end
