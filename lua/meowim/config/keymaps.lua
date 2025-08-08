@@ -127,8 +127,8 @@ Meow.keymap({
   { "<Leader>fT",          function() H.pick("todo", { scope = "all" }) end,                                       desc = "Pick workspace TODOs"              },
   { "<Leader>fu",          function() H.pick("hl_groups") end,                                                     desc = "Pick highlights"                   },
   { "<Leader>fU",          function() H.pick("colorschemes") end,                                                  desc = "Pick colorschemes"                 },
-  { "<Leader>fr",          function() H.pick("resume") end,                                                        desc = "Resume picker"                     },
-  { "<Leader>fR",          function() H.pick("registers") end,                                                     desc = "Pick registers"                    },
+  { "<Leader>fr",          function() H.pick("registers") end,                                                     desc = "Pick registers"                    },
+  { "<Leader>fR",          function() H.pick("resume") end,                                                        desc = "Resume picker"                     },
   { "<Leader>fw",          function() H.pick_word("current", "ast-grep") end,                                      desc = "Grep buffer <cword>"               },
   { "<Leader>fW",          function() H.pick_word("all", "ast-grep") end,                                          desc = "Grep workspace <cword>"            },
 })
