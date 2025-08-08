@@ -15,10 +15,10 @@ Meow.keymap({
   { "<Leader>E",           function() H.plugins.mini.files.open("workspace") end,                                  desc = "Explore workspace root"            },
 
   -- Toggles
-  { "<LocalLeader>k",      function() H.utils.toggle("minicompletion_disable", false) end,                         desc = "Toggle completion"                 },
-  { "<LocalLeader>K",      function() H.utils.toggle("minicompletion_disable", true) end,                          desc = "Toggle completion globally"        },
-  { "<LocalLeader>f",      function() H.utils.toggle("autoformat_disabled", false) end,                            desc = "Toggle autoformat"                 },
-  { "<LocalLeader>F",      function() H.utils.toggle("autoformat_disabled", true) end,                             desc = "Toggle autoformat globally"        },
+  { "<LocalLeader>k",      function() H.utils.toggle("minicompletion_disable", "global") end,                      desc = "Toggle completion"                 },
+  { "<LocalLeader>K",      function() H.utils.toggle("minicompletion_disable", "buffer") end,                      desc = "Toggle completion globally"        },
+  { "<LocalLeader>f",      function() H.utils.toggle("autoformat_disabled", "global") end,                         desc = "Toggle autoformat"                 },
+  { "<LocalLeader>F",      function() H.utils.toggle("autoformat_disabled", "buffer") end,                         desc = "Toggle autoformat globally"        },
   { "<LocalLeader>q",      function() require("quicker").toggle() end,                                             desc = "Toggle quickfix"                   },
   { "<LocalLeader>v",      "<Cmd>lua vim.wo.conceallevel = 2 - vim.wo.conceallevel",                               desc = "Toggle conceallevel"               },
 
@@ -105,14 +105,14 @@ Meow.keymap({
   { "<Leader>'",           function() H.pick("marks") end,                                                         desc = "Pick marks"                        },
   { '<Leader>"',           function() H.pick("registers") end,                                                     desc = "Pick registers"                    },
   { "<Leader>,",           function() H.pick("buffers") end,                                                       desc = "Pick buffers"                      },
-  { "<Leader>:",           function() H.pick("history", { scope = "cmd" }) end,                                    desc = "Pick command history"              },
+  { "<Leader>:",           function() H.pick("history", {scope="cmd"}) end,                                        desc = "Pick command history"              },
   { "<Leader>F",           function() H.pick("resume") end,                                                        desc = "Resume picker"                     },
 
   { "<Leader>fb",          function() H.pick("buffers") end,                                                       desc = "Pick buffers"                      },
   { "<Leader>fc",          function() H.pick("commands") end,                                                      desc = "Pick commands"                     },
   { "<Leader>fC",          function() H.pick("autocmds") end,                                                      desc = "Pick autocommands"                 },
   { "<Leader>ff",          function() H.pick("smart_files") end,                                                   desc = "Pick files"                        },
-  { "<Leader>fF",          function() H.pick("smart_files", { hidden = true }) end,                                desc = "Pick all files"                    },
+  { "<Leader>fF",          function() H.pick("smart_files", {hidden=true}) end,                                    desc = "Pick all files"                    },
   { "<Leader>fg",          function() H.pick_lgrep("current") end,                                                 desc = "Grep current buffer"               },
   { "<Leader>fG",          function() H.pick_lgrep("all") end,                                                     desc = "Grep workspace files"              },
   { "<Leader>fh",          function() H.pick("help") end,                                                          desc = "Pick helptags"                     },
@@ -120,17 +120,17 @@ Meow.keymap({
   { "<Leader>fm",          function() H.pick("marks") end,                                                         desc = "Pick marks"                        },
   { "<Leader>fn",          function() H.pick("notify") end,                                                        desc = "Pick notifications"                },
   { "<Leader>fo",          function() H.pick("oldfiles") end,                                                      desc = "Pick recent files"                 },
-  { "<Leader>fq",          function() H.pick("list", { scope = "quickfix" }) end,                                  desc = "Pick quickfix"                     },
-  { "<Leader>fs",          function() H.pick_lgrep("current", "ast-grep") end,                                     desc = "Ast-grep current buffer"           },
-  { "<Leader>fS",          function() H.pick_lgrep("all", "ast-grep") end,                                         desc = "Ast-grep workspace files"          },
-  { "<Leader>ft",          function() H.pick("todo", { scope = "current" }) end,                                   desc = "Pick buffer TODOs"                 },
-  { "<Leader>fT",          function() H.pick("todo", { scope = "all" }) end,                                       desc = "Pick workspace TODOs"              },
+  { "<Leader>fq",          function() H.pick("list", {scope="quickfix"}) end,                                      desc = "Pick quickfix"                     },
+  { "<Leader>fs",          function() H.pick_lgrep("current", {tool="ast-grep"}) end,                              desc = "Ast-grep current buffer"           },
+  { "<Leader>fS",          function() H.pick_lgrep("all", {tool="ast-grep"}) end,                                  desc = "Ast-grep workspace files"          },
+  { "<Leader>ft",          function() H.pick("todo", {scope="current"}) end,                                       desc = "Pick buffer TODOs"                 },
+  { "<Leader>fT",          function() H.pick("todo", {scope="all"}) end,                                           desc = "Pick workspace TODOs"              },
   { "<Leader>fu",          function() H.pick("hl_groups") end,                                                     desc = "Pick highlights"                   },
   { "<Leader>fU",          function() H.pick("colorschemes") end,                                                  desc = "Pick colorschemes"                 },
   { "<Leader>fr",          function() H.pick("registers") end,                                                     desc = "Pick registers"                    },
   { "<Leader>fR",          function() H.pick("resume") end,                                                        desc = "Resume picker"                     },
-  { "<Leader>fw",          function() H.pick_word("current", "ast-grep") end,                                      desc = "Grep buffer <cword>"               },
-  { "<Leader>fW",          function() H.pick_word("all", "ast-grep") end,                                          desc = "Grep workspace <cword>"            },
+  { "<Leader>fw",          function() H.pick_word("current", {tool="ast-grep"}) end,                               desc = "Grep buffer <cword>"               },
+  { "<Leader>fW",          function() H.pick_word("all", {tool="ast-grep"}) end,                                   desc = "Grep workspace <cword>"            },
 })
 
 -- stylua: ignore
@@ -150,8 +150,8 @@ local lsp_keymaps = {
   { "<Leader>lI",          function() H.lsp_implementation("all") end,                                             desc = "List workspace implementations"    },
   { "<Leader>lr",          function() H.lsp_references("current") end,                                             desc = "List buffer references"            },
   { "<Leader>lR",          function() H.lsp_references("all") end,                                                 desc = "List workspace references"         },
-  { "<Leader>ls",          function() H.pick("lsp", { scope = "document_symbol" }) end,                            desc = "Pick buffer symbols"               },
-  { "<Leader>lS",          function() H.pick("lsp", { scope = "workspace_symbol" }) end,                           desc = "Pick workspace symbols"            },
+  { "<Leader>ls",          function() H.pick("lsp", {scope="document_symbol"}) end,                                desc = "Pick buffer symbols"               },
+  { "<Leader>lS",          function() H.pick("lsp", {scope="workspace_symbol"}) end,                               desc = "Pick workspace symbols"            },
 }
 
 Meow.autocmd("meowim.config.keymaps", {

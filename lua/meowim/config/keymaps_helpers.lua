@@ -58,25 +58,29 @@ function H.pick_diagnostics(scope, severity)
 end
 
 ---@param scope "current"|"all"
----@param tool? "rg"|"git"|"ast-grep"
-function H.pick_lgrep(scope, tool)
+---@param opts? table
+function H.pick_lgrep(scope, opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
-  if tool == "ast-grep" then
-    require("mini.pick").registry.ast_grep_live({ globs = globs })
+  opts = vim.tbl_extend("force", { globs = globs }, opts or {})
+
+  if opts.tool == "ast-grep" then
+    require("mini.pick").registry.ast_grep_live(opts)
   else
-    require("mini.pick").registry.grep_live({ tool = tool, globs = globs })
+    require("mini.pick").registry.grep_live(opts)
   end
 end
 
 ---@param scope "current"|"all"
----@param tool? "rg"|"git"|"ast-grep"
-function H.pick_word(scope, tool)
+---@param opts? table
+function H.pick_word(scope, opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
   local pattern = vim.fn.expand("<cword>")
-  if tool == "ast-grep" then
-    require("mini.pick").registry.ast_grep({ pattern = pattern, globs = globs })
+  opts = vim.tbl_extend("force", { pattern = pattern, globs = globs }, opts or {})
+
+  if opts.tool == "ast-grep" then
+    require("mini.pick").registry.ast_grep(opts)
   else
-    require("mini.pick").registry.grep({ tool = tool, pattern = pattern, globs = globs })
+    require("mini.pick").registry.grep(opts)
   end
 end
 

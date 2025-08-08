@@ -21,9 +21,9 @@ end
 
 ---Toggles the specified option. The default is always false.
 ---@param key string
----@param global boolean
-function Utils.toggle(key, global)
-  if global then
+---@param scope? "buffer"|"global"
+function Utils.toggle(key, scope)
+  if scope == "global" then
     vim.g[key] = not vim.g[key]
   else
     local bufnr = vim.api.nvim_get_current_buf()
