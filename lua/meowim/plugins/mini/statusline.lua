@@ -140,7 +140,7 @@ Spec.config = function()
     end
     add("", filename:gsub("%%", "%%%%"))
 
-    add(nil, "%<%=") -- End left section
+    add(nil, "%<%=%S") -- End left section
 
     ------------------
     --- File infos ---
