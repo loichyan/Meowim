@@ -70,8 +70,10 @@ Meow.keymap({
   { "<Leader>gH",          function() H.pick("git_commits") end,                                                   desc = "Pick Git commits"                  },
   { "<Leader>gl",          function() require("mini.git").show_at_cursor() end, mode = nx,                         desc = "Show cursor info"                  },
   { "<Leader>gL",          function() H.gitexec("log", "-p", "--", "%") end,                                       desc = "Show buffer history"               },
-  { "<Leader>gs",          function() H.plugins.mini.diff.stage_hunk("cursor") end,                                desc = "State cursor hunks"                },
-  { "<Leader>gS",          function() H.plugins.mini.diff.stage_hunk("buffer") end,                                desc = "State buffer hunks"                },
+  { "<Leader>gs",          function() H.plugins.mini.diff.do_hunk("apply", "cursor") end,                          desc = "State cursor hunks"                },
+  { "<Leader>gS",          function() H.plugins.mini.diff.do_hunk("apply", "buffer") end,                          desc = "State buffer hunks"                },
+  { "<Leader>gx",          function() H.plugins.mini.diff.do_hunk("reset", "cursor") end,                          desc = "State cursor hunks"                },
+  { "<Leader>gX",          function() H.plugins.mini.diff.do_hunk("reset", "buffer") end,                          desc = "State buffer hunks"                },
 
   -- Diagnostics
   { "<C-l>",               function() vim.diagnostic.open_float() end,                                             desc = "Show current diagnostic"           },
@@ -143,8 +145,7 @@ local lsp_keymaps = {
   { "[r",                  function() require("snacks.words").jump(-vim.v.count1, true) end,                       desc = "Reference backward"                },
 
   { "<Leader>la",          function() vim.lsp.buf.code_action() end, mode = nx,                                    desc = "List code actions"                 },
-  { "<Leader>lf",          function() require("conform").format() end, mode = "n",                                 desc = "Format buffer"                     },
-  { "<Leader>lf",          function() require("conform").format() end, mode = "x",                                 desc = "Format selection"                  },
+  { "<Leader>lf",          function() require("conform").format() end, mode = nx,                                  desc = "Format buffer"                     },
   { "<Leader>ln",          function() vim.lsp.buf.rename() end,                                                    desc = "Rename cursor symbol"              },
   { "<Leader>li",          function() H.lsp_implementation("current") end,                                         desc = "List buffer implementations"       },
   { "<Leader>lI",          function() H.lsp_implementation("all") end,                                             desc = "List workspace implementations"    },

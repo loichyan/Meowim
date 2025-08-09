@@ -17,16 +17,17 @@ Spec.config = function()
   })
 end
 
----Stages hunks at cursor or in the entire buffer.
+---Operates hunks at cursor or in the entire buffer.
+---@param mode "apply"|"reset"|"yank"
 ---@param scope "cursor"|"buffer"
-function M.stage_hunk(scope)
+function M.do_hunks(mode, scope)
   if scope == "cursor" then
-    local trigger = require("mini.diff").operator("apply")
+    local trigger = require("mini.diff").operator(mode)
     local textobject = trigger .. "<Cmd>lua MiniDiff.textobject()<CR>"
     local keys = vim.api.nvim_replace_termcodes(textobject, true, true, true)
     vim.api.nvim_feedkeys(keys, "n", false)
   else
-    require("mini.diff").do_hunks(0, "apply")
+    require("mini.diff").do_hunks(0, mode)
   end
 end
 
