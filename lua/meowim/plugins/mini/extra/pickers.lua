@@ -122,36 +122,44 @@ end
 
 ---Lists notifications from mini.notify.
 -- TODO: contribute to mini.extra
----@param local_opts {source:string[]}
+---@param local_opts {sources:string[]}
 function Pickers.notify(local_opts, opts)
-  local_opts = vim.tbl_extend("force", { source = { "vim.notify" } }, local_opts or {})
+  local_opts = vim.tbl_extend("force", { sources = { "vim.notify" } }, local_opts or {})
 
-  local notify = require("mini.notify")
-  local notify_config = vim.tbl_deep_extend("force", notify.config, vim.b.mininotify_config or {})
-  local format = notify_config.format or notify.default_format
+  local minintf = require("mini.notify")
+  local minintf_config = vim.tbl_deep_extend("force", minintf.config, vim.b.mininotify_config or {})
+  local format_notif = minintf_config.format or minintf.default_format
+
+  -- Sort from oldest to newest.
+  local notifs = minintf.get_all()
+  table.sort(notifs, function(a, b) return a.ts_update < b.ts_update end)
 
   local items = {}
-  for _, notif in pairs(notify.get_all()) do
-    if vim.tbl_contains(local_opts.source, notif.data.source) then
-      table.insert(items, { _orig = notif, text = vim.split(format(notif), "\n")[1] })
+  for _, notif in pairs(notifs) do
+    if vim.tbl_contains(local_opts.sources, notif.data.source) then
+      table.insert(items, {
+        notif = notif,
+        text = vim.split(format_notif(notif), "\n")[1],
+      })
     end
   end
-  -- Sort from oldest to newest.
-  table.sort(items, function(a, b) return a._orig.ts_update < b._orig.ts_update end)
 
-  opts = vim.tbl_deep_extend("force", {
-    source = {
-      name = "Notifications",
-      items = items,
-      preview = function(buf_id, item)
-        vim.wo.wrap = true
-        vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, vim.split(item._orig.msg, "\n"))
-      end,
-      choose = function(item)
-        vim.schedule(function() vim.print(item._orig) end)
-      end,
-    },
-  }, opts or {})
+  local default_source = {
+    name = "Notifications",
+    items = items,
+    preview = function(buf_id, item)
+      vim.wo.wrap = true
+      vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, vim.split(item.notif.msg, "\n"))
+    end,
+    choose = function(item)
+      local bufnr = vim.api.nvim_create_buf(false, true)
+      vim.bo[bufnr].buftype = "nofile"
+      vim.bo[bufnr].filetype = "nofile"
+      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, vim.split(item.notif.msg, "\n"))
+      MiniPick.default_choose({ bufnr = bufnr })
+    end,
+  }
+  opts = vim.tbl_deep_extend("force", default_source, opts or {})
   return MiniPick.start(opts)
 end
 
@@ -172,34 +180,33 @@ function Pickers.autocmds(local_opts, opts)
   end
 
   local items = vim.tbl_map(
-    function(autocmd) return { _orig = autocmd, text = format(autocmd) } end,
+    function(autocmd) return { au = autocmd, text = format(autocmd) } end,
     vim.api.nvim_get_autocmds(local_opts or {})
   )
+
   -- Sort by group, then event
   table.sort(items, function(a, b)
-    if not a._orig.group then
+    if not a.au.group then
       return false
-    elseif not b._orig.group then
+    elseif not b.au.group then
       return true
-    elseif a._orig.group == b._orig.group then
-      return a._orig.event < b._orig.event
+    elseif a.au.group == b.au.group then
+      return a.au.event < b.au.event
     else
-      return a._orig.group < b._orig.group
+      return a.au.group < b.au.group
     end
   end)
 
-  opts = vim.tbl_deep_extend("force", {
-    source = {
-      name = "Autocmds",
-      items = items,
-      preview = function(buf_id, item)
-        vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, vim.split(vim.inspect(item._orig), "\n"))
-      end,
-      choose = function(item)
-        vim.schedule(function() vim.print(item._orig) end)
-      end,
-    },
-  }, opts or {})
+  local default_source = {
+    name = "Autocmds",
+    items = items,
+    preview = function(buf_id, item) MiniPick.default_preview(buf_id, item.au) end,
+    choose = function(item)
+      -- TODO: report to mini.nvim that choose_print needs schedule
+      vim.schedule(function() MiniPick.default_choose(item.au) end)
+    end,
+  }
+  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
   return MiniPick.start(opts)
 end
 
