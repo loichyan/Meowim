@@ -144,6 +144,7 @@ function Pickers.notify(local_opts, opts)
       name = "Notifications",
       items = items,
       preview = function(buf_id, item)
+        vim.wo.wrap = true
         vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, vim.split(item._orig.msg, "\n"))
       end,
       choose = function(item)
