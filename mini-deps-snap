@@ -4,13 +4,13 @@ return {
   ["git-conflict.nvim"] = "a1badcd070d176172940eb55d9d59029dad1c5a6",
   ["guess-indent.nvim"] = "84a4987ff36798c2fc1169cbaff67960aed9776f",
   ["lazydev.nvim"] = "2367a6c0a01eb9edb0464731cc0fb61ed9ab9d2c",
-  ["meow.nvim"] = "bf63bf67d3036eaa6bcf4164c86097f155384a84",
-  ["mini.nvim"] = "c122e852517adaf7257688e435369c050da113b1",
-  ["nvim-lint"] = "9c6207559297b24f0b7c32829f8e45f7d65b991f",
-  ["nvim-lspconfig"] = "3db16ceeea947517f0dc1404c24dcb5ab0c91d26",
+  ["meow.nvim"] = "daf36039fa843f456e830eb9f74c40891716d905",
+  ["mini.nvim"] = "4035ef97407a6661ae9ff913ff980e271a658502",
+  ["nvim-lint"] = "7ef127aaede2a4d5ad8df8321e2eb4e567f29594",
+  ["nvim-lspconfig"] = "276ce3bc878243dc63c32b75790c4296d11848f6",
   ["nvim-treesitter"] = "42fc28ba918343ebfd5565147a42a26580579482",
   ["nvim-treesitter-textobjects"] = "71385f191ec06ffc60e80e6b0c9a9d5daed4824c",
   ["quicker.nvim"] = "51d3926f183c2d98fbc237cc237ae0926839af3a",
-  ["smart-splits.nvim"] = "825073e87de5fae98b0c107917e15977d100323b",
+  ["smart-splits.nvim"] = "52ee119752ee7e98a2a62f0f172926b5fbbc28a5",
   ["snacks.nvim"] = "bc0630e43be5699bb94dadc302c0d21615421d93"
 }
