@@ -34,7 +34,7 @@ function H.jump_quickfix(dir, fallback)
 end
 
 ---@param dir "forward"|"backward"|"first"|"last"
----@param severity vim.diagnostic.Severity?
+---@param severity vim.diagnostic.SeverityName?
 function H.jump_diagnostic(dir, severity)
   require("mini.bracketed").diagnostic(dir, { severity = severity })
 end
@@ -49,7 +49,7 @@ function H.pick_quickfix()
 end
 
 ---@param scope "current"|"all"
----@param severity vim.diagnostic.Severity?
+---@param severity vim.diagnostic.SeverityName?
 function H.pick_diagnostics(scope, severity)
   require("mini.pick").registry.diagnostic({
     scope = scope,

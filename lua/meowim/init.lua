@@ -7,13 +7,20 @@ function Meowim.setup()
 
   _G.Meowim = Meowim
 
-  require("meowim.config.options")
+  -- Load configurations, reporting error if failed.
+  local load = function(mod)
+    local ok, err = pcall(require, mod)
+    if not ok then Meow.notifyf("ERROR", "failed to load '%s': %s", mod, err) end
+  end
+
+  -- Load options on startup anyway.
+  load("meowim.config.options")
 
   -- Load autocommands and polishment early if Vim is about to open files.
   local has_file = vim.fn.argc(-1) > 0
   if has_file then
-    require("meowim.config.polish")
-    require("meowim.config.autocmds")
+    load("meowim.config.polish")
+    load("meowim.config.autocmds")
     -- Load treesitter (for highlighting) and LSP configurations immediately to
     -- make sure they can work properly.
     Meow.load("nvim-treesitter")
@@ -28,10 +35,10 @@ function Meowim.setup()
       desc = "Load user configurations",
       once = true,
       callback = function()
-        require("meowim.config.keymaps")
+        load("meowim.config.keymaps")
         if has_file then return end
-        require("meowim.config.polish")
-        require("meowim.config.autocmds")
+        load("meowim.config.polish")
+        load("meowim.config.autocmds")
       end,
     },
   })
