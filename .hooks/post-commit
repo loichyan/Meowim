@@ -1,0 +1,3 @@
+#!/bin/sh
+# See <https://github.com/prettier/prettier/issues/2978#issuecomment-354982956>
+git update-index -g

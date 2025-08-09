@@ -1,10 +1,14 @@
-local config = function()
+---@type MeoSpec
+local Spec = { "mini.clue", event = "VeryLazy" }
+local H = {}
+
+Spec.config = function()
   local miniclue = require("mini.clue")
+
   miniclue.setup({
-    window = { delay = 250 },
+    window = { delay = 250, config = H.smart_width },
     -- stylua: ignore
     clues = {
-      -- Enhance this by adding descriptions for <Leader> mapping groups
       miniclue.gen_clues.builtin_completion(),
       miniclue.gen_clues.marks(),
       miniclue.gen_clues.registers(),
@@ -49,5 +53,14 @@ local config = function()
   })
 end
 
----@type MeoSpec
-return { "mini.clue", event = "VeryLazy", config = config }
+---Returns a best-fit width based on the contents and the screen width.
+function H.smart_width(bufnr)
+  local textwidth = 0
+  for _, l in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
+    textwidth = math.max(textwidth, vim.fn.strdisplaywidth(l))
+  end
+  local screen = math.floor(0.5 * vim.o.columns)
+  return { width = math.min(textwidth + 1, screen, 50) }
+end
+
+return Spec

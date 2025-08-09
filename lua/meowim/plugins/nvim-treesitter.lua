@@ -1,4 +1,12 @@
-local config = function()
+---@type MeoSpec
+local Spec = {
+  "nvim-treesitter/nvim-treesitter",
+  checkout = "master",
+  build = function() vim.cmd("TSUpdate") end,
+  event = "VeryLazy",
+}
+
+Spec.config = function()
   ---@diagnostic disable-next-line:missing-fields
   require("nvim-treesitter.configs").setup({
     sync_install = false,
@@ -18,6 +26,7 @@ local config = function()
     auto_install = true,
     highlight = { enable = true, additional_vim_regex_highlighting = false },
     incremental_selection = { enable = false },
+    indent = { enable = true },
     textobjects = {
       -- stylua: ignore
       move = {
@@ -31,11 +40,4 @@ local config = function()
   })
 end
 
----@type MeoSpec
-return {
-  "nvim-treesitter/nvim-treesitter",
-  checkout = "master",
-  build = function() vim.cmd("TSUpdate") end,
-  event = "VeryLazy",
-  config = config,
-}
+return Spec

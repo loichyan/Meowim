@@ -1,4 +1,10 @@
--- Install mini.nvim manually if not present.
+-- Bootstrap begin
+local start_time = vim.uv.hrtime()
+
+-- Enable the experimental loader for faster `require`s.
+vim.loader.enable(true)
+
+-- Install mini.nvim if not present.
 local pack_path = vim.fn.stdpath("data") .. "/site/"
 local mini_path = pack_path .. "pack/deps/start/mini.nvim"
 if not vim.uv.fs_stat(mini_path) then
@@ -14,17 +20,17 @@ if not vim.uv.fs_stat(mini_path) then
   vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
--- Record the startup time.
-local stime = vim.uv.hrtime()
-vim.api.nvim_create_autocmd("VimEnter", {
-  desc = "Measure startup time",
-  once = true,
-  callback = function() _G.meowim_startup_time = vim.uv.hrtime() - stime end,
-})
+-- Setup the plugin installer.
+local deps = require("mini.deps")
+deps.setup({ path = { package = pack_path } })
 
--- Enable the experimental loader and disable some useless standard plugins to
--- speed up the startup.
-vim.loader.enable(true)
+-- Enable profiler for debug/benchmark
+if vim.env["MEO_ENABLE_PROFILE"] ~= nil then
+  deps.add("folke/snacks.nvim")
+  require("snacks.profiler").startup({ startup = { event = "UIEnter" } })
+end
+
+-- Disable some useless standard plugins to speed up the startup.
 local disabled_builtins = {
   "gzip",
   -- "matchit",
@@ -39,15 +45,19 @@ for _, p in ipairs(disabled_builtins) do
   vim.g["loaded_" .. p] = true
 end
 
--- Install the plugin manager and load our plugin specs.
-local deps = require("mini.deps")
-deps.setup({ path = { package = pack_path } })
+-- Install the plugin manager and then load our plugin specs.
 deps.add("loichyan/meow.nvim")
 deps.now(function()
-  vim.cmd.colorscheme("base16-gruvbox") -- Configure the preferred colorscheme.
+  -- Configure the preferred colorscheme
+  vim.cmd.colorscheme("base16-gruvbox")
   require("meow").setup({
     specs = { import = "meowim.plugins" },
+    -- Enable import caching to reduce I/O loads.
+    import_cache = function() return require("meowim.cache_token") end,
     patch_mini = true,
     enable_snapshot = vim.env["MEO_DISABLE_SNAPSHOT"] == nil,
   })
 end)
+
+-- Bootstrap end
+vim.g.meowim_startup_time = vim.uv.hrtime() - start_time

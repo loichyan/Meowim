@@ -1,12 +1,15 @@
 ---@type MeoSpec
-return {
+local Spec = {
   "akinsho/git-conflict.nvim",
   event = "LazyFile",
-  config = function()
-    require("git-conflict").setup({
-      default_mappings = false,
-      default_commands = false,
-      disable_diagnostics = true,
-    })
-  end,
 }
+
+Spec.config = function()
+  require("git-conflict").setup({
+    default_mappings = false,
+    default_commands = false,
+    disable_diagnostics = true,
+  })
+end
+
+return Spec

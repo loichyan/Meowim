@@ -27,11 +27,7 @@ function Base16.setup(opts)
   local suffix = opts.variant and "-" .. opts.variant or ""
   require("meowim.utils").cached_colorscheme({
     name = opts.name .. suffix,
-    watch_paths = {
-      "/lua/mini/base16.lua", -- upstream
-      "/lua/meowim/base16.lua", -- ourself
-      "/colors/" .. opts.name .. ".lua", -- palette
-    },
+    cache_token = require("meowim.cache_token"),
     setup = function()
       require("mini.base16").setup(
         vim.tbl_extend("force", Base16.options, { palette = opts.palette })
