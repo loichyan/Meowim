@@ -34,11 +34,11 @@ Meow.autocmd("meowim.config.autocmds", {
   {
     event = "FileType",
     desc = "Configure rulers",
-    callback = function()
-      local ft = vim.bo.filetype
+    callback = function(ev)
+      local ft = ev.match
       if trivial_files[ft] then return end
       local width = rulers[ft] or rulers["*"]
-      vim.wo.colorcolumn = tostring(width)
+      vim.opt_local.colorcolumn:append({ width })
       vim.bo.textwidth = width
       if ft == "markdown" then vim.opt_local.wrap = true end
     end,
