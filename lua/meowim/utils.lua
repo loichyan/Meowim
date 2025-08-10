@@ -8,6 +8,11 @@ function Utils.prompt(prompt)
   return ok and msg or ""
 end
 
+---Closes current window if possible, otherwise current buffer.
+function Utils.try_close()
+  if not pcall(vim.cmd.close) then require("mini.bufremove").delete() end
+end
+
 ---Returns the top level path if the specified directory is inside a repository.
 ---@param cwd string?
 ---@return string?

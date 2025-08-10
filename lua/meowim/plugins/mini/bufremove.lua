@@ -13,13 +13,10 @@ function M.close_others(dir)
       if idir < 0 then break end
       idir = 0
     elseif vim.bo[bufnr].buflisted and idir <= 0 then
-      M.close(bufnr)
+      require("mini.bufremove").delete(bufnr)
     end
   end
 end
-
----@param bufnr? integer
-function M.close(bufnr) require("mini.bufremove").delete(bufnr) end
 
 M[1] = Spec
 return M

@@ -28,7 +28,7 @@ Meow.keymap({
   { "<Leader>-",           "<Cmd>split<CR>",                                                                       desc = "Split horizontal"                  },
   { "<Leader>\\",          "<Cmd>vsplit<CR>",                                                                      desc = "Split vertical"                    },
   { "<Leader>m",           function() H.plugins.mini.misc.zoom() end,                                              desc = "Zoom current buffer"               },
-  { "<Leader>w",           function() H.plugins.mini.bufremove.close() end,                                        desc = "Close current buffer"              },
+  { "<Leader>w",           function() require("mini.bufremove").delete() end,                                      desc = "Close current buffer"              },
   { "<Leader>W",           "<Cmd>close<CR>",                                                                       desc = "Close current window"              },
   { "<Leader>Q",           "<Cmd>tabclose<CR>",                                                                    desc = "Close current tab"                 },
 

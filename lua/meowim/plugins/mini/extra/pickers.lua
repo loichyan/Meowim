@@ -157,6 +157,7 @@ function Pickers.notify(local_opts, opts)
     end
   end
 
+  -- TODO: add highlights
   local default_source = {
     name = "Notifications",
     items = items,

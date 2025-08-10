@@ -23,12 +23,15 @@ local rulers = {
 Meow.autocmd("meowim.config.autocmds", {
   {
     event = "FileType",
-    pattern = vim.tbl_keys(trivial_files),
-    desc = "Tweak trivial files",
+    desc = "Tweak trivial buffers",
     callback = function(ev)
-      vim.b.miniindentscope_disable = true
+      if not trivial_files[vim.bo.filetype] then return end
       vim.bo.buflisted = false
-      vim.keymap.set("n", "q", "<Cmd>close<CR>", { desc = "Close current window", buffer = ev.buf })
+      vim.b.miniindentscope_disable = true
+      vim.keymap.set("n", "q", "<Cmd>lua Meowim.utils.try_close()<CR>", {
+        buffer = ev.buf,
+        desc = "Close current buffer",
+      })
     end,
   },
   {

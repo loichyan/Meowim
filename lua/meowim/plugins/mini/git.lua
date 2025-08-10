@@ -7,7 +7,7 @@ Spec.config = function()
   ---@type MeoKeySpec[]
   -- stylua: ignore
   local mappings = {
-    { "q",    "<Cmd>close<CR>",                        desc = "Close current window" },
+    { "q",    "<Cmd>lua Meowim.utils.try_close()<CR>", desc = "Close current buffer" },
     { "<CR>", "<Cmd>lua MiniGit.show_at_cursor()<CR>", desc = "Show cursor info"     },
   }
   Meow.autocmd("meowim.plugins.mini.git", {
