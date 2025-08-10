@@ -43,7 +43,8 @@ H.diagnostic_sections = {
 }
 
 -- Eviline-like statusline
-H.last_active = {}
+H.last_active = {} -- track last visited buffer
+H.git_summary = {} -- cache git summary per cwd
 function H.active()
   local groups = {}
   local add = function(hi, string)
@@ -82,16 +83,21 @@ function H.active()
   ----------------------
   local project = vim.fn.fnamemodify(last.cwd, ":t")
   local git_summary = vim.b[last.file].minigit_summary or {}
+  git_summary = not git_summary.head and H.git_summary[last.cwd] or git_summary
+
   -- branch name or a detached head
-  local head = git_summary.head_name or "HEAD"
   if git_summary.head then
+    H.git_summary[last.cwd] = git_summary
+    local head = git_summary.head_name or "HEAD"
     head = head == "HEAD" and git_summary.head:sub(1, 7) or head
     head = head:gsub("^heads/", "") -- remove `heads/` prefixes
     project = project .. ":" .. head
   end
+
   -- rebasing, merging, etc.
   local in_progress = git_summary.in_progress or ""
   if in_progress ~= "" then project = project .. "|" .. in_progress end
+
   add("gitcommitBranch", " " .. project)
 
   -----------------------
