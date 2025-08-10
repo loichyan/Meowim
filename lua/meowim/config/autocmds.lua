@@ -25,7 +25,7 @@ Meow.autocmd("meowim.config.autocmds", {
     event = "FileType",
     desc = "Tweak trivial buffers",
     callback = function(ev)
-      if not trivial_files[vim.bo.filetype] then return end
+      if not trivial_files[ev.match] then return end
       vim.bo.buflisted = false
       vim.b.miniindentscope_disable = true
       vim.keymap.set("n", "q", "<Cmd>lua Meowim.utils.try_close()<CR>", {
@@ -39,7 +39,7 @@ Meow.autocmd("meowim.config.autocmds", {
     desc = "Configure rulers",
     callback = function(ev)
       local ft = ev.match
-      if trivial_files[ft] then return end
+      if not Meowim.utils.is_valid_buf(ev.buf) or trivial_files[ft] then return end
       local width = rulers[ft] or rulers["*"]
       vim.opt_local.colorcolumn:append({ width })
       vim.bo.textwidth = width

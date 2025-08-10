@@ -64,7 +64,7 @@ function H.active()
   -- * last non-foating buffer
   local last = H.last_active
   local buf = vim.api.nvim_get_current_buf()
-  if not last.cwd or vim.bo.buftype == "" then
+  if not last.cwd or Meowim.utils.is_valid_buf(buf) then
     last.cwd = vim.fn.getcwd()
     last.file = buf
     last.buf = buf

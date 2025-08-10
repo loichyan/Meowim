@@ -34,7 +34,7 @@ function M.save()
   -- Ignore an empty session.
   for _, b in ipairs(vim.api.nvim_list_bufs()) do
     -- Only consider files under current directory
-    if vim.bo[b].buflisted and vim.startswith(vim.api.nvim_buf_get_name(b), cwd) then
+    if Meowim.utils.is_valid_buf(b) and vim.startswith(vim.api.nvim_buf_get_name(b), cwd) then
       require("mini.sessions").write(name, { force = true, verbose = false })
       return
     end
