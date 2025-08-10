@@ -1,5 +1,13 @@
 local Utils = {}
 
+---Asks user for a input.
+function Utils.prompt(prompt)
+  vim.cmd("echohl Question")
+  local ok, msg = pcall(vim.fn.input, prompt)
+  vim.cmd("echohl None | redraw")
+  return ok and msg or ""
+end
+
 ---Returns the top level path if the specified directory is inside a repository.
 ---@param cwd string?
 ---@return string?

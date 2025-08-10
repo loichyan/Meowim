@@ -13,9 +13,40 @@ function H.clear_ui()
   require("mini.snippets").session.stop()
 end
 
-function H.gitexec(...)
+function H.git(...)
   Meow.load("mini.git")
   vim.cmd.Git(...)
+end
+
+function H.git_show_buffer()
+  local rev
+  if vim.v.count > 0 then
+    rev = "HEAD~" .. vim.v.count
+  else
+    rev = vim.fn.expand("<cword>")
+    if not H.is_git_commit(rev) then
+      rev = Meowim.utils.prompt("Show revision: ")
+      if rev == "" then return end
+      rev = vim.fn.fnameescape(rev) -- escape to avoid expansion errors
+    end
+  end
+  H.git("show", rev .. ":%")
+end
+
+---@param mode "prompt"|"edit"
+function H.git_commit(mode)
+  if mode == "edit" then
+    H.git("commit")
+  else
+    local msg = Meowim.utils.prompt("Commit message: ")
+    if msg == "" then return end
+    msg = vim.fn.fnameescape(msg) -- escape to avoid expansion errors
+    H.git("commit", "-m", msg)
+  end
+end
+
+function H.is_git_commit(str)
+  return str ~= "" and string.find(str, "^%x%x%x%x%x%x%x+$") ~= nil and string.lower(str) == str
 end
 
 -----------------------------
