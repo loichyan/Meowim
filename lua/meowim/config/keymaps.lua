@@ -63,17 +63,16 @@ Meow.keymap({
   { "<Leader>gc",          function() H.git_commit("prompt") end,                                                  desc = "Commit changes quick"              },
   { "<Leader>gC",          function() H.git_commit("edit") end,                                                    desc = "Commit changes in buffer"          },
   { "<Leader>gd",          function() require("mini.diff").toggle_overlay(0) end,                                  desc = "Show buffer diffs overlay"         },
-  { "<Leader>gD",          function() H.git("diff", "HEAD" .. vim.v.count) end,                                    desc = "Show workspace diffs"              },
+  -- TODO: enable word diff if the 'diff' treesitter parser adds support it
+  { "<Leader>gD",          function() H.git("diff", "HEAD~" .. vim.v.count) end,                                   desc = "Show workspace diffs"              },
   { "<Leader>gf",          function() H.pick("git_conflicts") end,                                                 desc = "Pick Git conflicts"                },
   { "<Leader>gg",          function() require("mini.git").show_at_cursor() end, mode = nx,                         desc = "Show cursor info"                  },
   { "<Leader>gh",          function() H.pick("git_hunks")   end,                                                   desc = "Pick buffer hunks"                 },
   { "<Leader>gH",          function() H.git("log", "-p", "--", "%") end,                                           desc = "Show buffer history"               },
   { "<Leader>gl",          function() H.pick("git_commits") end,                                                   desc = "Pick workspace commits"            },
   { "<Leader>gL",          function() H.git_show_buffer() end,                                                     desc = "Show buffer of revision"           },
-  { "<Leader>gs",          function() H.plugins.mini.diff.do_hunks("apply", "cursor") end,                         desc = "State cursor hunks"                },
-  { "<Leader>gS",          function() H.plugins.mini.diff.do_hunks("apply", "buffer") end,                         desc = "State buffer hunks"                },
-  { "<Leader>gx",          function() H.plugins.mini.diff.do_hunks("reset", "cursor") end,                         desc = "State cursor hunks"                },
-  { "<Leader>gX",          function() H.plugins.mini.diff.do_hunks("reset", "buffer") end,                         desc = "State buffer hunks"                },
+  { "<Leader>gs",          function() H.pick("unstaged_files") end,                                                desc = "Pick unstaged files"               },
+  { "<Leader>gU",          function() H.git("reset", "--", "%") end,                                               desc = "Reset buffer index"                },
 
   -- Conflicts
   { "<Leader>ca",          "<Plug>(git-conflict-both)",                                                            desc = "Accept both changes"               },

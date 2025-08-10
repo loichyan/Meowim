@@ -11,28 +11,41 @@ function Pickers.smart_files(local_opts, opts)
   if local_opts.hidden then
     command = { "rg", "--files", "--no-follow", "--color=never", "--no-ignore" }
   elseif Meowim.utils.get_git_repo(cwd) == cwd then
-    -- stylua: ignore
-    command = { "git", "-c", "core.quotepath=false", "ls-files",
-                "--exclude-standard", "--cached", "--others", "--deduplicate" }
+  -- stylua: ignore
+    command = { "git", "ls-files",
+                "--exclude-standard", "--deduplicate", "--cached", "--others" }
     ---Filters out missing files.
     postprocess = function(items)
-      return vim.tbl_filter(
-        function(item) return item ~= "" and vim.uv.fs_stat(item) ~= nil end,
-        items
-      )
+      local exists = function(path) return path ~= "" and vim.uv.fs_stat(path) ~= nil end
+      return vim.tbl_filter(exists, items)
     end
   else
     command = { "rg", "--files", "--no-follow", "--color=never" }
   end
 
-  opts = vim.tbl_deep_extend("force", {
-    source = {
-      name = "Files",
-      cwd = cwd,
-      show = (H.get_config().source or {}).show or H.show_with_icons,
-    },
-  }, opts or {})
+  local default_source = {
+    name = "Files",
+    cwd = cwd,
+    show = (H.get_config().source or {}).show or H.show_with_icons,
+  }
+  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
   return MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
+end
+
+---Lists modified or untracked files.
+function Pickers.unstaged_files(local_opts, opts)
+  _ = local_opts
+
+  -- stylua: ignore
+  local command = { "git", "ls-files",
+                    "--exclude-standard", "--deduplicate", "--modified", "--others" }
+  local default_source = {
+    name = "Unstaged Files",
+    show = (H.get_config().source or {}).show or H.show_with_icons,
+  }
+  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
+
+  return MiniPick.builtin.cli({ command = command }, opts)
 end
 
 ---Grep live with ast-grep.

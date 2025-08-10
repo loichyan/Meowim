@@ -1,6 +1,5 @@
 ---@type MeoSpec
 local Spec = { "mini.diff", event = "LazyFile" }
-local M = {}
 
 Spec.config = function()
   require("mini.diff").setup({
@@ -15,21 +14,19 @@ Spec.config = function()
         goto_last  = "]G",
       },
   })
-end
 
----Operates hunks at cursor or in the entire buffer.
----@param mode "apply"|"reset"|"yank"
----@param scope "cursor"|"buffer"
-function M.do_hunks(mode, scope)
-  if scope == "cursor" then
-    local trigger = require("mini.diff").operator(mode)
-    local textobject = trigger .. "<Cmd>lua MiniDiff.textobject()<CR>"
-    local keys = vim.api.nvim_replace_termcodes(textobject, true, true, true)
-    vim.api.nvim_feedkeys(keys, "n", false)
-  else
-    require("mini.diff").do_hunks(0, mode)
+  local do_cursor = function(mode)
+    return require("mini.diff").operator(mode) .. "<Cmd>lua MiniDiff.textobject()<CR>"
   end
+  local do_buffer = function(mode) require("mini.diff").do_hunks(0, mode) end
+
+  -- stylua: ignore
+  Meow.keymap({
+    { "ghh", function() return do_cursor("apply") end, expr = true, desc = "Stage cursor hunks" },
+    { "gHh", function() return do_cursor("reset") end, expr = true, desc = "Reset cursor hunks" },
+    { "ghH", function() return do_buffer("apply") end,              desc = "Stage buffer hunks" },
+    { "gHH", function() return do_buffer("reset") end,              desc = "Reset buffer hunks" },
+  })
 end
 
-M[1] = Spec
-return M
+return Spec
