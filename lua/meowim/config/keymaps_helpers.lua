@@ -33,10 +33,18 @@ function H.git_show_buffer()
   H.git("show", rev .. ":%")
 end
 
----@param mode "prompt"|"edit"
+---@param mode "prompt"|"edit"|"amend"
 function H.git_commit(mode)
   if mode == "edit" then
     H.git("commit")
+  elseif mode == "amend" then
+    local msg = Meowim.utils.prompt("Edit message? (y/N) ", { mode = "char" })
+    msg = msg:lower()
+    if msg == "y" then
+      H.git("commit", "--amend")
+    elseif msg == "n" or msg == "\r" then
+      H.git("commit", "--amend", "--no-edit")
+    end
   else
     local msg = Meowim.utils.prompt("Commit message: ")
     if msg == "" then return end

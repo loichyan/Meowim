@@ -59,7 +59,7 @@ Meow.keymap({
 
   -- Git
   { "<Leader>ga",          function() H.git("add", "--", "%") end,                                                 desc = "Add current file to Git"           },
-  { "<Leader>gA",          function() H.git("commit", "--amend", "--no-edit") end,                                 desc = "Amend previous commit"             },
+  { "<Leader>gA",          function() H.git_commit("amend") end,                                                   desc = "Amend previous commit"             },
   { "<Leader>gc",          function() H.git_commit("prompt") end,                                                  desc = "Commit changes quick"              },
   { "<Leader>gC",          function() H.git_commit("edit") end,                                                    desc = "Commit changes in buffer"          },
   { "<Leader>gd",          function() require("mini.diff").toggle_overlay(0) end,                                  desc = "Show buffer diffs overlay"         },

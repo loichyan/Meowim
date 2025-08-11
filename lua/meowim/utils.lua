@@ -1,10 +1,24 @@
 local Utils = {}
 
 ---Asks user for a input.
-function Utils.prompt(prompt)
-  vim.cmd("echohl Question")
-  local ok, msg = pcall(vim.fn.input, prompt)
-  vim.cmd("echohl None | redraw")
+---@param opts? {mode:"str"|"char"}
+function Utils.prompt(prompt, opts)
+  local mode = (opts or {}).mode or "str"
+
+  local ok, msg
+  if mode == "str" then
+    vim.cmd("echohl Question")
+    ok, msg = pcall(vim.fn.input, prompt)
+    vim.cmd("echohl None | redraw")
+  else
+    vim.schedule(function()
+      vim.cmd("echo '' | redraw")
+      vim.api.nvim_echo({ { prompt, "Question" } }, false, {})
+    end)
+    ok, msg = pcall(vim.fn.getcharstr)
+    vim.cmd("echo '' | redraw")
+  end
+
   return ok and msg or ""
 end
 
