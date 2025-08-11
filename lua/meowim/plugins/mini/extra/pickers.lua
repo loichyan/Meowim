@@ -1,6 +1,26 @@
 local Pickers = {}
 local H = {}
 
+---Grep with ast-grep.
+---@param local_opts? {tool:string,pattern?:string,globs?:string[]}
+function Pickers.grep(local_opts, opts)
+  if (local_opts or {}).tool == "ast-grep" then
+    return H.ast_grep(local_opts, opts)
+  else
+    return MiniPick.builtin.grep(local_opts, opts)
+  end
+end
+
+---Grep with ast-grep.
+---@param local_opts? {tool:string,globs?:string[]}
+function Pickers.grep_live(local_opts, opts)
+  if (local_opts or {}).tool == "ast-grep" then
+    return H.ast_grep_live(local_opts, opts)
+  else
+    return MiniPick.builtin.grep_live(local_opts, opts)
+  end
+end
+
 ---Lists files with a sensible picker.
 ---@param local_opts? {hidden:boolean}
 function Pickers.smart_files(local_opts, opts)
@@ -46,61 +66,6 @@ function Pickers.unstaged_files(local_opts, opts)
   opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
 
   return MiniPick.builtin.cli({ command = command }, opts)
-end
-
----Grep live with ast-grep.
----@param local_opts? {globs?:string[]}
--- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1364>
-function Pickers.ast_grep_live(local_opts, opts)
-  local tool = "ast-grep"
-  local_opts = vim.tbl_extend("force", { globs = {} }, local_opts or {})
-
-  local globs = local_opts.globs or {}
-  local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
-  local default_source = {
-    name = string.format("Grep live (%s%s)", tool, name_suffix),
-    show = (H.get_config().source or {}).show or H.show_with_icons,
-  }
-  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
-
-  local cwd = opts.source.cwd or vim.fn.getcwd()
-  local set_items_opts = { do_match = false, querytick = MiniPick.get_querytick() }
-  local spawn_opts = { cwd = cwd }
-  local process
-  local match = function(_, _, query)
-    pcall(vim.loop.process_kill, process)
-    local querytick = MiniPick.get_querytick()
-    if querytick == set_items_opts.querytick then return end
-    if #query == 0 then return MiniPick.set_picker_items({}, set_items_opts) end
-
-    set_items_opts.querytick = querytick
-    local command, postprocess = H.ast_grep_command(table.concat(query), globs)
-    local cli_opts =
-      { postprocess = postprocess, set_items_opts = set_items_opts, spawn_opts = spawn_opts }
-    process = MiniPick.set_picker_items_from_cli(command, cli_opts)
-  end
-
-  opts = vim.tbl_deep_extend("force", opts or {}, { source = { items = {}, match = match } })
-  return MiniPick.start(opts)
-end
-
----Grep with ast-grep.
----@param local_opts? {pattern?:string,globs?:string[]}
--- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1328>
-function Pickers.ast_grep(local_opts, opts)
-  local tool = "ast-grep"
-  local_opts = vim.tbl_extend("force", { pattern = nil, globs = {} }, local_opts or {})
-
-  local globs = local_opts.globs or {}
-  local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
-  local show = H.get_config().source.show or H.show_with_icons
-  local default_source = { name = string.format("Grep (%s%s)", tool, name_suffix), show = show }
-  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
-
-  local pattern = type(local_opts.pattern) == "string" and local_opts.pattern
-    or vim.fn.input("Grep pattern: ")
-  local command, postprocess = H.ast_grep_command(pattern, globs)
-  return MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
 end
 
 ---Lists Git conflicts.
@@ -236,6 +201,61 @@ function H.show_with_icons(bufnr, items, query, opts)
     query,
     vim.tbl_extend("force", { show_icons = true }, opts or {})
   )
+end
+
+---Grep with ast-grep.
+---@param local_opts? {tool:string,pattern?:string,globs?:string[]}
+-- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1328>
+function H.ast_grep(local_opts, opts)
+  local tool = "ast-grep"
+  local_opts = vim.tbl_extend("force", { pattern = nil, globs = {} }, local_opts or {})
+
+  local globs = local_opts.globs or {}
+  local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
+  local show = H.get_config().source.show or H.show_with_icons
+  local default_source = { name = string.format("Grep (%s%s)", tool, name_suffix), show = show }
+  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
+
+  local pattern = type(local_opts.pattern) == "string" and local_opts.pattern
+    or vim.fn.input("Grep pattern: ")
+  local command, postprocess = H.ast_grep_command(pattern, globs)
+  return MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
+end
+
+---Grep live with ast-grep.
+---@param local_opts? {tool:string,globs?:string[]}
+-- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1364>
+function H.ast_grep_live(local_opts, opts)
+  local tool = "ast-grep"
+  local_opts = vim.tbl_extend("force", { globs = {} }, local_opts or {})
+
+  local globs = local_opts.globs or {}
+  local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
+  local default_source = {
+    name = string.format("Grep live (%s%s)", tool, name_suffix),
+    show = (H.get_config().source or {}).show or H.show_with_icons,
+  }
+  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
+
+  local cwd = opts.source.cwd or vim.fn.getcwd()
+  local set_items_opts = { do_match = false, querytick = MiniPick.get_querytick() }
+  local spawn_opts = { cwd = cwd }
+  local process
+  local match = function(_, _, query)
+    pcall(vim.loop.process_kill, process)
+    local querytick = MiniPick.get_querytick()
+    if querytick == set_items_opts.querytick then return end
+    if #query == 0 then return MiniPick.set_picker_items({}, set_items_opts) end
+
+    set_items_opts.querytick = querytick
+    local command, postprocess = H.ast_grep_command(table.concat(query), globs)
+    local cli_opts =
+      { postprocess = postprocess, set_items_opts = set_items_opts, spawn_opts = spawn_opts }
+    process = MiniPick.set_picker_items_from_cli(command, cli_opts)
+  end
+
+  opts = vim.tbl_deep_extend("force", opts or {}, { source = { items = {}, match = match } })
+  return MiniPick.start(opts)
 end
 
 ---@param pattern string

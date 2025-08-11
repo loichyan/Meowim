@@ -93,12 +93,7 @@ end
 function H.pick_lgrep(scope, opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
   opts = vim.tbl_extend("force", { globs = globs }, opts or {})
-
-  if opts.tool == "ast-grep" then
-    require("mini.pick").registry.ast_grep_live(opts)
-  else
-    require("mini.pick").registry.grep_live(opts)
-  end
+  require("mini.pick").registry.grep_live(opts)
 end
 
 ---@param scope "current"|"all"
@@ -107,12 +102,7 @@ function H.pick_word(scope, opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
   local pattern = vim.fn.expand("<cword>")
   opts = vim.tbl_extend("force", { pattern = pattern, globs = globs }, opts or {})
-
-  if opts.tool == "ast-grep" then
-    require("mini.pick").registry.ast_grep(opts)
-  else
-    require("mini.pick").registry.grep(opts)
-  end
+  require("mini.pick").registry.grep(opts)
 end
 
 -------------------
