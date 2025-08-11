@@ -3,16 +3,16 @@ local Spec = { "mini.diff", event = "LazyFile" }
 
 Spec.config = function()
   require("mini.diff").setup({
-      -- stylua: ignore
-      mappings = {
-        apply      = "gh",
-        reset      = "gH",
-        textobject = "gh",
-        goto_first = "[G",
-        goto_prev  = "[g",
-        goto_next  = "]g",
-        goto_last  = "]G",
-      },
+    -- stylua: ignore
+    mappings = {
+      apply      = "gh",
+      reset      = "gH",
+      textobject = "gh",
+      goto_first = "[G",
+      goto_prev  = "[g",
+      goto_next  = "]g",
+      goto_last  = "]G",
+    },
   })
 
   local do_cursor = function(mode)

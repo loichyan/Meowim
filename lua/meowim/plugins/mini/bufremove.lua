@@ -1,6 +1,7 @@
 ---@type MeoSpec
 local Spec = { "mini.bufremove", lazy = true }
 local M = {}
+
 Spec.config = function() require("mini.bufremove").setup() end
 
 ---Close other buffers.
