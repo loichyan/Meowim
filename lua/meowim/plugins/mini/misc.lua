@@ -10,13 +10,12 @@ Spec.config = function()
 
   -- TODO: report to mini.misc?
   -- Ensure target for `find_root` is a valid buffer
-  local orig_find_root = minimisc.find_root
   ---@diagnostic disable-next-line: duplicate-set-field
-  minimisc.find_root = function(bufnr, ...)
+  minimisc.find_root = Meowim.utils.wrap_fn(minimisc.find_root, function(find_root, bufnr, ...)
     bufnr = bufnr or 0
     if not Meowim.utils.is_valid_buf(bufnr) then return end
-    return orig_find_root(bufnr, ...)
-  end
+    return find_root(bufnr, ...)
+  end)
 end
 
 ---Zooms in/out current buffer.

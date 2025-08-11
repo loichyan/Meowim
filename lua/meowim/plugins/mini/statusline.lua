@@ -12,6 +12,7 @@ Spec.config = function()
     },
   })
 
+  H.patch_prompt()
   Meow.autocmd("meowim.plugins.mini.statusline", {
     {
       event = "DiagnosticChanged",
@@ -21,7 +22,7 @@ Spec.config = function()
     {
       event = { "CmdlineEnter", "CmdlineLeave" },
       desc = "Show statusline when in cmdline",
-      callback = H.smart_cmdline,
+      callback = H.auto_cmdheight,
     },
   })
 end
@@ -172,7 +173,7 @@ function H.track_diagnostics()
 end
 
 H.cmdline_was_hidden = nil
-function H.smart_cmdline(ev)
+function H.auto_cmdheight(ev)
   if ev.event == "CmdlineEnter" then
     if vim.o.cmdheight ~= 0 then return end
     vim.o.cmdheight = 1
@@ -182,6 +183,48 @@ function H.smart_cmdline(ev)
     vim.o.cmdheight = 0
     H.cmdline_was_hidden = false
   end
+end
+
+---Keeps the statusline when prompting for user input.
+---@diagnostic disable-next-line: duplicate-set-field
+function H.patch_prompt()
+  local wrap_fn = Meowim.utils.wrap_fn
+
+  local was_hidden = false
+  -- If there are prompts, show the cmdline before really displaying them.
+  -- This method should work with most mini modules.
+  local wrap_echo = function(echo, ...)
+    if vim.o.cmdheight == 0 then
+      was_hidden = true
+      vim.o.cmdheight = 1
+      vim.cmd("redraw")
+    end
+    return echo(...)
+  end
+  local wrap_getchar = function(getchar, ...)
+    local echo = vim.api.nvim_echo
+    vim.api.nvim_echo = wrap_fn(echo, wrap_echo)
+    local ok, res = pcall(getchar, ...)
+    vim.api.nvim_echo = echo
+
+    if was_hidden then vim.o.cmdheight = 0 end
+    return not ok and error(res) or res
+  end
+
+  vim.fn.getchar = Meowim.utils.wrap_fn(vim.fn.getchar, wrap_getchar)
+  vim.fn.getcharstr = Meowim.utils.wrap_fn(vim.fn.getcharstr, wrap_getchar)
+
+  -- `input()` always displays a prompt during execution, hence the patch is
+  -- much easier.
+  local wrap_input = function(input, ...)
+    local should_display = vim.o.cmdheight == 0
+    if should_display then vim.o.cmdheight = 1 end
+    local ok, res = pcall(input, ...)
+
+    if should_display then vim.o.cmdheight = 0 end
+    return not ok and error(res) or res
+  end
+  vim.fn.input = wrap_fn(vim.fn.input, wrap_input)
 end
 
 return Spec

@@ -1,5 +1,12 @@
 local Utils = {}
 
+---Wraps the given function with a new one.
+---@param old function
+---@param new function
+function Utils.wrap_fn(old, new)
+  return function(...) return new(old, ...) end
+end
+
 ---Asks user for a input.
 ---@param opts? {mode:"str"|"char"}
 function Utils.prompt(prompt, opts)
