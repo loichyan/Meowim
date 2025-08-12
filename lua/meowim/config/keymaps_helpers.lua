@@ -79,8 +79,7 @@ function H.jump_diagnostic(dir, severity)
 end
 
 ---@param picker string
----@param opts? table
-function H.pick(picker, opts) require("mini.pick").registry[picker](opts) end
+function H.pick(picker, local_opts) require("mini.pick").registry[picker](local_opts) end
 
 function H.pick_quickfix()
   require("quicker").close()
@@ -97,20 +96,22 @@ function H.pick_diagnostics(scope, severity)
 end
 
 ---@param scope "current"|"all"
----@param opts? table
-function H.pick_lgrep(scope, opts)
+function H.pick_lgrep(scope, grep_opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
-  opts = vim.tbl_extend("force", { globs = globs }, opts or {})
-  require("mini.pick").registry.grep_live(opts)
+  grep_opts = vim.tbl_extend("force", { globs = globs }, grep_opts or {})
+  require("mini.pick").registry.grep_live(grep_opts)
 end
 
 ---@param scope "current"|"all"
----@param opts? table
-function H.pick_word(scope, opts)
+function H.pick_word(scope, grep_opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
   local pattern = vim.fn.expand("<cword>")
-  opts = vim.tbl_extend("force", { pattern = pattern, globs = globs }, opts or {})
-  require("mini.pick").registry.grep(opts)
+  local default_grep_opts = { pattern = pattern, globs = globs, tool = "rg" }
+  grep_opts = vim.tbl_extend("force", default_grep_opts, grep_opts or {})
+
+  local name = string.format("Grep (%s | <cword>)", grep_opts.tool)
+  local opts = { source = { name = name } }
+  require("mini.pick").registry.grep(grep_opts, opts)
 end
 
 -------------------
