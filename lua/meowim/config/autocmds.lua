@@ -46,6 +46,14 @@ Meow.autocmd("meowim.config.autocmds", {
       if ft == "markdown" then vim.opt_local.wrap = true end
     end,
   },
+  {
+    event = "FileType",
+    pattern = "gitcommit",
+    desc = "Improve experience when editing gitcommit",
+    callback = function(ev)
+      vim.keymap.set("n", "<C-y>", "<Cmd>x<CR>", { buffer = ev.buf, desc = "Confirm editing" })
+    end,
+  },
   -- See <https://stackoverflow.com/a/6728687>
   {
     event = "FileType",
