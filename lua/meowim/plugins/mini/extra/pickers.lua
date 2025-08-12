@@ -32,13 +32,10 @@ function Pickers.smart_files(local_opts, opts)
     command = { "rg", "--files", "--no-follow", "--color=never", "--no-ignore" }
   elseif Meowim.utils.get_git_repo(cwd) == cwd then
   -- stylua: ignore
-    command = { "git", "ls-files",
+    command = { "git", "-c", "core.quotepath=false", "ls-files",
                 "--exclude-standard", "--deduplicate", "--cached", "--others" }
-    ---Filters out missing files.
-    postprocess = function(items)
-      local exists = function(path) return path ~= "" and vim.uv.fs_stat(path) ~= nil end
-      return vim.tbl_filter(exists, items)
-    end
+    local path_exists = function(path) return path ~= "" and vim.uv.fs_stat(path) ~= nil end
+    postprocess = function(items) return vim.tbl_filter(path_exists, items) end
   else
     command = { "rg", "--files", "--no-follow", "--color=never" }
   end
@@ -50,22 +47,6 @@ function Pickers.smart_files(local_opts, opts)
   }
   opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
   return MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
-end
-
----Lists modified or untracked files.
-function Pickers.unstaged_files(local_opts, opts)
-  _ = local_opts
-
-  -- stylua: ignore
-  local command = { "git", "ls-files",
-                    "--exclude-standard", "--deduplicate", "--modified", "--others" }
-  local default_source = {
-    name = "Unstaged Files",
-    show = (H.get_config().source or {}).show or H.show_with_icons,
-  }
-  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
-
-  return MiniPick.builtin.cli({ command = command }, opts)
 end
 
 ---Lists Git conflicts.
@@ -88,14 +69,68 @@ end
 ---@param local_opts? {scope:"current"|"all",keywords:string[]}
 function Pickers.todo(local_opts, opts)
   local_opts = vim.tbl_extend("force", { keywords = { "TODO", "FIXME" } }, local_opts or {})
+
   local keywords = table.concat(local_opts.keywords, "|")
   local grep_opts = {
     pattern = "\\b(" .. keywords .. ")(\\(.*\\))?:\\s+.+",
     globs = local_opts.scope == "current" and { vim.fn.expand("%") } or nil,
   }
+
   local name = table.concat(local_opts.keywords, "|")
   opts = vim.tbl_deep_extend("force", { source = { name = name } }, opts or {})
   return MiniPick.builtin.grep(grep_opts, opts)
+end
+
+---Lists modified or untracked files.
+-- TODO: contribute to mini.extra
+function Pickers.git_status(local_opts, opts)
+  _ = local_opts
+
+  local default_preview = function(bufnr, item)
+    if item.status:find("D") then
+      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "Deleted" })
+    else
+      MiniPick.default_preview(bufnr, item)
+    end
+  end
+  local default_source = {
+    name = "Git status",
+    preview = default_preview,
+    show = (H.get_config().source or {}).show or H.show_with_icons,
+  }
+  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
+
+  local command, postprocess
+  command = { "git", "-c", "core.quotepath=false", "status", "--porcelain", "--untracked", "-z" }
+
+  local parse_git_status = function(output)
+    local items, entries = {}, vim.split(output, "\0")
+    local i = 1
+    while i < #entries do
+      local entry = entries[i]
+      local status, path = entry:sub(1, 2), entry:sub(4)
+      local item = { path = path, status = status }
+      -- Handle status with two paths
+      if status:find("[CR]") then
+        i = i + 2
+        item.text = string.format("%s %s -> %s", status, entries[i], path)
+      else
+        i = i + 1
+        item.text = entry
+      end
+      table.insert(items, item)
+    end
+    return items
+  end
+  postprocess = function(items)
+    if #items == 0 then
+      return {}
+    else
+      return parse_git_status(items[1])
+    end
+  end
+
+  return MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
 end
 
 ---Lists notifications from mini.notify.
@@ -123,18 +158,18 @@ function Pickers.notify(local_opts, opts)
   end
 
   -- TODO: add highlights
+  local default_preview = function(bufnr, item)
+    vim.bo[bufnr].buftype = "nofile"
+    vim.bo[bufnr].filetype = "nofile"
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, vim.split(item.notif.msg, "\n"))
+  end
   local default_source = {
     name = "Notifications",
     items = items,
-    preview = function(buf_id, item)
-      vim.wo.wrap = true
-      vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, vim.split(item.notif.msg, "\n"))
-    end,
+    preview = default_preview,
     choose = function(item)
       local bufnr = vim.api.nvim_create_buf(false, true)
-      vim.bo[bufnr].buftype = "nofile"
-      vim.bo[bufnr].filetype = "nofile"
-      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, vim.split(item.notif.msg, "\n"))
+      default_preview(bufnr, item)
       MiniPick.default_choose({ bufnr = bufnr })
     end,
   }
@@ -179,7 +214,7 @@ function Pickers.autocmds(local_opts, opts)
   local default_source = {
     name = "Autocmds",
     items = items,
-    preview = function(buf_id, item) MiniPick.default_preview(buf_id, item.au) end,
+    preview = function(bufnr, item) MiniPick.default_preview(bufnr, item.au) end,
     choose = function(item)
       -- TODO: report to mini.nvim that choose_print needs schedule
       vim.schedule(function() MiniPick.default_choose(item.au) end)

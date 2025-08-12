@@ -71,7 +71,7 @@ Meow.keymap({
   { "<Leader>gH",          function() H.git("log", "-p", "--", "%") end,                                           desc = "Show buffer history"               },
   { "<Leader>gl",          function() H.pick("git_commits") end,                                                   desc = "Pick workspace commits"            },
   { "<Leader>gL",          function() H.git_show_buffer() end,                                                     desc = "Show buffer of revision"           },
-  { "<Leader>gs",          function() H.pick("unstaged_files") end,                                                desc = "Pick unstaged files"               },
+  { "<Leader>gs",          function() H.pick("git_status") end,                                                    desc = "Pick Git status"                   },
   { "<Leader>gU",          function() H.git("reset", "--", "%") end,                                               desc = "Reset buffer index"                },
 
   -- Conflicts
