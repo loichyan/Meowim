@@ -29,14 +29,6 @@ function Utils.prompt(prompt, opts)
   return ok and msg or ""
 end
 
----Returns whether a buffer is a valid regular file.
----@param bufnr integer
-function Utils.is_valid_buf(bufnr)
-  return vim.bo[bufnr].buftype == ""
-    and vim.bo[bufnr].buflisted
-    and vim.api.nvim_buf_is_loaded(bufnr)
-end
-
 ---Closes current window if possible, otherwise current buffer.
 function Utils.try_close()
   if not pcall(vim.cmd.close) then require("mini.bufremove").delete() end

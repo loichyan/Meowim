@@ -13,7 +13,7 @@ Spec.config = function()
   ---@diagnostic disable-next-line: duplicate-set-field
   minimisc.find_root = Meowim.utils.wrap_fn(minimisc.find_root, function(find_root, bufnr, ...)
     bufnr = bufnr or 0
-    if not Meowim.utils.is_valid_buf(bufnr) then return end
+    if vim.bo[bufnr].buftype ~= "" then return end
     return find_root(bufnr, ...)
   end)
 end

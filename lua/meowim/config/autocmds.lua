@@ -39,7 +39,7 @@ Meow.autocmd("meowim.config.autocmds", {
     desc = "Configure rulers",
     callback = function(ev)
       local ft = ev.match
-      if not Meowim.utils.is_valid_buf(ev.buf) or trivial_files[ft] then return end
+      if vim.bo.buftype ~= "" or trivial_files[ft] then return end
       local width = rulers[ft] or rulers["*"]
       vim.opt_local.colorcolumn:append({ width })
       vim.bo.textwidth = width
