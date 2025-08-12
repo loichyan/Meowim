@@ -152,7 +152,7 @@ function Pickers.notify(local_opts, opts)
     if vim.tbl_contains(local_opts.sources, notif.data.source) then
       table.insert(items, {
         notif = notif,
-        text = vim.split(format_notif(notif), "\n")[1],
+        text = vim.gsplit(format_notif(notif), "\n")(),
       })
     end
   end
@@ -173,7 +173,7 @@ function Pickers.notify(local_opts, opts)
       MiniPick.default_choose({ bufnr = bufnr })
     end,
   }
-  opts = vim.tbl_deep_extend("force", default_source, opts or {})
+  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
   return MiniPick.start(opts)
 end
 
