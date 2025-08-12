@@ -72,7 +72,7 @@ Meow.keymap({
   { "<Leader>gl",          function() H.pick("git_commits") end,                                                   desc = "Pick workspace commits"            },
   { "<Leader>gL",          function() H.git_show_buffer() end,                                                     desc = "Show buffer of revision"           },
   { "<Leader>gs",          function() H.pick("git_status") end,                                                    desc = "Pick Git status"                   },
-  { "<Leader>gU",          function() H.git("reset", "--", "%") end,                                               desc = "Reset buffer index"                },
+  { "<Leader>gU",          function() H.git("reset", "-q", "--", "%") end,                                         desc = "Reset buffer index"                },
 
   -- Conflicts
   { "<Leader>ca",          "<Plug>(git-conflict-both)",                                                            desc = "Accept both changes"               },
