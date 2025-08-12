@@ -48,9 +48,7 @@ function H.smart_pairs(open, pair, neigh_pattern)
 
   -- Disable pairing in string nodes
   local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, row - 1, math.max(col - 1, 0))
-  for _, capture in ipairs(ok and captures or {}) do
-    if capture.capture == "string" then return op end
-  end
+  if ok and #captures == 1 and captures[1].capture == "string" then return op end
 
   -- Emit a opening only if unbalanced
   if #line < 500 then
