@@ -21,3 +21,5 @@ vim.api.nvim_create_user_command("Cat", function(ctx)
   vim.bo.buftype = "nofile"
   vim.bo.filetype = "nofile"
 end, { nargs = "+", complete = "command" })
+
+require("meowim.config.polish_cmdheight")
