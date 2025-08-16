@@ -32,9 +32,9 @@ function Base16.setup(opts)
       require("mini.base16").setup(
         vim.tbl_extend("force", Base16.options, { palette = opts.palette })
       )
-      local colors = require("mini.colors").get_colorscheme()
-      colors = Base16.colors_customizations(opts, colors)
-      return colors:apply()
+      local minicolors = require("mini.colors").get_colorscheme()
+      minicolors = Base16.colors_customizations(opts, minicolors)
+      return minicolors:apply()
     end,
   })
   vim.g.colors_name = opts.name
