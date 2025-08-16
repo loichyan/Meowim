@@ -1,6 +1,8 @@
 local Pickers = {}
 local H = {}
 
+H.ns = vim.api.nvim_create_namespace("meowim.plugins.mini.extra.pickers")
+
 ---Grep with ast-grep.
 ---@param local_opts? {tool:string,pattern?:string,globs?:string[]}
 function Pickers.grep(local_opts, opts)
@@ -161,7 +163,11 @@ function Pickers.notify(local_opts, opts)
   local default_preview = function(bufnr, item)
     vim.bo[bufnr].buftype = "nofile"
     vim.bo[bufnr].filetype = "nofile"
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, vim.split(item.notif.msg, "\n"))
+    local lines = vim.split(item.notif.msg, "\n")
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+    if item.notif.hl_group then
+      vim.hl.range(bufnr, H.ns, item.notif.hl_group, { 1, 0 }, { #lines + 1, lines[#lines]:len() })
+    end
   end
   local default_source = {
     name = "Notifications",
@@ -193,23 +199,24 @@ function Pickers.autocmds(local_opts, opts)
     )
   end
 
-  local items = vim.tbl_map(
-    function(autocmd) return { au = autocmd, text = format(autocmd) } end,
-    vim.api.nvim_get_autocmds(local_opts or {})
-  )
-
+  local autocmds = vim.api.nvim_get_autocmds(local_opts or {})
   -- Sort by group, then event
-  table.sort(items, function(a, b)
-    if not a.au.group then
+  table.sort(autocmds, function(a, b)
+    if not a.group then
       return false
-    elseif not b.au.group then
+    elseif not b.group then
       return true
-    elseif a.au.group == b.au.group then
-      return a.au.event < b.au.event
+    elseif a.group == b.group then
+      return a.event < b.event
     else
-      return a.au.group < b.au.group
+      return a.group < b.group
     end
   end)
+
+  local items = vim.tbl_map(
+    function(autocmd) return { au = autocmd, text = format(autocmd) } end,
+    autocmds
+  )
 
   local default_source = {
     name = "Autocmds",

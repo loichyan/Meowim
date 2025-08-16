@@ -51,7 +51,7 @@ function H.smart_pairs(open, pair, neigh_pattern)
   if ok and #captures == 1 and captures[1].capture == "string" then return op end
 
   -- Emit a opening only if unbalanced
-  if #line < 500 then
+  if line:len() < 500 then
     if op ~= cl then
       local left, right = line:sub(1, col), line:sub(col + 1)
       local no, _ = H.count_unlanced(left, op, cl)

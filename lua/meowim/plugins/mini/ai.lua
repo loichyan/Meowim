@@ -23,6 +23,7 @@ Spec.config = function()
     },
   })
 end
+
 -- Select the entire buffer.
 -- Modgified from: https://github.com/LazyVim/LazyVim/blob/ec5981dfb1222c3bf246d9bcaa713d5cfa486fbd/lua/lazyvim/util/mini.lua
 function H.buffer_range()
