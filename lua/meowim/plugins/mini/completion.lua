@@ -9,7 +9,13 @@ local H = {}
 Spec.config = function()
   local minicomp = require("mini.completion")
 
+  local trigger_chars = { ".", ":", "(", "'", '"', "/" }
   Meow.autocmd("meowim.plugins.mini.completion", {
+    {
+      event = "LspAttach",
+      desc = "Reduce unnecessary completion triggers",
+      callback = function(args) H.filter_trigger_chars(args.data.client_id, trigger_chars) end,
+    },
     {
       -- Must be executed before mini.completion's autocommmands
       event = "CompleteDonePre",
@@ -97,6 +103,16 @@ function H.process_lsp_items(items)
   end
 
   return items
+end
+
+function H.filter_trigger_chars(client_id, trigger_chars)
+  local client = vim.lsp.get_client_by_id(client_id)
+  if not client or not client:supports_method("textDocument/completion") then return end
+  local compProvider = assert(client.server_capabilities.completionProvider)
+  compProvider.triggerCharacters = vim.tbl_filter(
+    function(c) return vim.tbl_contains(trigger_chars, c) end,
+    compProvider.triggerCharacters or {}
+  )
 end
 
 return Spec
