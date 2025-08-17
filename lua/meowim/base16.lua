@@ -47,7 +47,10 @@ end
 function Base16.colors_customizations(opts, colors)
   if Base16.transparent then colors = colors:add_transparency() end
 
-  local lighten = require("meowim.utils").lighten
+  local is_dark = opts.variant ~= "light"
+  local lighten = function(color, delta)
+    return require("meowim.utils").lighten(color, is_dark and delta or -delta)
+  end
   local palette = opts.palette
   local get = function(name)
     return colors.groups[name] --[[@as vim.api.keyset.highlight]]
@@ -95,18 +98,18 @@ function Base16.colors_customizations(opts, colors)
   local overrides = {
     ["FloatTitle"]               = { fg = get("Title").fg, bg= palette.base01 },
 
-    ["GitConflictCurrent"]       = { fg = palette.base05, bg = lighten(palette.base0D, -37) },
-    ["GitConflictCurrentLabel"]  = { fg = palette.base05, bg = lighten(palette.base0D, -23) },
-    ["GitConflictAncestor"]      = { fg = palette.base05, bg = lighten(palette.base0E, -37) },
-    ["GitConflictAncestorLabel"] = { fg = palette.base05, bg = lighten(palette.base0E, -23) },
-    ["GitConflictIncoming"]      = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
-    ["GitConflictIncomingLabel"] = { fg = palette.base05, bg = lighten(palette.base0B, -23) },
+    ["GitConflictCurrent"]       = { fg = palette.base05, bg = lighten(palette.base0D, -0.47) },
+    ["GitConflictCurrentLabel"]  = { fg = palette.base05, bg = lighten(palette.base0D, -0.31) },
+    ["GitConflictAncestor"]      = { fg = palette.base05, bg = lighten(palette.base0E, -0.47) },
+    ["GitConflictAncestorLabel"] = { fg = palette.base05, bg = lighten(palette.base0E, -0.31) },
+    ["GitConflictIncoming"]      = { fg = palette.base05, bg = lighten(palette.base0B, -0.47) },
+    ["GitConflictIncomingLabel"] = { fg = palette.base05, bg = lighten(palette.base0B, -0.31) },
 
-    ["MiniDiffOverAdd"]          = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
-    ["MiniDiffOverDelete"]       = { fg = palette.base05, bg = lighten(palette.base08, -37) },
-    ["MiniDiffOverChange"]       = { fg = palette.base05, bg = lighten(palette.base08, -37) },
-    ["MiniDiffOverChangeBuf"]    = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
-    ["MiniDiffOverContext"]      = { bg = palette.base01, fg = lighten(palette.base08, -23) },
+    ["MiniDiffOverAdd"]          = { fg = palette.base05, bg = lighten(palette.base0B, -0.47) },
+    ["MiniDiffOverDelete"]       = { fg = palette.base05, bg = lighten(palette.base08, -0.47) },
+    ["MiniDiffOverChange"]       = { fg = palette.base05, bg = lighten(palette.base08, -0.47) },
+    ["MiniDiffOverChangeBuf"]    = { fg = palette.base05, bg = lighten(palette.base0B, -0.47) },
+    ["MiniDiffOverContext"]      = { bg = palette.base02, fg = lighten(palette.base08, -0.23) },
     ["MiniDiffOverContextBuf"]   = {},
 
     ["MiniIndentscopeSymbol"]    = { fg = palette.base04 },
@@ -115,6 +118,27 @@ function Base16.colors_customizations(opts, colors)
   for name, hl in pairs(overrides) do
     colors.groups[name] = hl
   end
+
+  -- stylua: ignore
+  colors.terminal = {
+    [0]  = palette.base02,
+    [1]  = palette.base08,
+    [2]  = palette.base0B,
+    [3]  = palette.base0A,
+    [4]  = palette.base0D,
+    [5]  = palette.base0E,
+    [6]  = palette.base0C,
+    [7]  = palette.base05,
+
+    [8]  = lighten(palette.base02, 0.05),
+    [9]  = lighten(palette.base08, 0.05),
+    [10] = lighten(palette.base0B, 0.05),
+    [11] = lighten(palette.base0A, 0.05),
+    [12] = lighten(palette.base0D, 0.05),
+    [13] = lighten(palette.base0E, 0.05),
+    [14] = lighten(palette.base0C, 0.05),
+    [15] = lighten(palette.base05, 0.05),
+  }
 
   return colors
 end
