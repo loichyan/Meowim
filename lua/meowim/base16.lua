@@ -120,23 +120,23 @@ function Base16.colors_customizations(opts, colors)
 
   -- stylua: ignore
   colors.terminal = {
-    [0]  = palette.base02,
-    [1]  = palette.base08,
-    [2]  = palette.base0B,
-    [3]  = palette.base0A,
-    [4]  = palette.base0D,
-    [5]  = palette.base0E,
-    [6]  = palette.base0C,
-    [7]  = palette.base05,
+    [0]  =         palette.base02,
+    [1]  =         palette.base08,
+    [2]  =         palette.base0B,
+    [3]  =         palette.base0A,
+    [4]  =         palette.base0D,
+    [5]  =         palette.base0E,
+    [6]  =         palette.base0C,
+    [7]  =         palette.base05,
 
-    [8]  = lighten(palette.base02, 0.05),
-    [9]  = lighten(palette.base08, 0.05),
-    [10] = lighten(palette.base0B, 0.05),
-    [11] = lighten(palette.base0A, 0.05),
-    [12] = lighten(palette.base0D, 0.05),
-    [13] = lighten(palette.base0E, 0.05),
-    [14] = lighten(palette.base0C, 0.05),
-    [15] = lighten(palette.base05, 0.05),
+    [8]  =         palette.base03,
+    [9]  = lighten(palette.base08, 0.07),
+    [10] = lighten(palette.base0B, 0.07),
+    [11] = lighten(palette.base0A, 0.07),
+    [12] = lighten(palette.base0D, 0.07),
+    [13] = lighten(palette.base0E, 0.07),
+    [14] = lighten(palette.base0C, 0.07),
+    [15] =         palette.base07,
   }
 
   return colors
