@@ -6,7 +6,10 @@ vim.filetype.add({
 })
 
 -- Enable virtual text
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config({
+  virtual_text = vim.fn.has("nvim-0.12") == 1 and { current_line = false } or true,
+  virtual_lines = { current_line = true },
+})
 
 -- Register some useful commands
 
