@@ -17,7 +17,7 @@ Base16.options = {
 ---The name to identify this colorscheme.
 ---@field name string
 ---THe variant of this colorscheme.
----@field variant? string
+---@field variant? "dark"|"light"
 ---Base16 palette.
 ---@field palette table<string,string>
 
@@ -27,7 +27,7 @@ function Base16.setup(opts)
   local suffix = opts.variant and "-" .. opts.variant or ""
   require("meowim.utils").cached_colorscheme({
     name = opts.name .. suffix,
-    cache_token = require("meowim.cache_token"),
+    cache_token = not vim.env["MEO_DISABLE_CACHE"] and require("meowim.cache_token") or nil,
     setup = function()
       require("mini.base16").setup(
         vim.tbl_extend("force", Base16.options, { palette = opts.palette })
