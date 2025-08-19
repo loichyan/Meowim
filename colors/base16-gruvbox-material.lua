@@ -49,5 +49,6 @@ end
 require("meowim.base16").setup({
   name = "base16-gruvbox",
   variant = vim.o.background,
+  bright = 0.05,
   palette = palette,
 })

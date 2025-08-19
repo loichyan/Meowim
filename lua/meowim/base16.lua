@@ -14,10 +14,13 @@ Base16.options = {
 }
 
 ---@class meowim.base16.options
----The name to identify this colorscheme.
+---Name to identify this colorscheme.
 ---@field name string
----THe variant of this colorscheme.
+---Variant of this colorscheme.
 ---@field variant? "dark"|"light"
+---Lightness adjustment to create bright colors. May be an absolute value
+---greater than 1 or a relative percentage less than 1.0.
+---@field bright? number
 ---Base16 palette.
 ---@field palette table<string,string>
 
@@ -118,6 +121,7 @@ function Base16.colors_customizations(opts, colors)
     colors.groups[name] = hl
   end
 
+  local bright = opts.bright or 0.05
   -- stylua: ignore
   colors.terminal = {
     [0]  =         palette.base02,
@@ -130,12 +134,12 @@ function Base16.colors_customizations(opts, colors)
     [7]  =         palette.base05,
 
     [8]  =         palette.base03,
-    [9]  = lighten(palette.base08, 0.07),
-    [10] = lighten(palette.base0B, 0.07),
-    [11] = lighten(palette.base0A, 0.07),
-    [12] = lighten(palette.base0D, 0.07),
-    [13] = lighten(palette.base0E, 0.07),
-    [14] = lighten(palette.base0C, 0.07),
+    [9]  = lighten(palette.base08, bright),
+    [10] = lighten(palette.base0B, bright),
+    [11] = lighten(palette.base0A, bright),
+    [12] = lighten(palette.base0D, bright),
+    [13] = lighten(palette.base0E, bright),
+    [14] = lighten(palette.base0C, bright),
     [15] =         palette.base07,
   }
 
