@@ -75,7 +75,8 @@ end
 ---@param dir "forward"|"backward"|"first"|"last"
 ---@param severity vim.diagnostic.SeverityName?
 function H.jump_diagnostic(dir, severity)
-  require("mini.bracketed").diagnostic(dir, { severity = severity })
+  local float = not vim.diagnostic.config().virtual_lines
+  require("mini.bracketed").diagnostic(dir, { float = float, severity = severity })
 end
 
 ---@param picker string
