@@ -1,5 +1,39 @@
 local Utils = {}
 
+---Wraps the given function with a new one.
+---@param old function
+---@param new function
+function Utils.wrap_fn(old, new)
+  return function(...) return new(old, ...) end
+end
+
+---Asks user for a input.
+---@param opts? {mode:"str"|"char"}
+function Utils.prompt(prompt, opts)
+  local mode = (opts or {}).mode or "str"
+
+  local ok, msg
+  if mode == "str" then
+    vim.cmd("echohl Question")
+    ok, msg = pcall(vim.fn.input, prompt)
+    vim.cmd("echohl None | redraw")
+  else
+    vim.schedule(function()
+      vim.cmd("echo '' | redraw")
+      vim.api.nvim_echo({ { prompt, "Question" } }, false, {})
+    end)
+    ok, msg = pcall(vim.fn.getcharstr)
+    vim.cmd("echo '' | redraw")
+  end
+
+  return ok and msg or ""
+end
+
+---Closes current window if possible, otherwise current buffer.
+function Utils.try_close()
+  if not pcall(vim.cmd.close) then require("mini.bufremove").delete() end
+end
+
 ---Returns the top level path if the specified directory is inside a repository.
 ---@param cwd string?
 ---@return string?
@@ -94,7 +128,7 @@ end
 ---The name to identify this colorscheme.
 ---@field name string
 ---A token to identify the latest cache.
----@field cache_token string
+---@field cache_token? string
 ---A list of runtime files used to determine whether to update the cache.
 ---@field watch_paths? string[]
 ---The function used to setup the colorscheme. An optional colorscheme object
@@ -107,7 +141,7 @@ function Utils.cached_colorscheme(opts)
   local cache_path = cache_dir .. opts.name .. ".lua"
   local cache_token_path = cache_dir .. opts.name .. "_cache"
 
-  local cache_token = opts.cache_token
+  local cache_token = opts.cache_token or ""
   if opts.watch_paths then
     for _, path in ipairs(opts.watch_paths) do
       local realpath = vim.api.nvim_get_runtime_file(path, false)[1]
@@ -145,10 +179,16 @@ end
 
 ---Increases the lightness of the specified color.
 ---@param color string
----@param delta integer
+---@param delta number
 ---@return string
 function Utils.lighten(color, delta)
-  return require("mini.colors").modify_channel(color, "lightness", function(x) return x + delta end) --[[@as string]]
+  return require("mini.colors").modify_channel(color, "lightness", function(x)
+    if math.abs(delta) < 1 then
+      return x + delta * x
+    else
+      return x + delta
+    end
+  end) --[[@as string]]
 end
 
 return Utils

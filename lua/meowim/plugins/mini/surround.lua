@@ -10,10 +10,12 @@ Spec.config = function()
       add            = "yz",
       delete         = "dz",
       replace        = "cz",
-      find           = "",
-      find_left      = "",
-      highlight      = "",
-      update_n_lines = "",
+      find           = "gzf",
+      find_left      = "gzF",
+      highlight      = "gzh",
+      update_n_lines = "gzn",
+      suffix_last    = "l",
+      suffix_next    = "n",
     },
   })
 end

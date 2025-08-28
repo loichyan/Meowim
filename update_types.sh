@@ -18,7 +18,7 @@ build_type() {
 		cat <<-LUA
 			${dirident}["${modname}"] = require("${dirmod}.${modname}")
 		LUA
-	done < <(find "lua/$dir" -type f | sort)
+	done < <(find "lua/$dir" -maxdepth 1 -type f | sort)
 }
 
 {

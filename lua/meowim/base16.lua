@@ -14,10 +14,13 @@ Base16.options = {
 }
 
 ---@class meowim.base16.options
----The name to identify this colorscheme.
+---Name to identify this colorscheme.
 ---@field name string
----THe variant of this colorscheme.
----@field variant? string
+---Variant of this colorscheme.
+---@field variant? "dark"|"light"
+---Lightness adjustment to create bright colors. May be an absolute value
+---greater than 1 or a relative percentage less than 1.0.
+---@field bright? number
 ---Base16 palette.
 ---@field palette table<string,string>
 
@@ -27,14 +30,14 @@ function Base16.setup(opts)
   local suffix = opts.variant and "-" .. opts.variant or ""
   require("meowim.utils").cached_colorscheme({
     name = opts.name .. suffix,
-    cache_token = require("meowim.cache_token"),
+    cache_token = not vim.env["MEO_DISABLE_CACHE"] and require("meowim.cache_token") or nil,
     setup = function()
       require("mini.base16").setup(
         vim.tbl_extend("force", Base16.options, { palette = opts.palette })
       )
-      local colors = require("mini.colors").get_colorscheme()
-      colors = Base16.colors_customizations(opts, colors)
-      return colors:apply()
+      local minicolors = require("mini.colors").get_colorscheme()
+      minicolors = Base16.colors_customizations(opts, minicolors)
+      return minicolors:apply()
     end,
   })
   vim.g.colors_name = opts.name
@@ -47,7 +50,10 @@ end
 function Base16.colors_customizations(opts, colors)
   if Base16.transparent then colors = colors:add_transparency() end
 
-  local lighten = require("meowim.utils").lighten
+  local is_dark = opts.variant ~= "light"
+  local lighten = function(color, delta)
+    return require("meowim.utils").lighten(color, is_dark and delta or -delta)
+  end
   local palette = opts.palette
   local get = function(name)
     return colors.groups[name] --[[@as vim.api.keyset.highlight]]
@@ -95,19 +101,18 @@ function Base16.colors_customizations(opts, colors)
   local overrides = {
     ["FloatTitle"]               = { fg = get("Title").fg, bg= palette.base01 },
 
-    ["GitConflictCurrent"]       = { fg = palette.base05, bg = lighten(palette.base0D, -37) },
-    ["GitConflictCurrentLabel"]  = { fg = palette.base05, bg = lighten(palette.base0D, -23) },
-    ["GitConflictAncestor"]      = { fg = palette.base05, bg = lighten(palette.base0E, -37) },
-    ["GitConflictAncestorLabel"] = { fg = palette.base05, bg = lighten(palette.base0E, -23) },
-    ["GitConflictIncoming"]      = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
-    ["GitConflictIncomingLabel"] = { fg = palette.base05, bg = lighten(palette.base0B, -23) },
+    ["DiffAdd"]                  = { fg = palette.base05, bg = lighten(palette.base0B, -0.41) },
+    ["DiffDelete"]               = { fg = palette.base05, bg = lighten(palette.base08, -0.41) },
+    ["DiffText"]                 = { fg = palette.base05, bg = lighten(palette.base0E, -0.41) },
+    ["DiffTextAdd"]              = { fg = palette.base05, bg = lighten(palette.base0B, -0.41) },
+    ["DiffChange"]               = { bg = palette.base02                                      },
 
-    ["MiniDiffOverAdd"]          = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
-    ["MiniDiffOverDelete"]       = { fg = palette.base05, bg = lighten(palette.base08, -37) },
-    ["MiniDiffOverChange"]       = { fg = palette.base05, bg = lighten(palette.base08, -37) },
-    ["MiniDiffOverChangeBuf"]    = { fg = palette.base05, bg = lighten(palette.base0B, -37) },
-    ["MiniDiffOverContext"]      = { bg = palette.base01, fg = lighten(palette.base08, -23) },
-    ["MiniDiffOverContextBuf"]   = {},
+    ["GitConflictCurrent"]       = { fg = palette.base05, bg = lighten(palette.base0D, -0.41) },
+    ["GitConflictCurrentLabel"]  = { fg = palette.base05, bg = lighten(palette.base0D, -0.31) },
+    ["GitConflictAncestor"]      = { fg = palette.base05, bg = lighten(palette.base0E, -0.41) },
+    ["GitConflictAncestorLabel"] = { fg = palette.base05, bg = lighten(palette.base0E, -0.31) },
+    ["GitConflictIncoming"]      = { fg = palette.base05, bg = lighten(palette.base0B, -0.41) },
+    ["GitConflictIncomingLabel"] = { fg = palette.base05, bg = lighten(palette.base0B, -0.31) },
 
     ["MiniIndentscopeSymbol"]    = { fg = palette.base04 },
     ["MiniIndentscopeSymbolOff"] = { fg = palette.base04 },
@@ -115,6 +120,28 @@ function Base16.colors_customizations(opts, colors)
   for name, hl in pairs(overrides) do
     colors.groups[name] = hl
   end
+
+  local bright = opts.bright or 0.05
+  -- stylua: ignore
+  colors.terminal = {
+    [0]  =         palette.base02,
+    [1]  =         palette.base08,
+    [2]  =         palette.base0B,
+    [3]  =         palette.base0A,
+    [4]  =         palette.base0D,
+    [5]  =         palette.base0E,
+    [6]  =         palette.base0C,
+    [7]  =         palette.base05,
+
+    [8]  =         palette.base03,
+    [9]  = lighten(palette.base08, bright),
+    [10] = lighten(palette.base0B, bright),
+    [11] = lighten(palette.base0A, bright),
+    [12] = lighten(palette.base0D, bright),
+    [13] = lighten(palette.base0E, bright),
+    [14] = lighten(palette.base0C, bright),
+    [15] =         palette.base07,
+  }
 
   return colors
 end

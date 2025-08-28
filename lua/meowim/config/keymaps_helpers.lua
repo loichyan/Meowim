@@ -13,9 +13,48 @@ function H.clear_ui()
   require("mini.snippets").session.stop()
 end
 
-function H.gitexec(...)
+function H.git(...)
   Meow.load("mini.git")
   vim.cmd.Git(...)
+end
+
+function H.git_show_buffer()
+  local rev
+  if vim.v.count > 0 then
+    rev = "HEAD~" .. vim.v.count
+  else
+    rev = vim.fn.expand("<cword>")
+    if not H.is_git_commit(rev) then
+      rev = Meowim.utils.prompt("Show revision: ")
+      if rev == "" then return end
+      rev = vim.fn.fnameescape(rev) -- escape to avoid expansion errors
+    end
+  end
+  H.git("show", rev .. ":%")
+end
+
+---@param mode "prompt"|"edit"|"amend"
+function H.git_commit(mode)
+  if mode == "edit" then
+    H.git("commit")
+  elseif mode == "amend" then
+    local msg = Meowim.utils.prompt("Edit message? (y/N) ", { mode = "char" })
+    msg = msg:lower()
+    if msg == "y" then
+      H.git("commit", "--amend")
+    elseif msg == "n" or msg == "\r" then
+      H.git("commit", "--amend", "--no-edit")
+    end
+  else
+    local msg = Meowim.utils.prompt("Commit message: ")
+    if msg == "" then return end
+    msg = vim.fn.fnameescape(msg) -- escape to avoid expansion errors
+    H.git("commit", "-m", msg)
+  end
+end
+
+function H.is_git_commit(str)
+  return str ~= "" and string.find(str, "^%x%x%x%x%x%x%x+$") ~= nil and string.lower(str) == str
 end
 
 -----------------------------
@@ -36,12 +75,12 @@ end
 ---@param dir "forward"|"backward"|"first"|"last"
 ---@param severity vim.diagnostic.SeverityName?
 function H.jump_diagnostic(dir, severity)
-  require("mini.bracketed").diagnostic(dir, { severity = severity })
+  local float = not vim.diagnostic.config().virtual_lines
+  require("mini.bracketed").diagnostic(dir, { float = float, severity = severity })
 end
 
 ---@param picker string
----@param opts? table
-function H.pick(picker, opts) require("mini.pick").registry[picker](opts) end
+function H.pick(picker, local_opts) require("mini.pick").registry[picker](local_opts) end
 
 function H.pick_quickfix()
   require("quicker").close()
@@ -58,30 +97,22 @@ function H.pick_diagnostics(scope, severity)
 end
 
 ---@param scope "current"|"all"
----@param opts? table
-function H.pick_lgrep(scope, opts)
+function H.pick_lgrep(scope, grep_opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
-  opts = vim.tbl_extend("force", { globs = globs }, opts or {})
-
-  if opts.tool == "ast-grep" then
-    require("mini.pick").registry.ast_grep_live(opts)
-  else
-    require("mini.pick").registry.grep_live(opts)
-  end
+  grep_opts = vim.tbl_extend("force", { globs = globs }, grep_opts or {})
+  require("mini.pick").registry.grep_live(grep_opts)
 end
 
 ---@param scope "current"|"all"
----@param opts? table
-function H.pick_word(scope, opts)
+function H.pick_word(scope, grep_opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
   local pattern = vim.fn.expand("<cword>")
-  opts = vim.tbl_extend("force", { pattern = pattern, globs = globs }, opts or {})
+  local default_grep_opts = { pattern = pattern, globs = globs, tool = "rg" }
+  grep_opts = vim.tbl_extend("force", default_grep_opts, grep_opts or {})
 
-  if opts.tool == "ast-grep" then
-    require("mini.pick").registry.ast_grep(opts)
-  else
-    require("mini.pick").registry.grep(opts)
-  end
+  local name = string.format("Grep (%s | <cword>)", grep_opts.tool)
+  local opts = { source = { name = name } }
+  require("mini.pick").registry.grep(grep_opts, opts)
 end
 
 -------------------

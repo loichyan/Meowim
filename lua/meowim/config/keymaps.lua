@@ -9,6 +9,7 @@ local nx = { "n", "x" }
 Meow.keymap({
   -- Common mappings
   { "<Esc>",               "<Cmd>noh<CR>",                                                                         desc = "Clear highlights"                  },
+  { "<Esc><Esc>",          "<C-\\><C-n>", mode = "t",                                                              desc = "Escape terminal mode"              },
   { "<C-c>",               function() H.clear_ui() end,                                                            desc = "Clear trivial UI items"            },
 
   { "<Leader>e",           function() H.plugins.mini.files.open("buffer") end,                                     desc = "Explore buffer directory"          },
@@ -20,7 +21,7 @@ Meow.keymap({
   { "<LocalLeader>f",      function() H.utils.toggle("autoformat_disabled", "global") end,                         desc = "Toggle autoformat"                 },
   { "<LocalLeader>F",      function() H.utils.toggle("autoformat_disabled", "buffer") end,                         desc = "Toggle autoformat globally"        },
   { "<LocalLeader>q",      function() require("quicker").toggle() end,                                             desc = "Toggle quickfix"                   },
-  { "<LocalLeader>v",      "<Cmd>lua vim.wo.conceallevel = 2 - vim.wo.conceallevel",                               desc = "Toggle conceallevel"               },
+  { "<LocalLeader>v",      "<Cmd>lua vim.wo.conceallevel = 2 - vim.wo.conceallevel<CR>",                           desc = "Toggle conceallevel"               },
 
   -- Buffers/Tabs/Windows
   { "<Leader>n",           "<Cmd>enew<CR>",                                                                        desc = "New buffer"                        },
@@ -28,7 +29,7 @@ Meow.keymap({
   { "<Leader>-",           "<Cmd>split<CR>",                                                                       desc = "Split horizontal"                  },
   { "<Leader>\\",          "<Cmd>vsplit<CR>",                                                                      desc = "Split vertical"                    },
   { "<Leader>m",           function() H.plugins.mini.misc.zoom() end,                                              desc = "Zoom current buffer"               },
-  { "<Leader>w",           function() H.plugins.mini.bufremove.close() end,                                        desc = "Close current buffer"              },
+  { "<Leader>w",           function() require("mini.bufremove").delete() end,                                      desc = "Close current buffer"              },
   { "<Leader>W",           "<Cmd>close<CR>",                                                                       desc = "Close current window"              },
   { "<Leader>Q",           "<Cmd>tabclose<CR>",                                                                    desc = "Close current tab"                 },
 
@@ -58,22 +59,29 @@ Meow.keymap({
   { "<Leader>qQ",          "<Cmd>let g:minisessions_disable=v:true | quitall<CR>",                                 desc = "Quit Neovim quietly"               },
 
   -- Git
-  { "<Leader>gb",          "<Plug>(git-conflict-both)",                                                            desc = "Accept both changes"               },
-  { "<Leader>gB",          "<Plug>(git-conflict-none)",                                                            desc = "Accept base changes"               },
-  { "<Leader>gc",          "<Plug>(git-conflict-ours)",                                                            desc = "Accept current changes"            },
-  { "<Leader>gi",          "<Plug>(git-conflict-theirs)",                                                          desc = "Accept incoming changes"           },
-
-  { "<Leader>gd",          function() require("mini.diff").toggle_overlay(0) end,                                  desc = "Show buffer changes overlay"       },
-  { "<Leader>gD",          function() H.gitexec("diff", "HEAD", "--", "%") end,                                    desc = "Show buffer changes diff"          },
+  { "<Leader>ga",          function() H.git("add", "--", "%") end,                                                 desc = "Add current file to Git"           },
+  { "<Leader>gA",          function() H.git_commit("amend") end,                                                   desc = "Amend previous commit"             },
+  { "<Leader>gc",          function() H.git_commit("prompt") end,                                                  desc = "Commit changes quick"              },
+  { "<Leader>gC",          function() H.git_commit("edit") end,                                                    desc = "Commit changes in buffer"          },
+  { "<Leader>gd",          function() require("mini.diff").toggle_overlay(0) end,                                  desc = "Show buffer diffs overlay"         },
+  -- TODO: enable word diff if the 'diff' treesitter parser adds support it
+  { "<Leader>gD",          function() H.git("diff", "HEAD~" .. vim.v.count) end,                                   desc = "Show workspace diffs"              },
   { "<Leader>gf",          function() H.pick("git_conflicts") end,                                                 desc = "Pick Git conflicts"                },
+  { "<Leader>gg",          function() require("mini.git").show_at_cursor() end, mode = nx,                         desc = "Show cursor info"                  },
   { "<Leader>gh",          function() H.pick("git_hunks")   end,                                                   desc = "Pick buffer hunks"                 },
-  { "<Leader>gH",          function() H.pick("git_commits") end,                                                   desc = "Pick Git commits"                  },
-  { "<Leader>gl",          function() require("mini.git").show_at_cursor() end, mode = nx,                         desc = "Show cursor info"                  },
-  { "<Leader>gL",          function() H.gitexec("log", "-p", "--", "%") end,                                       desc = "Show buffer history"               },
-  { "<Leader>gs",          function() H.plugins.mini.diff.do_hunk("apply", "cursor") end,                          desc = "State cursor hunks"                },
-  { "<Leader>gS",          function() H.plugins.mini.diff.do_hunk("apply", "buffer") end,                          desc = "State buffer hunks"                },
-  { "<Leader>gx",          function() H.plugins.mini.diff.do_hunk("reset", "cursor") end,                          desc = "State cursor hunks"                },
-  { "<Leader>gX",          function() H.plugins.mini.diff.do_hunk("reset", "buffer") end,                          desc = "State buffer hunks"                },
+  { "<Leader>gH",          function() H.git("log", "-p", "--", "%") end,                                           desc = "Show buffer history"               },
+  { "<Leader>gl",          function() H.pick("git_commits") end,                                                   desc = "Pick workspace commits"            },
+  { "<Leader>gL",          function() H.git_show_buffer() end,                                                     desc = "Show buffer of revision"           },
+  { "<Leader>gs",          function() H.pick("git_status") end,                                                    desc = "Pick Git status"                   },
+  { "<Leader>gU",          function() H.git("reset", "-q", "--", "%") end,                                         desc = "Reset buffer index"                },
+
+  -- Conflicts
+  { "<Leader>ca",          "<Plug>(git-conflict-both)",                                                            desc = "Accept both changes"               },
+  { "<Leader>cr",          "<Plug>(git-conflict-none)",                                                            desc = "Reject both changes"               },
+  { "<Leader>cc",          "<Plug>(git-conflict-ours)",                                                            desc = "Accept current changes"            },
+  { "<Leader>cC",          function() H.git("checkout", "--ours", "--", "%") end,                                  desc = "Accept current buffer changes"     },
+  { "<Leader>ci",          "<Plug>(git-conflict-theirs)",                                                          desc = "Accept incoming changes"           },
+  { "<Leader>cI",          function() H.git("checkout", "--theirs", "--", "%") end,                                desc = "Accept incoming buffer changes"    },
 
   -- Diagnostics
   { "<C-l>",               function() vim.diagnostic.open_float() end,                                             desc = "Show current diagnostic"           },
@@ -165,7 +173,7 @@ Meow.autocmd("meowim.config.keymaps", {
 
       local specs, bufnr = {}, ev.buf
       for _, spec in ipairs(lsp_keymaps) do
-        -- Setup certain keymaps only if the client supports it
+        -- Setup conditional keymaps only if the client supports it
         if spec.has and client:supports_method(spec.has, bufnr) then
           spec = vim.deepcopy(spec)
           spec.has = nil

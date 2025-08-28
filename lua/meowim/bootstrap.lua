@@ -25,7 +25,7 @@ local deps = require("mini.deps")
 deps.setup({ path = { package = pack_path } })
 
 -- Enable profiler for debug/benchmark
-if vim.env["MEO_ENABLE_PROFILE"] ~= nil then
+if vim.env["MEO_ENABLE_PROFILE"] then
   deps.add("folke/snacks.nvim")
   require("snacks.profiler").startup({ startup = { event = "UIEnter" } })
 end
@@ -49,11 +49,12 @@ end
 deps.add("loichyan/meow.nvim")
 deps.now(function()
   -- Configure the preferred colorscheme
-  vim.cmd.colorscheme("base16-gruvbox")
+  vim.cmd.colorscheme("base16-gruvbox-carbon")
+  local cache_token = function() return require("meowim.cache_token") end
   require("meow").setup({
     specs = { import = "meowim.plugins" },
     -- Enable import caching to reduce I/O loads.
-    import_cache = function() return require("meowim.cache_token") end,
+    import_cache = not vim.env["MEO_DISABLE_CACHE"] and cache_token or nil,
     patch_mini = true,
     enable_snapshot = vim.env["MEO_DISABLE_SNAPSHOT"] == nil,
   })
