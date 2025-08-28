@@ -9,6 +9,7 @@ local nx = { "n", "x" }
 Meow.keymap({
   -- Common mappings
   { "<Esc>",               "<Cmd>noh<CR>",                                                                         desc = "Clear highlights"                  },
+  { "<Esc><Esc>",          "<C-\\><C-n>", mode = "t",                                                              desc = "Escape terminal mode"              },
   { "<C-c>",               function() H.clear_ui() end,                                                            desc = "Clear trivial UI items"            },
 
   { "<Leader>e",           function() H.plugins.mini.files.open("buffer") end,                                     desc = "Explore buffer directory"          },
