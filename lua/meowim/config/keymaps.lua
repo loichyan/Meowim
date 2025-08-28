@@ -21,7 +21,7 @@ Meow.keymap({
   { "<LocalLeader>f",      function() H.utils.toggle("autoformat_disabled", "global") end,                         desc = "Toggle autoformat"                 },
   { "<LocalLeader>F",      function() H.utils.toggle("autoformat_disabled", "buffer") end,                         desc = "Toggle autoformat globally"        },
   { "<LocalLeader>q",      function() require("quicker").toggle() end,                                             desc = "Toggle quickfix"                   },
-  { "<LocalLeader>v",      "<Cmd>lua vim.wo.conceallevel = 2 - vim.wo.conceallevel",                               desc = "Toggle conceallevel"               },
+  { "<LocalLeader>v",      "<Cmd>lua vim.wo.conceallevel = 2 - vim.wo.conceallevel<CR>",                           desc = "Toggle conceallevel"               },
 
   -- Buffers/Tabs/Windows
   { "<Leader>n",           "<Cmd>enew<CR>",                                                                        desc = "New buffer"                        },
