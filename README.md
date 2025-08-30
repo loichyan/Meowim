@@ -3,7 +3,7 @@
 Meowim is a [mini.nvim](https://github.com/echasnovski/mini.nvim) powered launch
 point for your personal development environment.
 
-![showcase](https://github.com/loichyan/dotfiles/raw/snapshot/assets/showcase.jpg)
+![showcase](https://loichyan.github.io/dotfiles/assets/showcase.jpg)
 [Information](https://github.com/loichyan/dotfiles/tree/snapshot#information)
 
 ## ✨ Features
