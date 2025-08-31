@@ -62,7 +62,6 @@ function H.setup_parser(ev)
       vim.treesitter.start(bufnr)
       vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
-      -- TODO: enable LSP foldexpr if supported
       vim.wo[winnr].foldlevel = 99
       vim.wo[winnr].foldmethod = "expr"
       vim.wo[winnr].foldexpr = "v:lua.vim.treesitter.foldexpr()"

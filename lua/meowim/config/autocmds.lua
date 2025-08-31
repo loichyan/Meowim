@@ -27,7 +27,13 @@ Meow.autocmd("meowim.config.autocmds", {
     callback = function(ev)
       local client = vim.lsp.get_client_by_id(ev.data.client_id)
       if not client then return end
-      local bufnr = vim.api.nvim_get_current_buf()
+      local bufnr, winnr = vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win()
+
+      -- Prefer LSP backed folds if possible
+      if client:supports_method("textDocument/foldingRange") then
+        vim.wo[winnr][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+      end
+
       require("meowim.config.keymaps_lsp").setup(bufnr, client)
     end,
   },
