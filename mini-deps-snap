@@ -8,8 +8,8 @@ return {
   ["mini.nvim"] = "dee23b41ba27bd583f1d19e199738f3bd0236648",
   ["nvim-lint"] = "ee04d481d4e6089892c2fb2ad8924b1a053591e1",
   ["nvim-lspconfig"] = "3d97ec4174bcc750d70718ddedabf150536a5891",
-  ["nvim-treesitter"] = "42fc28ba918343ebfd5565147a42a26580579482",
-  ["nvim-treesitter-textobjects"] = "71385f191ec06ffc60e80e6b0c9a9d5daed4824c",
+  ["nvim-treesitter"] = "cd64fd3f448eb6cc529830c7f265f7584168572b",
+  ["nvim-treesitter-textobjects"] = "1b2d85d3de6114c4bcea89ffb2cd1ce9e3a19931",
   ["quicker.nvim"] = "51d3926f183c2d98fbc237cc237ae0926839af3a",
   ["smart-splits.nvim"] = "67cbc412b83014ea5f92d617471d459714b5e6c7",
   ["snacks.nvim"] = "bc0630e43be5699bb94dadc302c0d21615421d93"
