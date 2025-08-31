@@ -9,7 +9,7 @@ Base16.options = {
   use_cterm = false,
   plugins = {
     default = false,
-    ["echasnovski/mini.nvim"] = true,
+    ["nvim-mini/mini.nvim"] = true,
   },
 }
 

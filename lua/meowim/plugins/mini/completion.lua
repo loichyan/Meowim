@@ -22,7 +22,7 @@ Spec.config = function()
       desc = "Filter out unintended confirms",
       callback = function()
         -- Only use certain keys to confirm a completion.
-        -- This resolves <https://github.com/echasnovski/mini.nvim/issues/1938>.
+        -- This resolves <https://github.com/nvim-mini/mini.nvim/issues/1938>.
         if not vim.g.meowim_complete_confirm then
           vim.v.completed_item = vim.empty_dict()
         else
@@ -89,7 +89,7 @@ function H.process_lsp_items(items)
       else
         -- Otherwise, ensure the new item can be recognized as a snippet by
         -- mini.completion. The presence of at least one tabstop is important,
-        -- which resolves <https://github.com/echasnovski/mini.nvim/issues/1944>.
+        -- which resolves <https://github.com/nvim-mini/mini.nvim/issues/1944>.
         item.insertTextFormat = textformat.Snippet
         local has_tabstop = inserttext:find("[^\\]%${?%w") or inserttext:find("^%${?%w")
         if has_tabstop then

@@ -1,6 +1,6 @@
 # 😺 Meowim
 
-Meowim is a [mini.nvim](https://github.com/echasnovski/mini.nvim) powered launch
+Meowim is a [mini.nvim](https://github.com/nvim-mini/mini.nvim) powered launch
 point for your personal development environment.
 
 ![showcase](https://loichyan.github.io/dotfiles/assets/showcase.jpg)
@@ -55,7 +55,7 @@ exists).
 
 ## ♥️ Special Thanks
 
-- [mini.nvim](https://github.com/echasnovski/mini.nvim) for the fundamental
+- [mini.nvim](https://github.com/nvim-mini/mini.nvim) for the fundamental
   contribution to the birth of this project.
 - [LazyVim](https://github.com/LazyVim/LazyVim) for providing many excellent
   configuration snippets used in this project.
