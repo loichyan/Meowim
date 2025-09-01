@@ -26,12 +26,12 @@ else
   -- Scheme: Gruvbox Carbon Light
   -- Author: Sainnhe Park (https://github.com/sainnhe), Loi Chyan (https://github.com/loichyan)
   palette = {
-    base00 = "#fff4d3",
-    base01 = "#f4e3bc",
-    base02 = "#ddcca9",
-    base03 = "#ad9e89",
+    base00 = "#fff5d5",
+    base01 = "#fcebc3",
+    base02 = "#e7d6b2",
+    base03 = "#b6a791",
+    base04 = "#9e8f7f",
 
-    base04 = "#958677",
     base05 = "#433f3d",
     base06 = "#2d2d2d",
     base07 = "#1d1d1d",
