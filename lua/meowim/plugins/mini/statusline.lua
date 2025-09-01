@@ -93,7 +93,7 @@ function H.active()
   local in_progress = git_summary.in_progress or ""
   if in_progress ~= "" then project = project .. "|" .. in_progress end
 
-  add("gitcommitBranch", " " .. project)
+  add("MiniStatuslineProject", project)
 
   -----------------------
   --- Macro Recording ---
@@ -151,7 +151,7 @@ function H.active()
   local searchcount = MiniStatusline.section_searchcount({})
   if searchcount ~= "" then add("String", " Search " .. searchcount) end
 
-  add("Constant", "%3l|%2v")
+  add("MiniStatuslineCursor", "%3l|%2v")
 
   add(mode_hl, " %##")
 
