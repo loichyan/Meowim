@@ -23,7 +23,7 @@ Spec.config = function()
       event = "BufWritePre",
       desc = "Format on save",
       callback = function(ev)
-        if not Meowim.utils.is_toggle_on(ev.buf, "autoformat_disabled") then
+        if not Meowim.utils.is_toggle_on(ev.buf, "autoformat_disable") then
           require("mini.trailspace").trim()
           require("conform").format()
         end
