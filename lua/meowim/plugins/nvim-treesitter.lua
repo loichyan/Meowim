@@ -44,7 +44,7 @@ function H.ensure_installed()
     "vim",
     "vimdoc",
   }
-  require("nvim-treesitter").install(ensure_installed)
+  require("nvim-treesitter").install(ensure_installed):await(H.update_installed)
 end
 
 function H.setup_parser(ev)
@@ -52,21 +52,39 @@ function H.setup_parser(ev)
   if not H.is_available(parser) then return end
 
   local bufnr, winnr = vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win()
-  require("nvim-treesitter").install({ parser }):await(function(err)
-    if err then
-      Meow.notifyf("ERROR", "failed to install parser '%s': %s", parser, err)
-      return
-    end
+  H.with_parser(parser, function()
+    vim.treesitter.start(bufnr)
+    vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
-    pcall(function() -- ignore errors when window/buffer gets invalid
-      vim.treesitter.start(bufnr)
-      vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-
-      vim.wo[winnr].foldlevel = 99
-      vim.wo[winnr].foldmethod = "expr"
-      vim.wo[winnr].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-    end)
+    vim.wo[winnr].foldlevel = 99
+    vim.wo[winnr].foldmethod = "expr"
+    vim.wo[winnr].foldexpr = "v:lua.vim.treesitter.foldexpr()"
   end)
+end
+
+function H.with_parser(parser, callback)
+  if not H.installed then H.update_installed() end
+
+  if H.installed[parser] == nil then
+    require("nvim-treesitter").install(parser):await(function(err)
+      if err then
+        H.installed[parser] = false
+        Meow.notifyf("ERROR", "failed to install parser '%s': %s", parser, err)
+      else
+        H.installed[parser] = true
+        pcall(callback) -- ignore errors when window/buffer gets invalid
+      end
+    end)
+  elseif H.installed[parser] then
+    callback()
+  end
+end
+
+function H.update_installed()
+  H.installed = H.installed or {}
+  for _, p in ipairs(require("nvim-treesitter.config").get_installed("parsers")) do
+    H.installed[p] = true
+  end
 end
 
 function H.is_available(parser)
