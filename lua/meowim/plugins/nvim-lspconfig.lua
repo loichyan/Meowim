@@ -29,6 +29,7 @@ Spec.config = function()
     vim.lsp.config(name, config)
     vim.lsp.enable(name)
   end
+  vim.lsp.config("*", { capabilities = require("mini.completion").get_lsp_capabilities() })
 end
 
 return Spec

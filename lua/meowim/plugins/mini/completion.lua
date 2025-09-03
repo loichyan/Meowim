@@ -59,7 +59,6 @@ Spec.config = function()
       scroll_up      = "<C-b>",
     },
   })
-  vim.lsp.config("*", { capabilities = minicomp.get_lsp_capabilities() })
 end
 
 ---@param items lsp.CompletionItem[]
