@@ -11,7 +11,7 @@ Spec.config = function()
   local treesitter = miniai.gen_spec.treesitter
   miniai.setup({
     n_lines = 500,
-    search_method = "cover_or_next",
+    search_method = "cover",
     custom_textobjects = {
       c = treesitter({ a = "@class.outer", i = "@class.inner" }),
       f = treesitter({ a = "@function.outer", i = "@function.inner" }),
