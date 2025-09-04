@@ -39,7 +39,7 @@ Spec.config = function()
     return MiniCompletion.default_process_items(items, base, process_opts)
   end
 
-  vim.o.completeopt = "menuone,noselect,fuzzy"
+  vim.o.completeopt = "menuone,noselect,fuzzy,nosort"
   vim.o.infercase = false
   minicomp.setup({
     lsp_completion = {
