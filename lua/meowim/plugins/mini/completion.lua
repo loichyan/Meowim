@@ -23,10 +23,10 @@ Spec.config = function()
       callback = function()
         -- Only use certain keys to confirm a completion.
         -- This resolves <https://github.com/nvim-mini/mini.nvim/issues/1938>.
-        if not vim.g.meowim_complete_confirm then
+        if not vim.g.minicompletion_confirm then
           vim.v.completed_item = vim.empty_dict()
         else
-          vim.g.meowim_complete_confirm = nil
+          vim.g.minicompletion_confirm = nil
         end
       end,
     },

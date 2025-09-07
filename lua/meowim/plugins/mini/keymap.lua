@@ -24,7 +24,7 @@ function H.pmenu_accept(force)
   return {
     condition = function() return vim.fn.pumvisible() == 1 and (force or H.pmenu_selected()) end,
     action = function()
-      vim.g.meowim_complete_confirm = true
+      vim.g.minicompletion_confirm = true
       if H.pmenu_selected() then
         return "<C-y>"
       else
