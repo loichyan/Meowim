@@ -109,6 +109,7 @@ function H.pick_word(scope, grep_opts)
   local pattern = vim.fn.expand("<cword>")
   local default_grep_opts = { pattern = pattern, globs = globs, tool = "rg" }
   grep_opts = vim.tbl_extend("force", default_grep_opts, grep_opts or {})
+  if grep_opts.tool ~= "ast-grep" then grep_opts.pattern = "\\b" .. grep_opts.pattern .. "\\b" end
 
   local name = string.format("Grep (%s | <cword>)", grep_opts.tool)
   local opts = { source = { name = name } }

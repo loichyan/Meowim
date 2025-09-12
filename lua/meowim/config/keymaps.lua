@@ -139,6 +139,6 @@ Meow.keymap({
   { "<Leader>fU",          function() H.pick("colorschemes") end,                                                  desc = "Pick colorschemes"                 },
   { "<Leader>fr",          function() H.pick("registers") end,                                                     desc = "Pick registers"                    },
   { "<Leader>fR",          function() H.pick("resume") end,                                                        desc = "Resume picker"                     },
-  { "<Leader>fw",          function() H.pick_word("current", {tool="ast-grep"}) end,                               desc = "Grep buffer <cword>"               },
-  { "<Leader>fW",          function() H.pick_word("all", {tool="ast-grep"}) end,                                   desc = "Grep workspace <cword>"            },
+  { "<Leader>fw",          function() H.pick_word("current") end,                                                  desc = "Grep buffer <cword>"               },
+  { "<Leader>fW",          function() H.pick_word("all") end,                                                      desc = "Grep workspace <cword>"            },
 })
