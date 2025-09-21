@@ -16,8 +16,8 @@ Meow.keymap({
   { "<Leader>E",           function() H.plugins.mini.files.open("workspace") end,                                  desc = "Explore workspace root"            },
 
   -- Toggles
-  { "<LocalLeader>k",      function() H.utils.toggle("minicompletion_disable", "buffer") end,                      desc = "Toggle completion"                 },
-  { "<LocalLeader>K",      function() H.utils.toggle("minicompletion_disable", "global") end,                      desc = "Toggle completion globally"        },
+  { "<LocalLeader>k",      function() H.utils.toggle("completion_disable", "buffer") end,                          desc = "Toggle completion"                 },
+  { "<LocalLeader>K",      function() H.utils.toggle("completion_disable", "global") end,                          desc = "Toggle completion globally"        },
   { "<LocalLeader>f",      function() H.utils.toggle("autoformat_disable", "buffer") end,                          desc = "Toggle autoformat"                 },
   { "<LocalLeader>F",      function() H.utils.toggle("autoformat_disable", "global") end,                          desc = "Toggle autoformat globally"        },
   { "<LocalLeader>q",      function() require("quicker").toggle() end,                                             desc = "Toggle quickfix"                   },

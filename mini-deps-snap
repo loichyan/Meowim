@@ -1,4 +1,5 @@
 return {
+  ["blink.cmp"] = "327fff91fe6af358e990be7be1ec8b78037d2138",
   ["conform.nvim"] = "a0ab60ed666c56b37fd7ed1847d2ac52f2482ce0",
   ["friendly-snippets"] = "572f5660cf05f8cd8834e096d7b4c921ba18e175",
   ["git-conflict.nvim"] = "a1badcd070d176172940eb55d9d59029dad1c5a6",

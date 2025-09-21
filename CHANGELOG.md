@@ -6,32 +6,23 @@ All notable changes to this project will be documented in this file.
 Here's a template for each release section. This file should only include updates
 that are noticeable to end users between two releases. For developers, this project
 follows <https://www.conventionalcommits.org/en/v1.0.0/> to track changes.
-
-## [20250101]
-
-### Added
-
-- (**breaking**) Always place breaking changes at the top of each subsection.
-- Append other changes in chronological order under the appropriate subsection.
-- Additionally, you may use `{{variable name}}` as a placeholder for the value
-  of a named variable, which includes:
-  - `PRNUM`: the number of the pull request
-  - `DATE`: the date in `YYYY-MM-DD` format whenever the pull request is updated
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-
-[20250101]: https://github.com/user/repo/compare/v20240101..v20250101
 -->
 
 ## [Unreleased]
+
+- (**breaking**) Replace mini.completion with blink.cmp. mini.completion
+  generally performs well, but some LSP servers can be problematic. For example,
+  clangd might insert extra leading characters, while ts_ls may occasionally
+  lose completions or fail to respond to autocompletion requests.
+  mini.completion expects servers to follow the LSP specification, but a server
+  might be implemented with a different interpretation, leading to
+  incompatibility with mini.completion. blink.cmp includes several
+  [hacks](https://github.com/saghen/blink.cmp/tree/v1.7.0/lua/blink/cmp/sources/lsp/hacks)
+  to make those servers function out of the box. So, let’s focus more on editing
+  and less on the editor.
+
+<!-- prettier-ignore-start -->
+<!-- prettier-ignore-end -->
 
 ## [20250828]
 
@@ -66,6 +57,7 @@ keymaps and auto-completion. Noticeable changes are listed below:
   (since they have the same author :heart:) but provides more options for
   customization.
 
+<!-- prettier-ignore-start -->
 [2832af2]: https://github.com/loichyan/Meowim/commit/2832af2a8cf0fea3095fd1817ac8718879b89bb5
 [055071f]: https://github.com/loichyan/Meowim/commit/055071fc367e2a69a2cbf286e28c5919e1304604
 [414b46c]: https://github.com/loichyan/Meowim/commit/414b46c622eccccf644517206ca057672256b653
@@ -74,6 +66,7 @@ keymaps and auto-completion. Noticeable changes are listed below:
 [c74a720]: https://github.com/loichyan/Meowim/commit/c74a72057e86ca7aefd82b306ece75bbd281301d
 [mini.nvim#1938]: https://github.com/echasnovski/mini.nvim/issues/1938
 [mini.nvim#1944]: https://github.com/echasnovski/mini.nvim/issues/1944
+<!-- prettier-ignore-end -->
 
 ## [20250809]
 
