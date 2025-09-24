@@ -75,21 +75,24 @@ Spec.config = function()
   require("blink.cmp").setup({
     enabled = function() return not Meowim.utils.is_toggle_on(0, "completion_disable") end,
     -- General
-    signature = { enabled = true },
     completion = {
       accept = { auto_brackets = { enabled = false } },
       list = { selection = { preselect = false, auto_insert = true } },
-      menu = { draw = draw_with_miniicon },
-      documentation = { auto_show = true, auto_show_delay_ms = 150 },
+      menu = { draw = draw_with_miniicon, auto_show_delay_ms = 150, winblend = 30 },
+      documentation = { auto_show = true, auto_show_delay_ms = 150, window = { winblend = 30 } },
       ghost_text = { enabled = false },
     },
+    signature = { enabled = true, window = { winblend = 30 } },
     -- Completion
     fuzzy = {
       implementation = "prefer_rust_with_warning",
       sorts = { "exact", "score", "sort_text", "kind" },
     },
     snippets = { preset = "mini_snippets" },
-    sources = { default = { "path", "lsp", "snippets", "buffer" } },
+    sources = {
+      default = { "path", "lsp", "snippets", "buffer" },
+      min_keyword_length = 2,
+    },
     -- keymaps
     keymap = keymap,
     cmdline = { enabled = true, keymap = cmdline_keymap },

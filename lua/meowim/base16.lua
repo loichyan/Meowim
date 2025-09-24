@@ -99,26 +99,26 @@ function Base16.colors_customizations(opts, colors)
   -- stylua: ignore
   ---@type table<string,vim.api.keyset.highlight>
   local overrides = {
-    ["FloatTitle"]               = { fg = get("Title").fg, bg= p.base01 },
+    ['BlinkCmpLabelDeprecated']   = {fg=p.base05, bg=nil, strikethrough=true},
+    ["FloatTitle"]                = {fg = get("Title").fg, bg= p.base01},
 
-    ["DiffAdd"]                  = { fg = p.base05, bg = lighten(p.base0B, -0.41) },
-    ["DiffDelete"]               = { fg = p.base05, bg = lighten(p.base08, -0.41) },
-    ["DiffText"]                 = { fg = p.base05, bg = lighten(p.base0E, -0.41) },
-    ["DiffTextAdd"]              = { fg = p.base05, bg = lighten(p.base0B, -0.41) },
-    ["DiffChange"]               = { bg = p.base02                                      },
+    ["DiffAdd"]                   = {fg=p.base05, bg=lighten(p.base0B, -0.41)},
+    ["DiffDelete"]                = {fg=p.base05, bg=lighten(p.base08, -0.41)},
+    ["DiffText"]                  = {fg=p.base05, bg=lighten(p.base0E, -0.41)},
+    ["DiffTextAdd"]               = {fg=p.base05, bg=lighten(p.base0B, -0.41)},
+    ["DiffChange"]                = {bg=p.base02                                   },
 
-    ["GitConflictCurrent"]       = { fg = p.base05, bg = lighten(p.base0D, -0.41) },
-    ["GitConflictCurrentLabel"]  = { fg = p.base05, bg = lighten(p.base0D, -0.31) },
-    ["GitConflictAncestor"]      = { fg = p.base05, bg = lighten(p.base0E, -0.41) },
-    ["GitConflictAncestorLabel"] = { fg = p.base05, bg = lighten(p.base0E, -0.31) },
-    ["GitConflictIncoming"]      = { fg = p.base05, bg = lighten(p.base0B, -0.41) },
-    ["GitConflictIncomingLabel"] = { fg = p.base05, bg = lighten(p.base0B, -0.31) },
+    ["GitConflictCurrent"]        = {fg=p.base05, bg=lighten(p.base0D, -0.41)},
+    ["GitConflictCurrentLabel"]   = {fg=p.base05, bg=lighten(p.base0D, -0.31)},
+    ["GitConflictAncestor"]       = {fg=p.base05, bg=lighten(p.base0E, -0.41)},
+    ["GitConflictAncestorLabel"]  = {fg=p.base05, bg=lighten(p.base0E, -0.31)},
+    ["GitConflictIncoming"]       = {fg=p.base05, bg=lighten(p.base0B, -0.41)},
+    ["GitConflictIncomingLabel"]  = {fg=p.base05, bg=lighten(p.base0B, -0.31)},
 
-    ["MiniIndentscopeSymbol"]    = { fg = p.base04 },
-    ["MiniIndentscopeSymbolOff"] = { fg = p.base04 },
-
-    ["MiniStatuslineProject"]    = { fg = p.base09, bold = true },
-    ["MiniStatuslineCursor"]     = { fg = p.base0A },
+    ["MiniIndentscopeSymbol"]     = {fg=p.base04},
+    ["MiniIndentscopeSymbolOff"]  = {fg=p.base04},
+    ["MiniStatuslineProject"]     = {fg=p.base09, bold = true},
+    ["MiniStatuslineCursor"]      = {fg=p.base0A},
   }
   for name, hl in pairs(overrides) do
     colors.groups[name] = hl
@@ -127,23 +127,22 @@ function Base16.colors_customizations(opts, colors)
   local bright = opts.bright or 0.05
   -- stylua: ignore
   colors.terminal = {
-    [0]  =         p.base02,
-    [1]  =         p.base08,
-    [2]  =         p.base0B,
-    [3]  =         p.base0A,
-    [4]  =         p.base0D,
-    [5]  =         p.base0E,
-    [6]  =         p.base0C,
-    [7]  =         p.base05,
-
-    [8]  =         p.base03,
+    [0]  = p.base02,
+    [1]  = p.base08,
+    [2]  = p.base0B,
+    [3]  = p.base0A,
+    [4]  = p.base0D,
+    [5]  = p.base0E,
+    [6]  = p.base0C,
+    [7]  = p.base05,
+    [8]  = p.base03,
     [9]  = lighten(p.base08, bright),
     [10] = lighten(p.base0B, bright),
     [11] = lighten(p.base0A, bright),
     [12] = lighten(p.base0D, bright),
     [13] = lighten(p.base0E, bright),
     [14] = lighten(p.base0C, bright),
-    [15] =         p.base07,
+    [15] = p.base07,
   }
 
   return colors
