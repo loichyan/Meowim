@@ -41,23 +41,23 @@ function H.smart_pairs(open, pair, neigh_pattern)
   local line, cur = vim.api.nvim_get_current_line(), vim.api.nvim_win_get_cursor(0)
   local row, col = cur[1], cur[2]
 
-  -- Handle codeblocks and Python's doc strings
+  -- Handle triple quotes
   if op == cl and line:sub(col - 1, col) == op:rep(2) then
     return op .. "\n" .. op:rep(3) .. vim.api.nvim_replace_termcodes("<Up>", true, true, true)
   end
 
-  -- Disable pairing in string nodes
+  -- Disable pairing in string literals
   local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, row - 1, math.max(col - 1, 0))
   if ok and #captures == 1 and captures[1].capture == "string" then return op end
 
-  -- Emit a opening only if unbalanced
+  -- Emit only an opening if unbalanced
   if line:len() < 500 then
-    if op ~= cl then
+    if op ~= cl then -- pairs
       local left, right = line:sub(1, col), line:sub(col + 1)
       local no, _ = H.count_unlanced(left, op, cl)
       local _, nc = H.count_unlanced(right, op, cl)
       if no < nc then return op end
-    else
+    else -- quotes
       local _, n = line:gsub("%" .. op, "")
       if n % 2 ~= 0 then return op end
     end
@@ -76,11 +76,15 @@ function H.count_unlanced(line, op, cl)
   for i = 1, #line do
     local ch = line:sub(i, i)
     if ch == op then
+      -- Found an unbalanced open character
       no = no + 1
     elseif ch ~= cl then
+      -- Ignore non-pairing characters
     elseif no > 0 then
+      -- Found a balanced pair
       no = no - 1
     else
+      -- Found an unbalanced close character
       nc = nc + 1
     end
   end
