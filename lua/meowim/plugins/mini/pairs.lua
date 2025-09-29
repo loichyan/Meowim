@@ -46,9 +46,11 @@ function H.smart_pairs(open, pair, neigh_pattern)
     return op .. "\n" .. op:rep(3) .. vim.api.nvim_replace_termcodes("<Up>", true, true, true)
   end
 
-  -- Disable pairing in string literals
-  local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, row - 1, math.max(col - 1, 0))
-  if ok and #captures == 1 and captures[1].capture == "string" then return op end
+  -- Disable quotes in string literals
+  if op == cl then
+    local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, row - 1, math.max(col - 1, 0))
+    if ok and #captures == 1 and captures[1].capture == "string" then return op end
+  end
 
   -- Emit only an opening if unbalanced
   if line:len() < 500 then
