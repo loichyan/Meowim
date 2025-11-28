@@ -53,15 +53,19 @@ function Utils.is_toggle_on(bufnr, key)
   return val == true
 end
 
----Toggles the specified option. The default is always false.
+---Toggles the specified option, returning the newly set state. The default is
+---always false.
 ---@param key string
 ---@param scope? "buffer"|"global"
+---@return boolean
 function Utils.toggle(key, scope)
   if scope == "global" then
     vim.g[key] = not vim.g[key]
+    return vim.g[key]
   else
     local bufnr = vim.api.nvim_get_current_buf()
     vim.b[bufnr][key] = not Utils.is_toggle_on(bufnr, key)
+    return vim.b[bufnr][key]
   end
 end
 

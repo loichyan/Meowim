@@ -20,6 +20,10 @@ follows <https://www.conventionalcommits.org/en/v1.0.0/> to track changes.
   [hacks](https://github.com/saghen/blink.cmp/tree/v1.7.0/lua/blink/cmp/sources/lsp/hacks)
   to make those servers function out of the box. So, let’s focus more on editing
   and less on the editor.
+- Add keymaps to toggle `virtual_text`.
+  - (**breaking**) Remap `<LocalLeader>d` to `<LocalLeader>D` (it toggles all
+    diagnostics).
+  - Use `<LocalLeader>d` to toggle `virtual_text`.
 
 <!-- prettier-ignore-start -->
 <!-- prettier-ignore-end -->
@@ -105,7 +109,9 @@ updates include:
   lack good LSP support or for which a LSP server is just too expensive to
   start.
 
+<!-- prettier-ignore-start -->
 [20250731]: https://github.com/loichyan/Meowim/tree/v20250731
 [20250809]: https://github.com/loichyan/Meowim/compare/v20250731..v20250809
 [20250828]: https://github.com/loichyan/Meowim/compare/v20250809..v20250828
 [Unreleased]: https://github.com/loichyan/Meowim/compare/v20250828..HEAD
+<!-- prettier-ignore-end -->

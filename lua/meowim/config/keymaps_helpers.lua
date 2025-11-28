@@ -61,6 +61,23 @@ end
 --- PICKERS & DIAGNOSTICS ---
 -----------------------------
 
+local last_virtualtext
+function H.toggle_virtual_text()
+  local current = vim.diagnostic.config() or {}
+  if current.virtual_lines then
+    vim.diagnostic.config({
+      virtual_text = last_virtualtext or current.virtual_text,
+      virtual_lines = false,
+    })
+  else
+    last_virtualtext = current.virtual_text
+    vim.diagnostic.config({
+      virtual_text = { current_line = false },
+      virtual_lines = { current_line = true },
+    })
+  end
+end
+
 ---@param dir "forward"|"backward"
 ---@param fallback string
 function H.jump_quickfix(dir, fallback)
@@ -75,8 +92,7 @@ end
 ---@param dir "forward"|"backward"|"first"|"last"
 ---@param severity vim.diagnostic.SeverityName?
 function H.jump_diagnostic(dir, severity)
-  local float = not vim.diagnostic.config().virtual_lines
-  require("mini.bracketed").diagnostic(dir, { float = float, severity = severity })
+  require("mini.bracketed").diagnostic(dir, { float = false, severity = severity })
 end
 
 ---@param picker string
