@@ -24,6 +24,8 @@ follows <https://www.conventionalcommits.org/en/v1.0.0/> to track changes.
   - (**breaking**) Remap `<LocalLeader>d` to `<LocalLeader>D` (it toggles all
     diagnostics).
   - Use `<LocalLeader>d` to toggle `virtual_text`.
+- (**breaking**) Revert the default colorscheme to gruvbox-material.
+  gruvbox-carbon is a bit too dark, and the contrast ratio is too high 🙃
 
 <!-- prettier-ignore-start -->
 <!-- prettier-ignore-end -->

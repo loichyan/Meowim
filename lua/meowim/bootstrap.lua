@@ -49,7 +49,7 @@ end
 deps.add("loichyan/meow.nvim")
 deps.now(function()
   -- Configure the preferred colorscheme
-  vim.cmd.colorscheme("base16-gruvbox-carbon")
+  vim.cmd.colorscheme("base16-gruvbox-material")
   local cache_token = function() return require("meowim.cache_token") end
   require("meow").setup({
     specs = { import = "meowim.plugins" },
