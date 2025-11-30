@@ -38,7 +38,7 @@ else
 
     base08 = "#9d0006",
     base09 = "#af3a03",
-    base0A = "#b57614",
+    base0A = "#a26700",
     base0B = "#79740e",
     base0C = "#427b58",
     base0D = "#076678",
