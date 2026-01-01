@@ -123,7 +123,7 @@ end
 function H.pick_word(scope, grep_opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
   local pattern = vim.fn.expand("<cword>")
-  pattern = pattern == "" and pattern or Meowim.utils.prompt("Search word: ")
+  pattern = pattern ~= "" and pattern or Meowim.utils.prompt("Search word: ")
 
   local default_grep_opts = { pattern = pattern, globs = globs, tool = "rg" }
   grep_opts = vim.tbl_extend("force", default_grep_opts, grep_opts or {})
