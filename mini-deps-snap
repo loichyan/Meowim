@@ -1,16 +1,17 @@
 return {
-  ["conform.nvim"] = "a0ab60ed666c56b37fd7ed1847d2ac52f2482ce0",
+  ["blink.cmp"] = "b19413d214068f316c78978b08264ed1c41830ec",
+  ["conform.nvim"] = "4b713b9da0061a54750bfed457e190459be28c7b",
   ["friendly-snippets"] = "572f5660cf05f8cd8834e096d7b4c921ba18e175",
   ["git-conflict.nvim"] = "a1badcd070d176172940eb55d9d59029dad1c5a6",
   ["guess-indent.nvim"] = "84a4987ff36798c2fc1169cbaff67960aed9776f",
-  ["lazydev.nvim"] = "2367a6c0a01eb9edb0464731cc0fb61ed9ab9d2c",
-  ["meow.nvim"] = "9e29271582a75ef3a6ecbc7c657bbeb28f016639",
-  ["mini.nvim"] = "dee23b41ba27bd583f1d19e199738f3bd0236648",
-  ["nvim-lint"] = "ee04d481d4e6089892c2fb2ad8924b1a053591e1",
-  ["nvim-lspconfig"] = "3d97ec4174bcc750d70718ddedabf150536a5891",
-  ["nvim-treesitter"] = "42fc28ba918343ebfd5565147a42a26580579482",
-  ["nvim-treesitter-textobjects"] = "71385f191ec06ffc60e80e6b0c9a9d5daed4824c",
-  ["quicker.nvim"] = "51d3926f183c2d98fbc237cc237ae0926839af3a",
-  ["smart-splits.nvim"] = "67cbc412b83014ea5f92d617471d459714b5e6c7",
-  ["snacks.nvim"] = "bc0630e43be5699bb94dadc302c0d21615421d93"
+  ["lazydev.nvim"] = "5231c62aa83c2f8dc8e7ba957aa77098cda1257d",
+  ["meow.nvim"] = "8d14ac46640c7e2c174f9bbbc8e8373840fe56c9",
+  ["mini.nvim"] = "43ec25063430196d36f5fff5758c9101775f3d57",
+  ["nvim-lint"] = "1f19dacd945a7b1a57f29f32b2d7168384df3d36",
+  ["nvim-lspconfig"] = "41ceb6bba3a40128b7841f5b7f5a9dae7201e823",
+  ["nvim-treesitter"] = "c6dd314086f7b471bf6c9110092a94ce1c06d220",
+  ["nvim-treesitter-textobjects"] = "ecd03f5811eb5c66d2fa420b79121b866feecd82",
+  ["quicker.nvim"] = "771437c3e3672dba9233156e1c2e2fc1888a5fff",
+  ["smart-splits.nvim"] = "1ea2e55bcc0dd2bdec5c5fef0082219f76c532fc",
+  ["snacks.nvim"] = "fe7cfe9800a182274d0f868a74b7263b8c0c020b"
 }

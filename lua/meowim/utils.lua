@@ -53,15 +53,19 @@ function Utils.is_toggle_on(bufnr, key)
   return val == true
 end
 
----Toggles the specified option. The default is always false.
+---Toggles the specified option, returning the newly set state. The default is
+---always false.
 ---@param key string
 ---@param scope? "buffer"|"global"
+---@return boolean
 function Utils.toggle(key, scope)
   if scope == "global" then
     vim.g[key] = not vim.g[key]
+    return vim.g[key]
   else
     local bufnr = vim.api.nvim_get_current_buf()
     vim.b[bufnr][key] = not Utils.is_toggle_on(bufnr, key)
+    return vim.b[bufnr][key]
   end
 end
 
@@ -166,12 +170,9 @@ function Utils.cached_colorscheme(opts)
   -- Defer cache rebuilding to speed up startup
   if cache_token ~= "" then
     vim.schedule(function()
-      -- 2) Dump the highlight groups.
+      -- 2) Write the compiled colorscheme into the cached module.
       colors:write({ compress = true, directory = cache_dir, name = opts.name })
-      -- 3) Re-compile the colorscheme to bytecodes.
-      local bytes = string.dump(assert(loadfile(cache_path)))
-      assert(assert(io.open(cache_path, "w")):write(bytes))
-      -- 4) Save cache tokens
+      -- 3) Save cache tokens
       assert(assert(io.open(cache_token_path, "w")):write(cache_token))
     end)
   end

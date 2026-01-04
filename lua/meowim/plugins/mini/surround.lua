@@ -4,7 +4,7 @@ local Spec = { "mini.surround", event = "LazyFile" }
 Spec.config = function()
   require("mini.surround").setup({
     n_lines = 500,
-    search_method = "cover_or_next",
+    search_method = "cover",
     -- stylua: ignore
     mappings = {
       add            = "yz",

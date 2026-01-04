@@ -4,6 +4,7 @@
 
 ---@class meowim.plugins
 local meowim_plugins = {}
+meowim_plugins["blink-cmp"] = require("meowim.plugins.blink-cmp")
 meowim_plugins["conform"] = require("meowim.plugins.conform")
 meowim_plugins["git-conflict"] = require("meowim.plugins.git-conflict")
 meowim_plugins["guess-indent"] = require("meowim.plugins.guess-indent")
@@ -25,6 +26,7 @@ meowim_plugins_mini["basics"] = require("meowim.plugins.mini.basics")
 meowim_plugins_mini["bracketed"] = require("meowim.plugins.mini.bracketed")
 meowim_plugins_mini["bufremove"] = require("meowim.plugins.mini.bufremove")
 meowim_plugins_mini["clue"] = require("meowim.plugins.mini.clue")
+meowim_plugins_mini["comment"] = require("meowim.plugins.mini.comment")
 meowim_plugins_mini["completion"] = require("meowim.plugins.mini.completion")
 meowim_plugins_mini["diff"] = require("meowim.plugins.mini.diff")
 meowim_plugins_mini["extra"] = require("meowim.plugins.mini.extra")

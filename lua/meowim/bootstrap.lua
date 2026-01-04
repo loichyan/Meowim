@@ -13,7 +13,7 @@ if not vim.uv.fs_stat(mini_path) then
     "git",
     "clone",
     "--filter=blob:none",
-    "https://github.com/echasnovski/mini.nvim",
+    "https://github.com/nvim-mini/mini.nvim",
     mini_path,
   })
   vim.cmd("packadd mini.nvim | helptags ALL")
@@ -49,7 +49,7 @@ end
 deps.add("loichyan/meow.nvim")
 deps.now(function()
   -- Configure the preferred colorscheme
-  vim.cmd.colorscheme("base16-gruvbox-carbon")
+  vim.cmd.colorscheme("base16-gruvbox-material")
   local cache_token = function() return require("meowim.cache_token") end
   require("meow").setup({
     specs = { import = "meowim.plugins" },

@@ -10,12 +10,8 @@ Spec.config = function()
       settings = {
         Lua = {
           completion = { callSnippet = "Replace" },
-          diagnostics = {
-            -- Don't analyze whole workspace, as it can be very slow
-            workspaceDelay = -1,
-          },
           workspace = {
-            -- Don't analyze 3rd party codb
+            -- Don't analyze 3rd party library
             checkThirdParty = false,
             ignoreSubmodules = true,
           },
@@ -29,6 +25,8 @@ Spec.config = function()
     vim.lsp.config(name, config)
     vim.lsp.enable(name)
   end
+  Meow.load("blink.cmp")
+  vim.lsp.config("*", { capabilities = require("blink-cmp").get_lsp_capabilities() })
 end
 
 return Spec

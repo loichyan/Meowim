@@ -61,6 +61,23 @@ end
 --- PICKERS & DIAGNOSTICS ---
 -----------------------------
 
+local last_virtualtext
+function H.toggle_virtual_text()
+  local current = vim.diagnostic.config() or {}
+  if current.virtual_lines then
+    vim.diagnostic.config({
+      virtual_text = last_virtualtext or current.virtual_text,
+      virtual_lines = false,
+    })
+  else
+    last_virtualtext = current.virtual_text
+    vim.diagnostic.config({
+      virtual_text = { current_line = false },
+      virtual_lines = { current_line = true },
+    })
+  end
+end
+
 ---@param dir "forward"|"backward"
 ---@param fallback string
 function H.jump_quickfix(dir, fallback)
@@ -75,8 +92,7 @@ end
 ---@param dir "forward"|"backward"|"first"|"last"
 ---@param severity vim.diagnostic.SeverityName?
 function H.jump_diagnostic(dir, severity)
-  local float = not vim.diagnostic.config().virtual_lines
-  require("mini.bracketed").diagnostic(dir, { float = float, severity = severity })
+  require("mini.bracketed").diagnostic(dir, { float = false, severity = severity })
 end
 
 ---@param picker string
@@ -107,10 +123,13 @@ end
 function H.pick_word(scope, grep_opts)
   local globs = scope == "current" and { vim.fn.expand("%") } or nil
   local pattern = vim.fn.expand("<cword>")
+  pattern = pattern ~= "" and pattern or Meowim.utils.prompt("Search word: ")
+
   local default_grep_opts = { pattern = pattern, globs = globs, tool = "rg" }
   grep_opts = vim.tbl_extend("force", default_grep_opts, grep_opts or {})
+  if grep_opts.tool ~= "ast-grep" then grep_opts.pattern = "\\b" .. grep_opts.pattern .. "\\b" end
 
-  local name = string.format("Grep (%s | <cword>)", grep_opts.tool)
+  local name = string.format("Grep (%s | %s)", grep_opts.tool, pattern)
   local opts = { source = { name = name } }
   require("mini.pick").registry.grep(grep_opts, opts)
 end

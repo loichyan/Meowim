@@ -11,7 +11,11 @@ Spec.config = function()
       event = "FileType",
       pattern = "minifiles",
       desc = "Improve motions in the explorer",
-      command = "setlocal iskeyword-=_",
+      callback = function()
+        vim.opt_local.iskeyword:remove("_")
+        vim.keymap.set("n", "<C-b>", "<Left>", { buffer = true })
+        vim.keymap.set("n", "<C-f>", "<Right>", { buffer = true })
+      end,
     },
   })
 end

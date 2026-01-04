@@ -93,13 +93,7 @@ function H.active()
   local in_progress = git_summary.in_progress or ""
   if in_progress ~= "" then project = project .. "|" .. in_progress end
 
-  add("gitcommitBranch", " " .. project)
-
-  -----------------------
-  --- Macro Recording ---
-  -----------------------
-  local macro_rec = vim.fn.reg_recording()
-  if macro_rec ~= "" then add("Function", "󰵝 Recording @" .. macro_rec) end
+  add("MiniStatuslineProject", project)
 
   -----------------------------
   --- Workspace diagnostics ---
@@ -139,7 +133,15 @@ function H.active()
   --- Cmdline Messages  ---
   -------------------------
   add("", "%<%=") -- End left section
-  add("", vim.o.showcmdloc == "statusline" and "%S" or "") -- 'showcmd'
+
+  -- keystrokes/selection
+  if vim.o.showcmdloc == "statusline" then add("", "%S") end
+
+  local searchcount = MiniStatusline.section_searchcount({})
+  if searchcount ~= "" then add("String", " " .. searchcount) end
+
+  local macro_rec = vim.fn.reg_recording()
+  if macro_rec ~= "" then add("Function", "󰵝 @" .. macro_rec) end
 
   ------------------
   --- File infos ---
@@ -148,10 +150,7 @@ function H.active()
   add("", MiniStatusline.section_lsp({ trunc_width = 100 }))
   add("", MiniStatusline.section_fileinfo({ trunc_width = 120 }))
 
-  local searchcount = MiniStatusline.section_searchcount({})
-  if searchcount ~= "" then add("String", " Search " .. searchcount) end
-
-  add("Constant", "%3l|%2v")
+  add("MiniStatuslineCursor", "%3l|%2v")
 
   add(mode_hl, " %##")
 

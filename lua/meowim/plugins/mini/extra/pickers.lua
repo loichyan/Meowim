@@ -247,7 +247,7 @@ end
 
 ---Grep with ast-grep.
 ---@param local_opts? {tool:string,pattern?:string,globs?:string[]}
--- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1328>
+-- NOTE: copi-pasted from <https://github.com/nvim-mini/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1328>
 function H.ast_grep(local_opts, opts)
   local tool = "ast-grep"
   local_opts = vim.tbl_extend("force", { pattern = nil, globs = {} }, local_opts or {})
@@ -266,7 +266,7 @@ end
 
 ---Grep live with ast-grep.
 ---@param local_opts? {tool:string,globs?:string[]}
--- NOTE: copi-pasted from <https://github.com/echasnovski/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1364>
+-- NOTE: copi-pasted from <https://github.com/nvim-mini/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1364>
 function H.ast_grep_live(local_opts, opts)
   local tool = "ast-grep"
   local_opts = vim.tbl_extend("force", { globs = {} }, local_opts or {})

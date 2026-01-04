@@ -16,10 +16,12 @@ Meow.keymap({
   { "<Leader>E",           function() H.plugins.mini.files.open("workspace") end,                                  desc = "Explore workspace root"            },
 
   -- Toggles
-  { "<LocalLeader>k",      function() H.utils.toggle("minicompletion_disable", "global") end,                      desc = "Toggle completion"                 },
-  { "<LocalLeader>K",      function() H.utils.toggle("minicompletion_disable", "buffer") end,                      desc = "Toggle completion globally"        },
-  { "<LocalLeader>f",      function() H.utils.toggle("autoformat_disabled", "global") end,                         desc = "Toggle autoformat"                 },
-  { "<LocalLeader>F",      function() H.utils.toggle("autoformat_disabled", "buffer") end,                         desc = "Toggle autoformat globally"        },
+  { "<LocalLeader>d",      function() H.toggle_virtual_text() end,                                                 desc = "Toggle virtual text"               },
+  { "<LocalLeader>D",      function() require("mini.basics").toggle_diagnostic() end,                              desc = "Toggle diagnostic"                 },
+  { "<LocalLeader>k",      function() H.utils.toggle("completion_disable", "buffer") end,                          desc = "Toggle completion"                 },
+  { "<LocalLeader>K",      function() H.utils.toggle("completion_disable", "global") end,                          desc = "Toggle completion globally"        },
+  { "<LocalLeader>f",      function() H.utils.toggle("autoformat_disable", "buffer") end,                          desc = "Toggle autoformat"                 },
+  { "<LocalLeader>F",      function() H.utils.toggle("autoformat_disable", "global") end,                          desc = "Toggle autoformat globally"        },
   { "<LocalLeader>q",      function() require("quicker").toggle() end,                                             desc = "Toggle quickfix"                   },
   { "<LocalLeader>v",      "<Cmd>lua vim.wo.conceallevel = 2 - vim.wo.conceallevel<CR>",                           desc = "Toggle conceallevel"               },
 
@@ -139,48 +141,6 @@ Meow.keymap({
   { "<Leader>fU",          function() H.pick("colorschemes") end,                                                  desc = "Pick colorschemes"                 },
   { "<Leader>fr",          function() H.pick("registers") end,                                                     desc = "Pick registers"                    },
   { "<Leader>fR",          function() H.pick("resume") end,                                                        desc = "Resume picker"                     },
-  { "<Leader>fw",          function() H.pick_word("current", {tool="ast-grep"}) end,                               desc = "Grep buffer <cword>"               },
-  { "<Leader>fW",          function() H.pick_word("all", {tool="ast-grep"}) end,                                   desc = "Grep workspace <cword>"            },
-})
-
--- stylua: ignore
-local lsp_keymaps = {
-  { "K",                   function() vim.lsp.buf.hover() end,     has = "textDocument/hover",                     desc = "Show documentation"                },
-  { "gd",                  function() H.lsp_definition() end,      has = "textDocument/definition",                desc = "Goto definition"                   },
-  { "gD",                  function() H.lsp_type_definition() end, has = "textDocument/typeDefinition",            desc = "Goto type definition"              },
-
-  { "]r",                  function() require("snacks.words").jump( vim.v.count1, true) end,                       desc = "Reference forward"                 },
-  { "[r",                  function() require("snacks.words").jump(-vim.v.count1, true) end,                       desc = "Reference backward"                },
-
-  { "<Leader>la",          function() vim.lsp.buf.code_action() end, mode = nx,                                    desc = "List code actions"                 },
-  { "<Leader>lf",          function() require("conform").format() end, mode = nx,                                  desc = "Format buffer"                     },
-  { "<Leader>ln",          function() vim.lsp.buf.rename() end,                                                    desc = "Rename cursor symbol"              },
-  { "<Leader>li",          function() H.lsp_implementation("current") end,                                         desc = "List buffer implementations"       },
-  { "<Leader>lI",          function() H.lsp_implementation("all") end,                                             desc = "List workspace implementations"    },
-  { "<Leader>lr",          function() H.lsp_references("current") end,                                             desc = "List buffer references"            },
-  { "<Leader>lR",          function() H.lsp_references("all") end,                                                 desc = "List workspace references"         },
-  { "<Leader>ls",          function() H.pick("lsp", {scope="document_symbol"}) end,                                desc = "Pick buffer symbols"               },
-  { "<Leader>lS",          function() H.pick("lsp", {scope="workspace_symbol"}) end,                               desc = "Pick workspace symbols"            },
-}
-
-Meow.autocmd("meowim.config.keymaps", {
-  {
-    event = "LspAttach",
-    desc = "Setup LSP specified keymaps",
-    callback = function(ev)
-      local client = vim.lsp.get_client_by_id(ev.data.client_id)
-      if not client then return end
-
-      local specs, bufnr = {}, ev.buf
-      for _, spec in ipairs(lsp_keymaps) do
-        -- Setup conditional keymaps only if the client supports it
-        if spec.has and client:supports_method(spec.has, bufnr) then
-          spec = vim.deepcopy(spec)
-          spec.has = nil
-        end
-        if not spec.has then table.insert(specs, spec) end
-      end
-      Meow.keymap(bufnr, specs)
-    end,
-  },
+  { "<Leader>fw",          function() H.pick_word("current") end,                                                  desc = "Grep buffer <cword>"               },
+  { "<Leader>fW",          function() H.pick_word("all") end,                                                      desc = "Grep workspace <cword>"            },
 })

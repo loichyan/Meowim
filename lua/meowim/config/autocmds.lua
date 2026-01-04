@@ -22,6 +22,23 @@ local rulers = {
 
 Meow.autocmd("meowim.config.autocmds", {
   {
+    event = "LspAttach",
+    desc = "Setup LSP related options and keymaps",
+    callback = function(ev)
+      local client = vim.lsp.get_client_by_id(ev.data.client_id)
+      if not client then return end
+      local bufnr, winnr = vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win()
+
+      -- Prefer LSP backed folds if possible
+      if client:supports_method("textDocument/foldingRange") then
+        vim.wo[winnr][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+      end
+
+      require("meowim.config.keymaps_lsp").setup(bufnr, client)
+    end,
+  },
+
+  {
     event = "FileType",
     desc = "Tweak trivial buffers",
     callback = function(ev)
@@ -34,6 +51,7 @@ Meow.autocmd("meowim.config.autocmds", {
       })
     end,
   },
+
   {
     event = "FileType",
     desc = "Configure rulers",
@@ -46,6 +64,7 @@ Meow.autocmd("meowim.config.autocmds", {
       if ft == "markdown" then vim.opt_local.wrap = true end
     end,
   },
+
   {
     event = "FileType",
     pattern = "gitcommit",
@@ -54,6 +73,7 @@ Meow.autocmd("meowim.config.autocmds", {
       vim.keymap.set("n", "<C-y>", "<Cmd>x<CR>", { buffer = ev.buf, desc = "Confirm editing" })
     end,
   },
+
   -- See <https://stackoverflow.com/a/6728687>
   {
     event = "FileType",
@@ -61,6 +81,7 @@ Meow.autocmd("meowim.config.autocmds", {
     desc = "Move quickfix window to very bottom",
     command = "wincmd J",
   },
+
   -- Taken from <https://github.com/neovim/neovim/issues/12374#issuecomment-2121867087>
   {
     event = "ModeChanged",
