@@ -36,13 +36,13 @@ Spec.config = function()
 end
 
 ---Shows preview at center.
-function H.center_preview(bufnr, item, opts)
+H.center_preview = function(bufnr, item, opts)
   opts = vim.tbl_extend("force", { line_position = "center" }, opts or {})
   return MiniPick.default_preview(bufnr, item, opts)
 end
 
 ---Shows all selected items in the quickfix list.
-function H.open_quickfix()
+H.open_quickfix = function()
   local matches = MiniPick.get_picker_matches()
   if not matches then return end
 

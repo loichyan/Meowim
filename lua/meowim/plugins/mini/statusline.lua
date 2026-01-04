@@ -40,7 +40,7 @@ H.diagnostic_sections = {
 -- Eviline-like statusline
 H.last_active = {} -- track last visited buffer
 H.git_summary = {} -- cache git summary per cwd
-function H.active()
+H.active = function()
   local groups = {}
   local add = function(hi, string)
     if string == "" then
@@ -158,7 +158,7 @@ function H.active()
 end
 
 H.diagnostic_counts = {}
-function H.track_diagnostics()
+H.track_diagnostics = function()
   H.diagnostic_counts = {}
   for _, diag in ipairs(vim.diagnostic.get()) do
     H.diagnostic_counts[diag.severity] = (H.diagnostic_counts[diag.severity] or 0) + 1

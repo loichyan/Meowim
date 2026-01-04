@@ -57,7 +57,7 @@ Spec.config = function()
 end
 
 ---Returns a best-fit width based on the contents and the screen width.
-function H.smart_width(bufnr)
+H.smart_width = function(bufnr)
   local textwidth = 0
   for _, l in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
     textwidth = math.max(textwidth, vim.fn.strdisplaywidth(l))

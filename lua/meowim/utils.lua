@@ -3,13 +3,13 @@ local Utils = {}
 ---Wraps the given function with a new one.
 ---@param old function
 ---@param new function
-function Utils.wrap_fn(old, new)
+Utils.wrap_fn = function(old, new)
   return function(...) return new(old, ...) end
 end
 
 ---Asks user for a input.
 ---@param opts? {mode:"str"|"char"}
-function Utils.prompt(prompt, opts)
+Utils.prompt = function(prompt, opts)
   local mode = (opts or {}).mode or "str"
 
   local ok, msg
@@ -30,14 +30,14 @@ function Utils.prompt(prompt, opts)
 end
 
 ---Closes current window if possible, otherwise current buffer.
-function Utils.try_close()
+Utils.try_close = function()
   if not pcall(vim.cmd.close) then require("mini.bufremove").delete() end
 end
 
 ---Returns the top level path if the specified directory is inside a repository.
 ---@param cwd string?
 ---@return string?
-function Utils.get_git_repo(cwd)
+Utils.get_git_repo = function(cwd)
   cwd = cwd or vim.fn.getcwd()
   local ok, p = pcall(vim.system, { "git", "rev-parse", "--show-toplevel" }, { cwd = cwd })
   local rev = ok and vim.trim(p:wait().stdout)
@@ -47,7 +47,7 @@ end
 ---Returns the state of a toggler of current buffer.
 ---@param bufnr integer
 ---@param key string
-function Utils.is_toggle_on(bufnr, key)
+Utils.is_toggle_on = function(bufnr, key)
   local val = vim.b[bufnr][key]
   if val == nil then val = vim.g[key] end
   return val == true
@@ -58,7 +58,7 @@ end
 ---@param key string
 ---@param scope? "buffer"|"global"
 ---@return boolean
-function Utils.toggle(key, scope)
+Utils.toggle = function(key, scope)
   if scope == "global" then
     vim.g[key] = not vim.g[key]
     return vim.g[key]
@@ -72,7 +72,7 @@ end
 ---Jumps to the first item if it is the only one. Otherwise, lists all items in
 ---quickfix.
 ---@param opts vim.lsp.LocationOpts.OnList
-function Utils.loclist_or_jump(opts)
+Utils.loclist_or_jump = function(opts)
   if #opts.items > 1 then
     ---@diagnostic disable-next-line: param-type-mismatch
     vim.fn.setqflist({}, " ", opts)
@@ -95,7 +95,7 @@ end
 
 ---Lists only items of current buffer.
 ---@param opts vim.lsp.LocationOpts.OnList
-function Utils.loclist_buf(opts)
+Utils.loclist_buf = function(opts)
   local bufnr = vim.api.nvim_get_current_buf()
   local bufname = vim.api.nvim_buf_get_name(bufnr)
   opts.items = vim.tbl_filter(
@@ -107,7 +107,7 @@ end
 
 ---Lists only the first one of items locate in consecutive lines.
 ---@param opts vim.lsp.LocationOpts.OnList
-function Utils.loclist_unique(opts)
+Utils.loclist_unique = function(opts)
   local items = opts.items
   table.sort(items, function(a, b)
     if a.filename ~= b.filename then
@@ -140,7 +140,7 @@ end
 ---@field setup fun():table?
 
 ---@param opts meowim.utils.cached_colorscheme.options
-function Utils.cached_colorscheme(opts)
+Utils.cached_colorscheme = function(opts)
   local cache_dir = vim.fn.stdpath("cache") .. "/colors/"
   local cache_path = cache_dir .. opts.name .. ".lua"
   local cache_token_path = cache_dir .. opts.name .. "_cache"
@@ -182,7 +182,7 @@ end
 ---@param color string
 ---@param delta number
 ---@return string
-function Utils.lighten(color, delta)
+Utils.lighten = function(color, delta)
   return require("mini.colors").modify_channel(color, "lightness", function(x)
     if math.abs(delta) < 1 then
       return x + delta * x

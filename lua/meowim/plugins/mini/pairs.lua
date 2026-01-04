@@ -34,7 +34,7 @@ end
 ---@param open function
 ---@param pair string
 ---@param neigh_pattern string
-function H.smart_pairs(open, pair, neigh_pattern)
+H.smart_pairs = function(open, pair, neigh_pattern)
   if vim.fn.getcmdline() ~= "" then return open(pair, neigh_pattern) end
 
   local op, cl = pair:sub(1, 1), pair:sub(2, 2)
@@ -73,7 +73,7 @@ end
 ---@param op string # open character
 ---@param cl string # close character
 ---@return integer,integer # count of open and close characters
-function H.count_unlanced(line, op, cl)
+H.count_unlanced = function(line, op, cl)
   local no, nc = 0, 0
   for i = 1, #line do
     local ch = line:sub(i, i)

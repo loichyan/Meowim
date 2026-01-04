@@ -23,7 +23,7 @@ local lsp_keyaps = {
   { "<Leader>lS",          function() H.pick("lsp", {scope="workspace_symbol"}) end,                               desc = "Pick workspace symbols"            },
 }
 
-function M.setup(bufnr, client)
+M.setup = function(bufnr, client)
   local specs = {}
   for _, spec in ipairs(lsp_keyaps) do
     -- Setup conditional keymaps only if the client supports it

@@ -28,7 +28,7 @@ Spec.config = function()
   })
 end
 
-function H.ensure_installed()
+H.ensure_installed = function()
   local ensure_installed = {
     "bash",
     "c",
@@ -47,7 +47,7 @@ function H.ensure_installed()
   require("nvim-treesitter").install(ensure_installed):await(H.update_installed)
 end
 
-function H.setup_parser(ev)
+H.setup_parser = function(ev)
   local parser = vim.treesitter.language.get_lang(ev.match)
   if not H.is_available(parser) then return end
 
@@ -62,7 +62,7 @@ function H.setup_parser(ev)
   end)
 end
 
-function H.with_parser(parser, callback)
+H.with_parser = function(parser, callback)
   if not H.installed then H.update_installed() end
 
   if H.installed[parser] == nil then
@@ -80,14 +80,14 @@ function H.with_parser(parser, callback)
   end
 end
 
-function H.update_installed()
+H.update_installed = function()
   H.installed = H.installed or {}
   for _, p in ipairs(require("nvim-treesitter.config").get_installed("parsers")) do
     H.installed[p] = true
   end
 end
 
-function H.is_available(parser)
+H.is_available = function(parser)
   if not H.available then
     H.available = {}
     for _, p in ipairs(require("nvim-treesitter.config").get_available()) do

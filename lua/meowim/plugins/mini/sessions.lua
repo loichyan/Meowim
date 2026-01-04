@@ -1,6 +1,6 @@
 ---@type MeoSpec
 local Spec = { "mini.sessions", event = "VeryLazy" }
-local M = {}
+local M = { Spec }
 
 Spec.config = function()
   require("mini.sessions").setup({
@@ -21,13 +21,13 @@ end
 ---Returns the name of current session if valid.
 ---@param cwd string?
 ---@return string?
-function M.get_name(cwd)
+M.get_name = function(cwd)
   local repo = Meowim.utils.get_git_repo(cwd)
   return repo and vim.fs.basename(repo)
 end
 
 ---Saves the current session.
-function M.save()
+M.save = function()
   local cwd = vim.fn.getcwd()
   local name = M.get_name(cwd)
   if not name then return end
@@ -42,18 +42,17 @@ function M.save()
 end
 
 ---Restores the current session.
-function M.restore()
+M.restore = function()
   local name = M.get_name()
   if not name then return end
   require("mini.sessions").read(name, { force = false, verbose = false })
 end
 
 ---Deletes the current session.
-function M.delete()
+M.delete = function()
   local name = M.get_name()
   if not name then return end
   require("mini.sessions").write(name, { force = true, verbose = false })
 end
 
-M[1] = Spec
 return M

@@ -1,6 +1,6 @@
 ---@type MeoSpec
 local Spec = { "mini.misc", event = "VeryLazy" }
-local M = {}
+local M = { Spec }
 
 Spec.config = function()
   local minimisc = require("mini.misc")
@@ -19,11 +19,10 @@ Spec.config = function()
 end
 
 ---Zooms in/out current buffer.
-function M.zoom()
+M.zoom = function()
   local title = " Zoom |" .. vim.fn.expand(".") .. " "
   if not require("mini.misc").zoom(0, { title = title }) then return end
   vim.wo.winhighlight = "NormalFloat:Normal"
 end
 
-M[1] = Spec
 return M

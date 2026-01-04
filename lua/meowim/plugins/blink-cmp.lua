@@ -100,12 +100,12 @@ Spec.config = function()
   })
 end
 
-function H.pair_cr()
+H.pair_cr = function()
   vim.api.nvim_feedkeys(require("mini.pairs").cr(), "n", false)
   return true
 end
 
-function H.select_and_pair(cmp)
+H.select_and_pair = function(cmp)
   if cmp.is_active() and not cmp.get_selected_item_idx() then cmp.insert_next() end
   vim.schedule(function()
     cmp.hide()

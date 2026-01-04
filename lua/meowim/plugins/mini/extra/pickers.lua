@@ -5,7 +5,7 @@ H.ns = vim.api.nvim_create_namespace("meowim.plugins.mini.extra.pickers")
 
 ---Lists files with a sensible picker.
 ---@param local_opts? {hidden:boolean}
-function Pickers.smart_files(local_opts, opts)
+Pickers.smart_files = function(local_opts, opts)
   local_opts = vim.tbl_extend("force", { hidden = false }, local_opts or {})
   local cwd = vim.fn.getcwd()
   local command, postprocess
@@ -33,7 +33,7 @@ end
 
 ---Lists Git conflicts.
 ---@param local_opts? {tool:string}
-function Pickers.git_conflicts(local_opts, opts)
+Pickers.git_conflicts = function(local_opts, opts)
   local_opts = vim.tbl_extend("force", {}, local_opts or {})
   local cwd = vim.fn.getcwd()
   opts = vim.tbl_deep_extend("force", {
@@ -49,7 +49,7 @@ end
 
 ---Lists all todo comments of the specified keywords.
 ---@param local_opts? {scope:"current"|"all",keywords:string[]}
-function Pickers.todo(local_opts, opts)
+Pickers.todo = function(local_opts, opts)
   local_opts = vim.tbl_extend("force", { keywords = { "TODO", "FIXME" } }, local_opts or {})
 
   local keywords = table.concat(local_opts.keywords, "|")
@@ -65,7 +65,7 @@ end
 
 ---Lists modified or untracked files.
 -- TODO: contribute to mini.extra
-function Pickers.git_status(local_opts, opts)
+Pickers.git_status = function(local_opts, opts)
   _ = local_opts
 
   local default_preview = function(bufnr, item)
@@ -118,7 +118,7 @@ end
 ---Lists notifications from mini.notify.
 -- TODO: contribute to mini.extra
 ---@param local_opts {sources:string[]}
-function Pickers.notify(local_opts, opts)
+Pickers.notify = function(local_opts, opts)
   local_opts = vim.tbl_extend("force", { sources = { "vim.notify" } }, local_opts or {})
 
   local minintf = require("mini.notify")
@@ -165,7 +165,7 @@ end
 
 ---Lists registered autocmds.
 -- TODO: contribute to mini.extra
-function Pickers.autocmds(local_opts, opts)
+Pickers.autocmds = function(local_opts, opts)
   -- stylua: ignore
   local fields = {
     { "group_name", "%-30s" },
@@ -211,12 +211,12 @@ function Pickers.autocmds(local_opts, opts)
   return MiniPick.start(opts)
 end
 
-function H.get_config()
+H.get_config = function()
   return vim.tbl_deep_extend("force", MiniPick.config, vim.b.minipick_config or {})
 end
 
 ---Shows items with icons.
-function H.show_with_icons(bufnr, items, query, opts)
+H.show_with_icons = function(bufnr, items, query, opts)
   return MiniPick.default_show(
     bufnr,
     items,

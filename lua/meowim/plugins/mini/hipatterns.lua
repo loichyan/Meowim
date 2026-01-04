@@ -19,7 +19,7 @@ end
 ---Returns Lua patterns used to highlight todo comments.
 ---@param keywords string[]
 ---@return string[]
-function H.hitodo(keywords)
+H.hitodo = function(keywords)
   local patterns = {}
   for _, kw in ipairs(keywords) do
     table.insert(patterns, "%s?%f[%w]" .. kw .. ":%s+.+") -- KEYWORD: something

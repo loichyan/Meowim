@@ -1,6 +1,6 @@
 ---@type MeoSpec
 local Spec = { "mini.files", event = "VeryLazy" }
-local M = {}
+local M = { Spec }
 
 Spec.config = function()
   require("mini.files").setup({
@@ -22,7 +22,7 @@ end
 
 ---Opens the explorer at the specified location.
 ---@param scope "buffer"|"workspace"
-function M.open(scope)
+M.open = function(scope)
   local cwd, path = vim.fn.getcwd()
   if scope == "buffer" then
     path = vim.api.nvim_buf_get_name(0)
@@ -32,5 +32,4 @@ function M.open(scope)
   require("mini.files").open(dir)
 end
 
-M[1] = Spec
 return M

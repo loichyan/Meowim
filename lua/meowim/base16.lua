@@ -26,7 +26,7 @@ Base16.options = {
 
 ---Apply a customized mini.base16 colorscheme.
 ---@param opts meowim.base16.options
-function Base16.setup(opts)
+Base16.setup = function(opts)
   local suffix = opts.variant and "-" .. opts.variant or ""
   require("meowim.utils").cached_colorscheme({
     name = opts.name .. suffix,
@@ -47,7 +47,7 @@ end
 ---@param opts meowim.base16.options
 ---@param colors table
 ---@return table
-function Base16.colors_customizations(opts, colors)
+Base16.colors_customizations = function(opts, colors)
   if Base16.transparent then colors = colors:add_transparency() end
 
   local is_dark = opts.variant ~= "light"

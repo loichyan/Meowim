@@ -1,12 +1,12 @@
 ---@type MeoSpec
 local Spec = { "mini.bufremove", lazy = true }
-local M = {}
+local M = { Spec }
 
 Spec.config = function() require("mini.bufremove").setup() end
 
 ---Close other buffers.
 ---@param dir "left"|"right"|"all"
-function M.close_others(dir)
+M.close_others = function(dir)
   local idir = dir == "left" and -1 or dir == "right" and 1 or 0
   local curr = vim.api.nvim_get_current_buf()
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
@@ -19,5 +19,4 @@ function M.close_others(dir)
   end
 end
 
-M[1] = Spec
 return M

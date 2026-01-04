@@ -1,7 +1,7 @@
 local Meowim = {}
 
 local did_setup = false
-function Meowim.setup()
+Meowim.setup = function()
   if did_setup then return end
   did_setup = true
 

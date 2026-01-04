@@ -40,7 +40,7 @@ Spec.config = function()
   })
 end
 
-function H.footer()
+H.footer = function()
   -- Hide statusline
   if not H.prev_laststatus then
     H.prev_laststatus = vim.o.laststatus
