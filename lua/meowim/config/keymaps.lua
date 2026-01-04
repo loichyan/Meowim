@@ -133,8 +133,6 @@ Meow.keymap({
   { "<Leader>fn",          function() H.pick("notify") end,                                                        desc = "Pick notifications"                },
   { "<Leader>fo",          function() H.pick("oldfiles") end,                                                      desc = "Pick recent files"                 },
   { "<Leader>fq",          function() H.pick("list", {scope="quickfix"}) end,                                      desc = "Pick quickfix"                     },
-  { "<Leader>fs",          function() H.pick_lgrep("current", {tool="ast-grep"}) end,                              desc = "Ast-grep current buffer"           },
-  { "<Leader>fS",          function() H.pick_lgrep("all", {tool="ast-grep"}) end,                                  desc = "Ast-grep workspace files"          },
   { "<Leader>ft",          function() H.pick("todo", {scope="current"}) end,                                       desc = "Pick buffer TODOs"                 },
   { "<Leader>fT",          function() H.pick("todo", {scope="all"}) end,                                           desc = "Pick workspace TODOs"              },
   { "<Leader>fu",          function() H.pick("hl_groups") end,                                                     desc = "Pick highlights"                   },

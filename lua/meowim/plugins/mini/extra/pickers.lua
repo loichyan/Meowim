@@ -3,26 +3,6 @@ local H = {}
 
 H.ns = vim.api.nvim_create_namespace("meowim.plugins.mini.extra.pickers")
 
----Grep with ast-grep.
----@param local_opts? {tool:string,pattern?:string,globs?:string[]}
-function Pickers.grep(local_opts, opts)
-  if (local_opts or {}).tool == "ast-grep" then
-    return H.ast_grep(local_opts, opts)
-  else
-    return MiniPick.builtin.grep(local_opts, opts)
-  end
-end
-
----Grep with ast-grep.
----@param local_opts? {tool:string,globs?:string[]}
-function Pickers.grep_live(local_opts, opts)
-  if (local_opts or {}).tool == "ast-grep" then
-    return H.ast_grep_live(local_opts, opts)
-  else
-    return MiniPick.builtin.grep_live(local_opts, opts)
-  end
-end
-
 ---Lists files with a sensible picker.
 ---@param local_opts? {hidden:boolean}
 function Pickers.smart_files(local_opts, opts)
@@ -243,91 +223,6 @@ function H.show_with_icons(bufnr, items, query, opts)
     query,
     vim.tbl_extend("force", { show_icons = true }, opts or {})
   )
-end
-
----Grep with ast-grep.
----@param local_opts? {tool:string,pattern?:string,globs?:string[]}
--- NOTE: copi-pasted from <https://github.com/nvim-mini/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1328>
-function H.ast_grep(local_opts, opts)
-  local tool = "ast-grep"
-  local_opts = vim.tbl_extend("force", { pattern = nil, globs = {} }, local_opts or {})
-
-  local globs = local_opts.globs or {}
-  local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
-  local show = H.get_config().source.show or H.show_with_icons
-  local default_source = { name = string.format("Grep (%s%s)", tool, name_suffix), show = show }
-  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
-
-  local pattern = type(local_opts.pattern) == "string" and local_opts.pattern
-    or vim.fn.input("Grep pattern: ")
-  local command, postprocess = H.ast_grep_command(pattern, globs)
-  return MiniPick.builtin.cli({ command = command, postprocess = postprocess }, opts)
-end
-
----Grep live with ast-grep.
----@param local_opts? {tool:string,globs?:string[]}
--- NOTE: copi-pasted from <https://github.com/nvim-mini/mini.nvim/blob/c122e852517adaf7257688e435369c050da113b1/lua/mini/pick.lua#L1364>
-function H.ast_grep_live(local_opts, opts)
-  local tool = "ast-grep"
-  local_opts = vim.tbl_extend("force", { globs = {} }, local_opts or {})
-
-  local globs = local_opts.globs or {}
-  local name_suffix = #globs == 0 and "" or (" | " .. table.concat(globs, ", "))
-  local default_source = {
-    name = string.format("Grep live (%s%s)", tool, name_suffix),
-    show = (H.get_config().source or {}).show or H.show_with_icons,
-  }
-  opts = vim.tbl_deep_extend("force", { source = default_source }, opts or {})
-
-  local cwd = opts.source.cwd or vim.fn.getcwd()
-  local set_items_opts = { do_match = false, querytick = MiniPick.get_querytick() }
-  local spawn_opts = { cwd = cwd }
-  local process
-  local match = function(_, _, query)
-    pcall(vim.loop.process_kill, process)
-    local querytick = MiniPick.get_querytick()
-    if querytick == set_items_opts.querytick then return end
-    if #query == 0 then return MiniPick.set_picker_items({}, set_items_opts) end
-
-    set_items_opts.querytick = querytick
-    local command, postprocess = H.ast_grep_command(table.concat(query), globs)
-    local cli_opts =
-      { postprocess = postprocess, set_items_opts = set_items_opts, spawn_opts = spawn_opts }
-    process = MiniPick.set_picker_items_from_cli(command, cli_opts)
-  end
-
-  opts = vim.tbl_deep_extend("force", opts or {}, { source = { items = {}, match = match } })
-  return MiniPick.start(opts)
-end
-
----@param pattern string
----@param globs string[]
--- TODO: contribute to mini.pick
-function H.ast_grep_command(pattern, globs)
-  local res =
-    { "ast-grep", "run", "--color=never", "--context=0", "--json=stream", "--pattern", pattern }
-  for _, g in ipairs(globs) do
-    table.insert(res, "--globs")
-    table.insert(res, g)
-  end
-  local postprocess = function(lines)
-    local items = {}
-    for _, line in ipairs(lines) do
-      if line == "" then break end
-      local raw = vim.json.decode(line)
-      local item = {
-        path = raw.file,
-        lnum = raw.range.start.line + 1,
-        col = raw.range.start.column + 1,
-        lnum_end = raw.range["end"].line + 1,
-        col_end = raw.range["end"].column + 1,
-      }
-      item.text = string.format("%s|%s|%s|%s", item.path, item.lnum, item.col, raw.lines)
-      table.insert(items, item)
-    end
-    return items
-  end
-  return res, postprocess
 end
 
 return Pickers
