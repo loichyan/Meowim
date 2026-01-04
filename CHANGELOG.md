@@ -126,6 +126,6 @@ updates include:
 [20250731]: https://github.com/loichyan/Meowim/tree/v20250731
 [20250809]: https://github.com/loichyan/Meowim/compare/v20250731..v20250809
 [20250828]: https://github.com/loichyan/Meowim/compare/v20250809..v20250828
-[20260104]: https://github.com/loichyan/Meowim/compare/v20250828..v20260101
-[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260101..HEAD
+[20260104]: https://github.com/loichyan/Meowim/compare/v20250828..v20260104
+[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260104..HEAD
 <!-- prettier-ignore-end -->
