@@ -10,24 +10,35 @@ follows <https://www.conventionalcommits.org/en/v1.0.0/> to track changes.
 
 ## [Unreleased]
 
-- (**breaking**) Replace mini.completion with blink.cmp. mini.completion
-  generally performs well, but some LSP servers can be problematic. For example,
-  clangd might insert extra leading characters, while ts_ls may occasionally
-  lose completions or fail to respond to autocompletion requests.
-  mini.completion expects servers to follow the LSP specification, but a server
-  might be implemented with a different interpretation, leading to
+## [20260104]
+
+This release includes several significant changes to the editing experience and
+UI enhancements. Here are some notable updates:
+
+- (**breaking**, [a54b2e8]) Migrate to 'main' branch of nvim-treesitter and
+  related plugins.
+- (**breaking**, [c91e011]) Replace mini.completion with blink.cmp.
+  mini.completion generally performs well, but some LSP servers can be
+  problematic. For example, clangd might insert extra leading characters, while
+  ts_ls may occasionally lose completions or fail to respond to autocompletion
+  requests. mini.completion expects servers to follow the LSP specification, but
+  a server might be implemented with a different interpretation, leading to
   incompatibility with mini.completion. blink.cmp includes several
   [hacks](https://github.com/saghen/blink.cmp/tree/v1.7.0/lua/blink/cmp/sources/lsp/hacks)
   to make those servers function out of the box. So, let’s focus more on editing
-  and less on the editor.
-- Add keymaps to toggle `virtual_text`.
+  and less on the editor 😊
+- ([275d32d]) Add keymaps to toggle `virtual_text`.
   - (**breaking**) Remap `<LocalLeader>d` to `<LocalLeader>D` (it toggles all
     diagnostics).
   - Use `<LocalLeader>d` to toggle `virtual_text`.
-- (**breaking**) Revert the default colorscheme to gruvbox-material.
+- (**breaking**, [bd6e630]) Revert the default colorscheme to gruvbox-material.
   gruvbox-carbon is a bit too dark, and the contrast ratio is too high 🙃
 
 <!-- prettier-ignore-start -->
+[a54b2e8]: https://github.com/loichyan/Meowim/commit/a54b2e8f2be0544601cba5a7e816f31585570338
+[c91e011]: https://github.com/loichyan/Meowim/commit/c91e011cbc395cab766b06ba2dae158c0078e3bf
+[275d32d]: https://github.com/loichyan/Meowim/commit/275d32d94211f1c21d8b4c4e2ab0f31aa3a3764c
+[bd6e630]: https://github.com/loichyan/Meowim/commit/bd6e63098bad8f792f55fbdbde64da2f515f6a1f
 <!-- prettier-ignore-end -->
 
 ## [20250828]
@@ -115,5 +126,6 @@ updates include:
 [20250731]: https://github.com/loichyan/Meowim/tree/v20250731
 [20250809]: https://github.com/loichyan/Meowim/compare/v20250731..v20250809
 [20250828]: https://github.com/loichyan/Meowim/compare/v20250809..v20250828
-[Unreleased]: https://github.com/loichyan/Meowim/compare/v20250828..HEAD
+[20260104]: https://github.com/loichyan/Meowim/compare/v20250828..v20260101
+[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260101..HEAD
 <!-- prettier-ignore-end -->
