@@ -3,9 +3,24 @@ local Spec = { "mini.sessions", event = "VeryLazy" }
 local M = { Spec }
 
 Spec.config = function()
+  vim.opt.sessionoptions:append("globals")
   require("mini.sessions").setup({
     autoread = false,
     autowrite = false,
+    hooks = {
+      pre = {
+        write = function()
+          Meow.load("scope.nvim")
+          vim.cmd("ScopeSaveState")
+        end,
+      },
+      post = {
+        read = function()
+          Meow.load("scope.nvim")
+          vim.cmd("ScopeLoadState")
+        end,
+      },
+    },
   })
 
   Meow.autocmd("meowim.plugins.mini.sessions", {
