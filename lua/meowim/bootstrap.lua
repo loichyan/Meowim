@@ -50,11 +50,10 @@ deps.add("loichyan/meow.nvim")
 deps.now(function()
   -- Configure the preferred colorscheme
   vim.cmd.colorscheme("base16-gruvbox-material")
-  local cache_token = function() return require("meowim.cache_token") end
   require("meow").setup({
     specs = { import = "meowim.plugins" },
     -- Enable import caching to reduce I/O loads.
-    import_cache = not vim.env["MEO_DISABLE_CACHE"] and cache_token or nil,
+    import_cache = function() return require("meowim.cache_token") end,
     patch_mini = true,
     enable_snapshot = vim.env["MEO_DISABLE_SNAPSHOT"] == nil,
   })
