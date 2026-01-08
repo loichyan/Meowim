@@ -17,7 +17,6 @@ Spec.config = function()
       stop      = "<C-c>",
     },
   })
-  minisnp.start_lsp_server({ match = false })
 end
 
 return Spec
