@@ -39,9 +39,8 @@ end
 ---@return string?
 Utils.get_git_repo = function(cwd)
   cwd = cwd or vim.fn.getcwd()
-  local ok, p = pcall(vim.system, { "git", "rev-parse", "--show-toplevel" }, { cwd = cwd })
-  local rev = ok and vim.trim(p:wait().stdout)
-  return rev and rev ~= "" and rev or nil
+  local repo = vim.fs.find({ ".git" }, { path = cwd, upward = true })[1]
+  return repo and vim.fn.fnamemodify(repo, ":h") or nil
 end
 
 ---Returns the state of a toggler of current buffer.
