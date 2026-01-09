@@ -26,10 +26,15 @@ M.open = function(scope)
   local cwd, path = vim.fn.getcwd()
   if scope == "buffer" then
     path = vim.api.nvim_buf_get_name(0)
-    path = vim.uv.fs_stat(path) and path or nil
+    local dir = vim.fn.fnamemodify(path, ":h")
+    if vim.uv.fs_stat(path) then
+    elseif vim.uv.fs_stat(dir) then
+      path = dir
+    else
+      path = nil
+    end
   end
-  local dir = path or Meowim.utils.get_git_repo(cwd) or cwd
-  require("mini.files").open(dir)
+  require("mini.files").open(path or Meowim.utils.get_git_repo(cwd) or cwd)
 end
 
 return M
