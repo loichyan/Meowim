@@ -8,9 +8,9 @@ H.plugins = Meowim.plugins
 H.utils = Meowim.utils
 
 H.clear_ui = function()
-  vim.cmd("noh")
   require("quicker").close()
   require("mini.snippets").session.stop()
+  vim.cmd("noh | redrawstatus")
 end
 
 H.git = function(...)
