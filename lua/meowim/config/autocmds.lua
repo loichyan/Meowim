@@ -100,4 +100,13 @@ Meow.autocmd("meowim.config.autocmds", {
       end
     end,
   },
+
+  {
+    event = "BufWritePre",
+    desc = "Ensure directories before writing",
+    callback = function(ev)
+      if not vim.bo[ev.buf].buflisted then return end
+      vim.fn.mkdir(vim.fn.fnamemodify(ev.file, ":h"), "p")
+    end,
+  },
 })
