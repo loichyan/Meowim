@@ -111,7 +111,7 @@ Meow.keymap({
   { "<Leader>lE",          function() H.pick_diagnostics("all",     "ERROR") end,                                  desc = "Pick workspace errors"             },
 
   -- Pickers
-  { "<C-q>",               function() H.pick_quickfix() end,                                                       desc = "Pick quickfix"                     },
+  { "<C-q>",               function() H.pick("list", {scope="quickfix"}) end,                                      desc = "Pick quickfix"                     },
   { "<Leader><Leader>",    function() H.pick("smart_files") end,                                                   desc = "Pick files"                        },
 
   { "<Leader>'",           function() H.pick("marks") end,                                                         desc = "Pick marks"                        },

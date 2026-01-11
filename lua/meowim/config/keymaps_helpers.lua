@@ -90,21 +90,23 @@ H.jump_quickfix = function(dir, fallback)
 end
 
 ---@param dir "forward"|"backward"|"first"|"last"
----@param severity vim.diagnostic.SeverityName?
+---@param severity vim.diagnostic.Severity?
 H.jump_diagnostic = function(dir, severity)
   require("mini.bracketed").diagnostic(dir, { float = false, severity = severity })
 end
 
 ---@param picker string
-H.pick = function(picker, local_opts) require("mini.pick").registry[picker](local_opts) end
-
-H.pick_quickfix = function()
-  require("quicker").close()
-  require("mini.pick").registry.list({ scope = "quickfix" })
+H.pick = function(picker, local_opts)
+  if picker == "list" then
+    require("quicker").close()
+    require("mini.pick").registry.list({ scope = "quickfix" })
+  else
+    require("mini.pick").registry[picker](local_opts)
+  end
 end
 
 ---@param scope "current"|"all"
----@param severity vim.diagnostic.SeverityName?
+---@param severity vim.diagnostic.Severity?
 H.pick_diagnostics = function(scope, severity)
   require("mini.pick").registry.diagnostic({
     scope = scope,
