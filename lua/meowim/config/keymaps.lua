@@ -78,8 +78,8 @@ Meow.keymap({
   { "<Leader>gU",          function() H.git("reset", "-q", "--", "%") end,                                         desc = "Reset buffer index"                },
 
   -- Conflicts
-  { "<Leader>ca",          "<Plug>(git-conflict-both)",                                                            desc = "Accept both changes"               },
-  { "<Leader>cr",          "<Plug>(git-conflict-none)",                                                            desc = "Reject both changes"               },
+  { "<Leader>cb",          "<Plug>(git-conflict-both)",                                                            desc = "Accept both changes"               },
+  { "<Leader>cx",          "<Plug>(git-conflict-none)",                                                            desc = "Reject both changes"               },
   { "<Leader>cc",          "<Plug>(git-conflict-ours)",                                                            desc = "Accept current changes"            },
   { "<Leader>cC",          function() H.git("checkout", "--ours", "--", "%") end,                                  desc = "Accept current buffer changes"     },
   { "<Leader>ci",          "<Plug>(git-conflict-theirs)",                                                          desc = "Accept incoming changes"           },
