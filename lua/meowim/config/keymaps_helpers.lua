@@ -30,6 +30,12 @@ H.git_show_buffer = function()
       rev = vim.fn.fnameescape(rev) -- escape to avoid expansion errors
     end
   end
+  local cur = vim.api.nvim_win_get_cursor(0)
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniGitCommandSplit",
+    once = true,
+    command = string.format("call cursor(%d, %d) | normal! zz", cur[1], cur[2]),
+  })
   H.git("show", rev .. ":%")
 end
 
