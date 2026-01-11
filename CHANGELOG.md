@@ -34,12 +34,10 @@ UI enhancements. Here are some notable updates:
 - (**breaking**, [bd6e630]) Revert the default colorscheme to gruvbox-material.
   gruvbox-carbon is a bit too dark, and the contrast ratio is too high 🙃
 
-<!-- prettier-ignore-start -->
 [a54b2e8]: https://github.com/loichyan/Meowim/commit/a54b2e8f2be0544601cba5a7e816f31585570338
 [c91e011]: https://github.com/loichyan/Meowim/commit/c91e011cbc395cab766b06ba2dae158c0078e3bf
 [275d32d]: https://github.com/loichyan/Meowim/commit/275d32d94211f1c21d8b4c4e2ab0f31aa3a3764c
 [bd6e630]: https://github.com/loichyan/Meowim/commit/bd6e63098bad8f792f55fbdbde64da2f515f6a1f
-<!-- prettier-ignore-end -->
 
 ## [20250828]
 
@@ -74,7 +72,6 @@ keymaps and auto-completion. Noticeable changes are listed below:
   (since they have the same author :heart:) but provides more options for
   customization.
 
-<!-- prettier-ignore-start -->
 [2832af2]: https://github.com/loichyan/Meowim/commit/2832af2a8cf0fea3095fd1817ac8718879b89bb5
 [055071f]: https://github.com/loichyan/Meowim/commit/055071fc367e2a69a2cbf286e28c5919e1304604
 [414b46c]: https://github.com/loichyan/Meowim/commit/414b46c622eccccf644517206ca057672256b653
@@ -83,7 +80,6 @@ keymaps and auto-completion. Noticeable changes are listed below:
 [c74a720]: https://github.com/loichyan/Meowim/commit/c74a72057e86ca7aefd82b306ece75bbd281301d
 [mini.nvim#1938]: https://github.com/echasnovski/mini.nvim/issues/1938
 [mini.nvim#1944]: https://github.com/echasnovski/mini.nvim/issues/1944
-<!-- prettier-ignore-end -->
 
 ## [20250809]
 
@@ -122,10 +118,8 @@ updates include:
   lack good LSP support or for which a LSP server is just too expensive to
   start.
 
-<!-- prettier-ignore-start -->
 [20250731]: https://github.com/loichyan/Meowim/tree/v20250731
 [20250809]: https://github.com/loichyan/Meowim/compare/v20250731..v20250809
 [20250828]: https://github.com/loichyan/Meowim/compare/v20250809..v20250828
 [20260104]: https://github.com/loichyan/Meowim/compare/v20250828..v20260104
 [Unreleased]: https://github.com/loichyan/Meowim/compare/v20260104..HEAD
-<!-- prettier-ignore-end -->
