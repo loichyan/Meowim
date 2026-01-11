@@ -18,10 +18,11 @@ Meow.keymap({
   -- Toggles
   { "<LocalLeader>d",      function() H.toggle_virtual_text() end,                                                 desc = "Toggle virtual text"               },
   { "<LocalLeader>D",      function() require("mini.basics").toggle_diagnostic() end,                              desc = "Toggle diagnostic"                 },
-  { "<LocalLeader>k",      function() H.utils.toggle("completion_disable", "buffer") end,                          desc = "Toggle completion"                 },
-  { "<LocalLeader>K",      function() H.utils.toggle("completion_disable", "global") end,                          desc = "Toggle completion globally"        },
   { "<LocalLeader>f",      function() H.utils.toggle("autoformat_disable", "buffer") end,                          desc = "Toggle autoformat"                 },
   { "<LocalLeader>F",      function() H.utils.toggle("autoformat_disable", "global") end,                          desc = "Toggle autoformat globally"        },
+  { "<LocalLeader>g",      function() require("mini.diff").toggle_overlay(0) end,                                  desc = "Toggle buffer diffs overlay"       },
+  { "<LocalLeader>k",      function() H.utils.toggle("completion_disable", "buffer") end,                          desc = "Toggle completion"                 },
+  { "<LocalLeader>K",      function() H.utils.toggle("completion_disable", "global") end,                          desc = "Toggle completion globally"        },
   { "<LocalLeader>q",      function() require("quicker").toggle() end,                                             desc = "Toggle quickfix"                   },
   { "<LocalLeader>v",      "<Cmd>lua vim.wo.conceallevel = 2 - vim.wo.conceallevel<CR>",                           desc = "Toggle conceallevel"               },
 
@@ -61,21 +62,20 @@ Meow.keymap({
   { "<Leader>qQ",          "<Cmd>let g:minisessions_disable=v:true | quitall<CR>",                                 desc = "Quit Neovim quietly"               },
 
   -- Git
+  { "<Leader>G",           function() require('mini.git').show_at_cursor() end, mode = nx,                                       desc = "Show cursor info"                  },
   { "<Leader>ga",          function() H.git("add", "--", "%") end,                                                 desc = "Add current file to Git"           },
   { "<Leader>gA",          function() H.git_commit("amend") end,                                                   desc = "Amend previous commit"             },
   { "<Leader>gc",          function() H.git_commit("prompt") end,                                                  desc = "Commit changes quick"              },
   { "<Leader>gC",          function() H.git_commit("edit") end,                                                    desc = "Commit changes in buffer"          },
-  { "<Leader>gd",          function() require("mini.diff").toggle_overlay(0) end,                                  desc = "Show buffer diffs overlay"         },
-  -- TODO: enable word diff if the 'diff' treesitter parser adds support it
-  { "<Leader>gD",          function() H.git("diff", "HEAD~" .. vim.v.count) end,                                   desc = "Show workspace diffs"              },
-  { "<Leader>gf",          function() H.pick("git_conflicts") end,                                                 desc = "Pick Git conflicts"                },
-  { "<Leader>gg",          function() require("mini.git").show_at_cursor() end, mode = nx,                         desc = "Show cursor info"                  },
-  { "<Leader>gh",          function() H.pick("git_hunks")   end,                                                   desc = "Pick buffer hunks"                 },
-  { "<Leader>gH",          function() H.git("log", "-p", "--", "%") end,                                           desc = "Show buffer history"               },
-  { "<Leader>gl",          function() H.pick("git_commits") end,                                                   desc = "Pick workspace commits"            },
-  { "<Leader>gL",          function() H.git_show_buffer() end,                                                     desc = "Show buffer of revision"           },
+  { "<Leader>gd",          function() H.git("diff", "HEAD~" .. vim.v.count, "--", "%") end,                        desc = "Diff buffer against HEAD~"         },
+  { "<Leader>gD",          function() H.git("diff", "HEAD~" .. vim.v.count) end,                                   desc = "Diff workspace against HEAD~"      },
+  { "<Leader>gh",          function() H.pick("git_hunks")   end,                                                   desc = "Pick workspace hunks"              },
+  { "<Leader>gl",          function() H.git("log", "-p", "--", "%") end,                                           desc = "Show buffer logs"                  },
+  { "<Leader>gL",          function() H.pick("git_commits") end,                                                   desc = "Pick workspace logs"               },
+  { "<Leader>go",          function() H.git_show_buffer() end,                                                     desc = "Show buffer of revision"           },
   { "<Leader>gs",          function() H.pick("git_status") end,                                                    desc = "Pick Git status"                   },
   { "<Leader>gU",          function() H.git("reset", "-q", "--", "%") end,                                         desc = "Reset buffer index"                },
+  { "<Leader>gx",          function() H.pick("git_conflicts") end,                                                 desc = "Pick Git conflicts"                },
 
   -- Conflicts
   { "<Leader>cb",          "<Plug>(git-conflict-both)",                                                            desc = "Accept both changes"               },
