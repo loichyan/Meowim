@@ -125,9 +125,9 @@ Pickers.notify = function(local_opts, opts)
   local minintf_config = vim.tbl_deep_extend("force", minintf.config, vim.b.mininotify_config or {})
   local format_notif = minintf_config.format or minintf.default_format
 
-  -- Sort from oldest to newest.
+  -- Sort from newest to oldest.
   local notifs = minintf.get_all()
-  table.sort(notifs, function(a, b) return a.ts_update < b.ts_update end)
+  table.sort(notifs, function(a, b) return a.ts_update > b.ts_update end)
 
   local items = {}
   for _, notif in pairs(notifs) do
@@ -139,7 +139,6 @@ Pickers.notify = function(local_opts, opts)
     end
   end
 
-  -- TODO: add highlights
   local default_preview = function(bufnr, item)
     vim.bo[bufnr].buftype = "nofile"
     vim.bo[bufnr].filetype = "nofile"
