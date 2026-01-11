@@ -5,10 +5,10 @@ Spec.config = function()
   require("mini.comment").setup({
     -- stylua: ignore
     mappings = {
-      comment        = 'gc',
-      comment_line   = 'gcc',
-      comment_visual = 'gc',
-      textobject     = 'gc',
+      comment        = "gc",
+      comment_line   = "gcc",
+      comment_visual = "gc",
+      textobject     = "gc",
     },
   })
 

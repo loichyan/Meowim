@@ -27,14 +27,14 @@ Spec.config = function()
   -- stylua: ignore
   Meow.keymap({
     { "ghh", function() return do_cursor("apply") end, expr = true, desc = "Stage cursor hunks" },
-    { "gHh", function() return do_cursor("reset") end, expr = true, desc = "Reset cursor hunks" },
     { "ghH", function() return do_buffer("apply") end,              desc = "Stage buffer hunks" },
+    { "gHh", function() return do_cursor("reset") end, expr = true, desc = "Reset cursor hunks" },
     { "gHH", function() return do_buffer("reset") end,              desc = "Reset buffer hunks" },
 
-    { "[gh", function() require("mini.diff").goto_hunk("prev") end,  mode = nxo, desc = "Hunk backward" },
-    { "[gH", function() require("mini.diff").goto_hunk("first") end, mode = nxo, desc = "Hunk first"    },
-    { "]gh", function() require("mini.diff").goto_hunk("next") end,  mode = nxo, desc = "Hunk forward"  },
-    { "]gH", function() require("mini.diff").goto_hunk("last") end,  mode = nxo, desc = "Hunk last"     },
+    { "[g", function() require("mini.diff").goto_hunk("prev") end,  mode = nxo, desc = "Hunk backward" },
+    { "[G", function() require("mini.diff").goto_hunk("first") end, mode = nxo, desc = "Hunk first"    },
+    { "]g", function() require("mini.diff").goto_hunk("next") end,  mode = nxo, desc = "Hunk forward"  },
+    { "]G", function() require("mini.diff").goto_hunk("last") end,  mode = nxo, desc = "Hunk last"     },
   })
 end
 
