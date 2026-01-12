@@ -17,4 +17,6 @@ o.laststatus = 3 -- Show global statusline
 o.conceallevel = 2 -- Improve rendering for Markdown
 o.relativenumber = true -- Show relative numbers
 
-opt.diffopt:append("algorithm:histogram", "inline:word") -- improve diff mode
+o.jumpoptions = "stack" -- More intuitive jumps
+opt.diffopt:append("algorithm:histogram", "inline:word") -- Improve diff mode
+opt.shortmess:append("A") -- Suppress swapfile warnings
