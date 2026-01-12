@@ -48,13 +48,12 @@ end
 ---@param colors table
 ---@return table
 Base16.colors_customizations = function(opts, colors)
-  if Base16.transparent then colors = colors:add_transparency() end
-
   local is_dark = opts.variant ~= "light"
+  local p = opts.palette
+
   local lighten = function(color, delta)
     return require("meowim.utils").lighten(color, is_dark and delta or -delta)
   end
-  local p = opts.palette
   local get = function(name)
     return colors.groups[name] --[[@as vim.api.keyset.highlight]]
   end
@@ -128,6 +127,7 @@ Base16.colors_customizations = function(opts, colors)
     colors.groups[name] = hl
   end
 
+  -- Terminal colors
   local bright = opts.bright or 0.05
   -- stylua: ignore
   colors.terminal = {
@@ -149,6 +149,7 @@ Base16.colors_customizations = function(opts, colors)
     [15] = p.base07,
   }
 
+  if Base16.transparent then colors = colors:add_transparency() end
   return colors
 end
 

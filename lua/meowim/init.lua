@@ -13,8 +13,9 @@ Meowim.setup = function()
     if not ok then Meow.notifyf("ERROR", "failed to load '%s': %s", mod, err) end
   end
 
-  -- Load options on startup anyway.
+  -- Load options and colorscheme on startup anyway.
   load("meowim.config.options")
+  vim.cmd.colorscheme(vim.g.colors_name or "base16-gruvbox-material")
 
   -- Load autocommands and polishment early if Vim is about to open files.
   local has_file = vim.fn.argc(-1) > 0
