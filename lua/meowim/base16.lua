@@ -79,6 +79,8 @@ Base16.colors_customizations = function(opts, colors)
     "StatusLineTerm",
     "StatusLineNC",
     "StatusLineTermNC",
+    "WinBar",
+    "WinBarNC",
 
     "CursorLineNr",
     "CursorLineSign",
@@ -99,8 +101,8 @@ Base16.colors_customizations = function(opts, colors)
   -- stylua: ignore
   ---@type table<string,vim.api.keyset.highlight>
   local overrides = {
-    ['BlinkCmpLabelDeprecated']   = {fg=p.base05, bg=nil, strikethrough=true},
-    ["FloatTitle"]                = {fg = get("Title").fg, bg= p.base01},
+    ["BlinkCmpLabelDeprecated"]   = {fg=p.base05, strikethrough=true},
+    ["FloatTitle"]                = {fg=get("Title").fg, bg=p.base01},
 
     ["DiffAdd"]                   = {fg=p.base05, bg=lighten(p.base0B, -0.6)},
     ["DiffChange"]                = {fg=p.base05, bg=lighten(p.base0E, -0.6)},
