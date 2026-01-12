@@ -55,17 +55,11 @@ Spec.config = function()
     components = {
       kind_icon = {
         text = function(ctx)
-          local icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+          local icon = H.get_icon("lsp", ctx.kind)
           return icon
         end,
         highlight = function(ctx)
-          local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-          return hl
-        end,
-      },
-      kind = {
-        highlight = function(ctx)
-          local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+          local _, hl = H.get_icon("lsp", ctx.kind)
           return hl
         end,
       },
@@ -117,5 +111,7 @@ H.select_and_pair = function(cmp)
   end)
   return true
 end
+
+H.get_icon = require("mini.icons").get
 
 return Spec
