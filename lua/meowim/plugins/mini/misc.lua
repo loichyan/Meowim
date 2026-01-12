@@ -10,8 +10,9 @@ end
 
 ---Zooms in/out current buffer.
 M.zoom = function()
-  local title = " Zoom |" .. vim.fn.expand(".") .. " "
+  local title = "Zoom | " .. vim.fn.expand("%:.")
   if not require("mini.misc").zoom(0, { title = title }) then return end
+  vim.wo.winbar = " %#ZoomTitle#" .. string.gsub(title, "%%", "%%%%") .. "%##%="
   vim.wo.winhighlight = "NormalFloat:Normal"
 end
 
