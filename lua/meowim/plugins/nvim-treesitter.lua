@@ -9,7 +9,7 @@ local H = {}
 
 Spec.config = function()
   -- See <https://github.com/neovim/neovim/issues/32660>
-  vim.g._ts_force_sync_parsing = true
+  vim.g._ts_force_sync_parsing = vim.fn.has("nvim-0.12") ~= 1
   require("nvim-treesitter").setup()
 
   Meow.autocmd("meowim.plugins.nvim-treesitter", {
