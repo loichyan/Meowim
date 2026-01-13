@@ -88,10 +88,21 @@ Base16.colors_customizations = function(opts, colors)
     "LineNrBelow",
     "SignColumn",
 
+    "DiagnosticSignError",
+    "DiagnosticSignHint",
+    "DiagnosticSignInfo",
+    "DiagnosticSignOk",
+    "DiagnosticSignWarn",
+    "MiniDiffSignAdd",
+    "MiniDiffSignChange",
+    "MiniDiffSignDelete",
+
     "WinSeparator",
     "ErrorMsg",
   }
   for _, name in ipairs(transparents) do
+    local link = colors.groups[name].link
+    if link then colors.groups[name] = vim.deepcopy(colors.groups[link]) end
     colors.groups[name].bg = nil
   end
 
@@ -102,6 +113,8 @@ Base16.colors_customizations = function(opts, colors)
   local overrides = {
     ["BlinkCmpLabelDeprecated"]   = {fg=p.base05, strikethrough=true},
     ["FloatTitle"]                = {fg=get("Title").fg, bg=p.base01},
+    ["FoldColumn"]                = {fg=p.base03},
+    ["CursorLineFold"]            = {fg=p.base03},
     ["ZoomTitle"]                 = {fg=p.base0A, bold=true},
 
     ["DiffAdd"]                   = {fg=p.base05, bg=lighten(p.base0B, -0.6)},
