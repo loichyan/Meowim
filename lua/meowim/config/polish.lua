@@ -6,7 +6,20 @@ vim.filetype.add({
 })
 
 -- Enable virtual text
-vim.diagnostic.config({ virtual_text = true })
+local severity = vim.diagnostic.severity
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = {
+    -- stylua: ignore
+    text = {
+      [severity.ERROR] = "E",
+      [severity.HINT]  = "H",
+      [severity.INFO]  = "I",
+      [severity.WARN]  = "W",
+    },
+  },
+  severity_sort = true,
+})
 
 -- Register some useful commands
 
