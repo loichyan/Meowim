@@ -117,9 +117,9 @@ Base16.colors_customizations = function(opts, colors)
     ["CursorLineFold"]            = {fg=p.base03},
     ["ZoomTitle"]                 = {fg=p.base0A, bold=true},
 
-    ["DiffAdd"]                   = {fg=p.base05, bg=lighten(p.base0B, -0.6)},
-    ["DiffChange"]                = {fg=p.base05, bg=lighten(p.base0E, -0.6)},
-    ["DiffDelete"]                = {fg=p.base05, bg=lighten(p.base08, -0.6)},
+    ["DiffAdd"]                   = {fg=p.base05, bg=lighten(p.base0B, -0.7)},
+    ["DiffChange"]                = {fg=p.base05, bg=lighten(p.base0E, -0.7)},
+    ["DiffDelete"]                = {fg=p.base05, bg=lighten(p.base08, -0.7)},
     ["DiffText"]                  = {link="DiffTextChange"},
     ["DiffTextAdd"]               = {fg=p.base05, bg=lighten(p.base0B, -0.4)},
     ["DiffTextChange"]            = {fg=p.base05, bg=lighten(p.base0E, -0.4)},
