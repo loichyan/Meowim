@@ -1,11 +1,10 @@
-----------------------
---- COMMON KEYMAPS ---
-----------------------
-
 local H = {}
-
 H.plugins = Meowim.plugins
 H.utils = Meowim.utils
+
+--------------------------------------------------------------------------------
+--- COMMON KEYMAPS -------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 H.clear_ui = function()
   require('quicker').close()
@@ -63,9 +62,9 @@ H.is_git_commit = function(str)
   return str ~= '' and string.find(str, '^%x%x%x%x%x%x%x+$') ~= nil and string.lower(str) == str
 end
 
------------------------------
---- PICKERS & DIAGNOSTICS ---
------------------------------
+--------------------------------------------------------------------------------
+--- DIAGNOSTICS ----------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 local last_virtualtext
 H.toggle_virtual_text = function()
@@ -100,6 +99,10 @@ end
 H.jump_diagnostic = function(dir, severity)
   require('mini.bracketed').diagnostic(dir, { float = false, severity = severity })
 end
+
+--------------------------------------------------------------------------------
+--- PICKERS --------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 ---@param picker string
 H.pick = function(picker, local_opts)
@@ -139,36 +142,6 @@ H.pick_word = function(scope, grep_opts)
   local name = string.format('Grep (%s | %s)', grep_opts.tool, pattern)
   local opts = { source = { name = name } }
   require('mini.pick').registry.grep(grep_opts, opts)
-end
-
--------------------
---- LSP KEYMAPS ---
--------------------
-
----@param scope 'current'|'all'
-H.lsp_implementation = function(scope)
-  vim.lsp.buf.implementation({
-    on_list = scope == 'current' and Meowim.utils.loclist_buf or nil,
-  })
-end
-
----@param scope 'current'|'all'
-H.lsp_references = function(scope)
-  vim.lsp.buf.references({ includeDeclaration = false }, {
-    on_list = scope == 'current' and Meowim.utils.loclist_buf or nil,
-  })
-end
-
-H.lsp_definition = function()
-  vim.lsp.buf.definition({
-    on_list = Meowim.utils.loclist_unique,
-  })
-end
-
-H.lsp_type_definition = function()
-  vim.lsp.buf.type_definition({
-    on_list = Meowim.utils.loclist_unique,
-  })
 end
 
 return H

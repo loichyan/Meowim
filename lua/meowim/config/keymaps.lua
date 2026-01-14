@@ -1,7 +1,3 @@
-----------------------
---- COMMON KEYMAPS ---
-----------------------
-
 local H = require('meowim.config.keymaps_helpers')
 local nx = { 'n', 'x' }
 
