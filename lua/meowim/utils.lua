@@ -1,4 +1,5 @@
 local Utils = {}
+local H = {}
 
 ---@class meowim.utils.cached_colorscheme.options
 ---The name to identify this colorscheme.
@@ -190,5 +191,27 @@ Utils.lighten = function(color, delta)
     end
   end) --[[@as string]]
 end
+
+Utils.foldexpr = function(lnum)
+  local bufnr = vim.api.nvim_get_current_buf()
+  if H.enable_lsp_expr[bufnr] then -- prefer LSP backed folds if possible
+    return vim.lsp.foldexpr(lnum)
+  else
+    return vim.treesitter.foldexpr(lnum)
+  end
+end
+
+H.enable_lsp_expr = {}
+Meow.autocmd("meowim.utils", {
+  {
+    event = "lspAttach",
+    desc = "Track LSP foldexpr",
+    callback = function(ev)
+      local client = vim.lsp.get_client_by_id(ev.data.client_id)
+      if not client or not client:supports_method("textDocument/foldingRange") then return end
+      H.enable_lsp_expr[ev.buf] = true
+    end,
+  },
+})
 
 return Utils

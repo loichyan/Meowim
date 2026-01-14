@@ -51,14 +51,10 @@ H.setup_parser = function(ev)
   local parser = vim.treesitter.language.get_lang(ev.match)
   if not H.is_available(parser) then return end
 
-  local bufnr, winnr = vim.api.nvim_get_current_buf(), vim.api.nvim_get_current_win()
+  local bufnr = vim.api.nvim_get_current_buf()
   H.with_parser(parser, function()
     vim.treesitter.start(bufnr)
     vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-
-    vim.wo[winnr].foldlevel = 99
-    vim.wo[winnr].foldmethod = "expr"
-    vim.wo[winnr].foldexpr = "v:lua.vim.treesitter.foldexpr()"
   end)
 end
 
