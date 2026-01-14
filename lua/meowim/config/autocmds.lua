@@ -67,6 +67,15 @@ Meow.autocmd('meowim.config.autocmds', {
     end,
   },
 
+  {
+    event = 'FileType',
+    pattern = 'help',
+    desc = 'Improve experience when reading :help',
+    callback = function(ev)
+      vim.keymap.set('n', 'gd', '<C-]>', { buffer = ev.buf, desc = 'Jump tag definition' })
+    end,
+  },
+
   -- See <https://stackoverflow.com/a/6728687>
   {
     event = 'FileType',
