@@ -17,6 +17,19 @@ Spec.config = function()
       suffix_last    = 'l',
       suffix_next    = 'n',
     },
+    custom_surroundings = {
+      ['T'] = {
+        -- Match: Type< ... >
+        --        ^^^^^     ^
+        input = { '%f[%w_][%w_]+%b<>', '^.-<().*()>$' },
+        output = function()
+          local input = MiniSurround.user_input('Type')
+          if input == nil then return nil end
+          local type = input:match('^%S*')
+          return { left = type .. '<', right = '>' }
+        end,
+      },
+    },
   })
 end
 
