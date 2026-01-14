@@ -5,57 +5,57 @@ local start_time = vim.uv.hrtime()
 vim.loader.enable(true)
 
 -- Install mini.nvim if not present.
-local pack_path = vim.fn.stdpath("data") .. "/site/"
-local mini_path = pack_path .. "pack/deps/start/mini.nvim"
+local pack_path = vim.fn.stdpath('data') .. '/site/'
+local mini_path = pack_path .. 'pack/deps/start/mini.nvim'
 if not vim.uv.fs_stat(mini_path) then
-  vim.cmd('echo "Installing `mini.nvim`" | redraw')
+  vim.cmd('echo "Installing mini.nvim" | redraw')
   vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/nvim-mini/mini.nvim",
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/nvim-mini/mini.nvim',
     mini_path,
   })
-  vim.cmd("packadd mini.nvim | helptags ALL")
-  vim.cmd('echo "Installed `mini.nvim`" | redraw')
+  vim.cmd('packadd mini.nvim | helptags ALL')
+  vim.cmd('echo "Installed mini.nvim" | redraw')
 end
 
 -- Setup the plugin installer.
-local deps = require("mini.deps")
+local deps = require('mini.deps')
 deps.setup({ path = { package = pack_path } })
 
 -- Enable profiler for debug/benchmark
-if vim.env["MEO_ENABLE_PROFILE"] then
-  deps.add("folke/snacks.nvim")
-  require("snacks.profiler").startup({ startup = { event = "UIEnter" } })
+if vim.env['MEO_ENABLE_PROFILE'] then
+  deps.add('folke/snacks.nvim')
+  require('snacks.profiler').startup({ startup = { event = 'UIEnter' } })
 end
 
 -- Disable some useless standard plugins to speed up the startup.
 local disabled_builtins = {
-  "gzip",
-  -- "matchit",
-  -- "matchparen",
-  "netrwPlugin",
-  "tarPlugin",
-  "tohtml",
-  "tutor",
-  "zipPlugin",
+  'gzip',
+  -- 'matchit',
+  -- 'matchparen',
+  'netrwPlugin',
+  'tarPlugin',
+  'tohtml',
+  'tutor',
+  'zipPlugin',
 }
 for _, p in ipairs(disabled_builtins) do
-  vim.g["loaded_" .. p] = true
+  vim.g['loaded_' .. p] = true
 end
 
 -- Install the plugin manager and then load our plugin specs.
-deps.add("loichyan/meow.nvim")
+deps.add('loichyan/meow.nvim')
 deps.now(function()
   -- Configure the preferred colorscheme
-  vim.g.colors_name = "base16-gruvbox-material"
-  require("meow").setup({
-    specs = { import = "meowim.plugins" },
+  vim.g.colors_name = 'base16-gruvbox-material'
+  require('meow').setup({
+    specs = { import = 'meowim.plugins' },
     -- Enable import caching to reduce I/O loads.
-    import_cache = function() return require("meowim.cache_token") end,
+    import_cache = function() return require('meowim.cache_token') end,
     patch_mini = true,
-    enable_snapshot = vim.env["MEO_DISABLE_SNAPSHOT"] == nil,
+    enable_snapshot = vim.env['MEO_DISABLE_SNAPSHOT'] == nil,
   })
 end)
 

@@ -4,7 +4,7 @@ local Base16 = {}
 ---Name to identify this colorscheme.
 ---@field name string
 ---Variant of this colorscheme.
----@field variant? "dark"|"light"
+---@field variant? 'dark'|'light'
 ---Lightness adjustment to create bright colors. May be an absolute value
 ---greater than 1 or a relative percentage less than 1.0.
 ---@field bright? number
@@ -20,22 +20,22 @@ Base16.options = {
   use_cterm = false,
   plugins = {
     default = false,
-    ["nvim-mini/mini.nvim"] = true,
+    ['nvim-mini/mini.nvim'] = true,
   },
 }
 
 ---Apply a customized mini.base16 colorscheme.
 ---@param opts meowim.base16.options
 Base16.setup = function(opts)
-  local suffix = opts.variant and "-" .. opts.variant or ""
-  require("meowim.utils").cached_colorscheme({
+  local suffix = opts.variant and '-' .. opts.variant or ''
+  require('meowim.utils').cached_colorscheme({
     name = opts.name .. suffix,
-    cache_token = not vim.env["MEO_DISABLE_CACHE"] and require("meowim.cache_token") or nil,
+    cache_token = not vim.env['MEO_DISABLE_CACHE'] and require('meowim.cache_token') or nil,
     setup = function()
-      require("mini.base16").setup(
-        vim.tbl_extend("force", Base16.options, { palette = opts.palette })
+      require('mini.base16').setup(
+        vim.tbl_extend('force', Base16.options, { palette = opts.palette })
       )
-      local minicolors = require("mini.colors").get_colorscheme()
+      local minicolors = require('mini.colors').get_colorscheme()
       minicolors = Base16.colors_customizations(opts, minicolors)
       return minicolors:apply()
     end,
@@ -48,57 +48,57 @@ end
 ---@param colors table
 ---@return table
 Base16.colors_customizations = function(opts, colors)
-  local is_dark = opts.variant ~= "light"
+  local is_dark = opts.variant ~= 'light'
   local p = opts.palette
 
   local lighten = function(color, delta)
-    return require("meowim.utils").lighten(color, is_dark and delta or -delta)
+    return require('meowim.utils').lighten(color, is_dark and delta or -delta)
   end
   local get = function(name)
     return colors.groups[name] --[[@as vim.api.keyset.highlight]]
   end
 
   -- Use undercurl for diagnostics
-  for _, kind in ipairs({ "Ok", "Hint", "Info", "Warn", "Error" }) do
-    local hl = get("DiagnosticUnderline" .. kind)
+  for _, kind in ipairs({ 'Ok', 'Hint', 'Info', 'Warn', 'Error' }) do
+    local hl = get('DiagnosticUnderline' .. kind)
     hl.underline = false
     hl.undercurl = true
   end
 
   -- Use yellow color for diagnostics.
-  get("DiagnosticWarn").fg = p.base0A
-  get("DiagnosticFloatingWarn").fg = p.base0A
-  get("DiagnosticUnderlineWarn").sp = p.base0A
+  get('DiagnosticWarn').fg = p.base0A
+  get('DiagnosticFloatingWarn').fg = p.base0A
+  get('DiagnosticUnderlineWarn').sp = p.base0A
 
   -- Transparent highlights
   ---@type string[]
   local transparents = {
-    "TabLineFill",
-    "StatusLine",
-    "StatusLineTerm",
-    "StatusLineNC",
-    "StatusLineTermNC",
-    "WinBar",
-    "WinBarNC",
+    'TabLineFill',
+    'StatusLine',
+    'StatusLineTerm',
+    'StatusLineNC',
+    'StatusLineTermNC',
+    'WinBar',
+    'WinBarNC',
 
-    "CursorLineNr",
-    "CursorLineSign",
-    "LineNr",
-    "LineNrAbove",
-    "LineNrBelow",
-    "SignColumn",
+    'CursorLineNr',
+    'CursorLineSign',
+    'LineNr',
+    'LineNrAbove',
+    'LineNrBelow',
+    'SignColumn',
 
-    "DiagnosticSignError",
-    "DiagnosticSignHint",
-    "DiagnosticSignInfo",
-    "DiagnosticSignOk",
-    "DiagnosticSignWarn",
-    "MiniDiffSignAdd",
-    "MiniDiffSignChange",
-    "MiniDiffSignDelete",
+    'DiagnosticSignError',
+    'DiagnosticSignHint',
+    'DiagnosticSignInfo',
+    'DiagnosticSignOk',
+    'DiagnosticSignWarn',
+    'MiniDiffSignAdd',
+    'MiniDiffSignChange',
+    'MiniDiffSignDelete',
 
-    "WinSeparator",
-    "ErrorMsg",
+    'WinSeparator',
+    'ErrorMsg',
   }
   for _, name in ipairs(transparents) do
     local link = colors.groups[name].link
@@ -111,31 +111,31 @@ Base16.colors_customizations = function(opts, colors)
   -- stylua: ignore
   ---@type table<string,vim.api.keyset.highlight>
   local overrides = {
-    ["BlinkCmpLabelDeprecated"]   = {fg=p.base05, strikethrough=true},
-    ["FloatTitle"]                = {fg=get("Title").fg, bg=p.base01},
-    ["FoldColumn"]                = {fg=p.base03},
-    ["CursorLineFold"]            = {fg=p.base03},
-    ["ZoomTitle"]                 = {fg=p.base0A, bold=true},
+    ['BlinkCmpLabelDeprecated']  = {fg=p.base05, strikethrough=true},
+    ['FloatTitle']               = {fg=get('Title').fg, bg=p.base01},
+    ['FoldColumn']               = {fg=p.base03},
+    ['CursorLineFold']           = {fg=p.base03},
+    ['ZoomTitle']                = {fg=p.base0A, bold=true},
 
-    ["DiffAdd"]                   = {fg=p.base05, bg=lighten(p.base0B, -0.7)},
-    ["DiffChange"]                = {fg=p.base05, bg=lighten(p.base0E, -0.7)},
-    ["DiffDelete"]                = {fg=p.base05, bg=lighten(p.base08, -0.7)},
-    ["DiffText"]                  = {link="DiffTextChange"},
-    ["DiffTextAdd"]               = {fg=p.base05, bg=lighten(p.base0B, -0.4)},
-    ["DiffTextChange"]            = {fg=p.base05, bg=lighten(p.base0E, -0.4)},
-    ["DiffTextDelete"]            = {fg=p.base05, bg=lighten(p.base08, -0.4)},
+    ['DiffAdd']                  = {fg=p.base05, bg=lighten(p.base0B, -0.7)},
+    ['DiffChange']               = {fg=p.base05, bg=lighten(p.base0E, -0.7)},
+    ['DiffDelete']               = {fg=p.base05, bg=lighten(p.base08, -0.7)},
+    ['DiffText']                 = {link='DiffTextChange'},
+    ['DiffTextAdd']              = {fg=p.base05, bg=lighten(p.base0B, -0.4)},
+    ['DiffTextChange']           = {fg=p.base05, bg=lighten(p.base0E, -0.4)},
+    ['DiffTextDelete']           = {fg=p.base05, bg=lighten(p.base08, -0.4)},
 
-    ["GitConflictIncoming"]       = {link="DiffAdd"},
-    ["GitConflictAncestor"]       = {link="DiffChange"},
-    ["GitConflictCurrent"]        = {link="DiffDelete"},
-    ["GitConflictIncomingLabel"]  = {link="DiffTextAdd"},
-    ["GitConflictAncestorLabel"]  = {link="DiffTextChange"},
-    ["GitConflictCurrentLabel"]   = {link="DiffTextDelete"},
+    ['GitConflictIncoming']      = {link='DiffAdd'},
+    ['GitConflictAncestor']      = {link='DiffChange'},
+    ['GitConflictCurrent']       = {link='DiffDelete'},
+    ['GitConflictIncomingLabel'] = {link='DiffTextAdd'},
+    ['GitConflictAncestorLabel'] = {link='DiffTextChange'},
+    ['GitConflictCurrentLabel']  = {link='DiffTextDelete'},
 
-    ["MiniIndentscopeSymbol"]     = {fg=p.base04},
-    ["MiniIndentscopeSymbolOff"]  = {fg=p.base04},
-    ["MiniStatuslineProject"]     = {fg=p.base09, bold = true},
-    ["MiniStatuslineCursor"]      = {fg=p.base0A},
+    ['MiniIndentscopeSymbol']    = {fg=p.base04},
+    ['MiniIndentscopeSymbolOff'] = {fg=p.base04},
+    ['MiniStatuslineProject']    = {fg=p.base09, bold = true},
+    ['MiniStatuslineCursor']     = {fg=p.base0A},
   }
   for name, hl in pairs(overrides) do
     colors.groups[name] = hl

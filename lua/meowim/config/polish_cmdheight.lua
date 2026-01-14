@@ -5,7 +5,7 @@
 do
   local cmdline_was_hidden = nil
   local auto_cmdheight = function(ev)
-    if ev.event == "CmdlineEnter" then
+    if ev.event == 'CmdlineEnter' then
       if vim.o.cmdheight ~= 0 then return end
       vim.o.cmdheight = 1
       cmdline_was_hidden = true
@@ -16,10 +16,10 @@ do
     end
   end
 
-  Meow.autocmd("meowim.config.polish", {
+  Meow.autocmd('meowim.config.polish', {
     {
-      event = { "CmdlineEnter", "CmdlineLeave" },
-      desc = "Show statusline when in cmdline",
+      event = { 'CmdlineEnter', 'CmdlineLeave' },
+      desc = 'Show statusline when in cmdline',
       callback = auto_cmdheight,
     },
   })
@@ -33,7 +33,7 @@ do
     if is_prompting and vim.o.cmdheight == 0 then
       was_hidden = true
       vim.o.cmdheight = 1
-      vim.cmd("redraw")
+      vim.cmd('redraw')
     end
     return echo(...)
   end

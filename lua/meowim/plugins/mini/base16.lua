@@ -1,2 +1,2 @@
 ---@type MeoSpec
-return { "mini.base16", lazy = true }
+return { 'mini.base16', lazy = true }

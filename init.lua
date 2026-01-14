@@ -1,1 +1,1 @@
-require("meowim.bootstrap")
+require('meowim.bootstrap')

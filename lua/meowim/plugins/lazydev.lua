@@ -1,13 +1,13 @@
 ---@type MeoSpec
-local Spec = { "folke/lazydev.nvim", ft = "lua" }
+local Spec = { 'folke/lazydev.nvim', ft = 'lua' }
 
 Spec.config = function()
   ---@diagnostic disable-next-line:missing-fields
-  require("lazydev").setup({
+  require('lazydev').setup({
     library = {
-      "meow.nvim",
-      "mini.nvim",
-      { path = "${3rd}/luv/library", words = { "vim%.loop", "vim%.uv" } },
+      'meow.nvim',
+      'mini.nvim',
+      { path = '${3rd}/luv/library', words = { 'vim%.loop', 'vim%.uv' } },
     },
   })
 end

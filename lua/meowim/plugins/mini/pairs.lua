@@ -1,16 +1,16 @@
 ---@type MeoSpec
-local Spec = { "mini.pairs", event = "LazyFile" }
+local Spec = { 'mini.pairs', event = 'LazyFile' }
 local H = {}
 
 Spec.config = function()
-  local minipairs = require("mini.pairs")
+  local minipairs = require('mini.pairs')
   minipairs.setup({
     modes = { insert = true, command = false, terminal = false },
     mappings = {
-      [">"] = {
-        action = "close",
-        pair = "<>",
-        neigh_pattern = "[^\\].",
+      ['>'] = {
+        action = 'close',
+        pair = '<>',
+        neigh_pattern = '[^\\].',
         register = { cr = false },
       },
     },
@@ -19,12 +19,12 @@ Spec.config = function()
   ---@diagnostic disable-next-line: duplicate-set-field
   minipairs.open = Meowim.utils.wrap_fn(minipairs.open, H.smart_pairs)
 
-  Meow.autocmd("meowim.plugins.mini.pairs", {
+  Meow.autocmd('meowim.plugins.mini.pairs', {
     {
-      event = "FileType",
-      pattern = "rust",
-      desc = "Disable annoying pairs for certain languages",
-      callback = function(ev) vim.keymap.set("i", "'", "'", { buffer = ev.buf }) end,
+      event = 'FileType',
+      pattern = 'rust',
+      desc = 'Disable annoying pairs for certain languages',
+      callback = function(ev) vim.keymap.set('i', "'", "'", { buffer = ev.buf }) end,
     },
   })
 end
@@ -35,7 +35,7 @@ end
 ---@param pair string
 ---@param neigh_pattern string
 H.smart_pairs = function(open, pair, neigh_pattern)
-  if vim.fn.getcmdline() ~= "" then return open(pair, neigh_pattern) end
+  if vim.fn.getcmdline() ~= '' then return open(pair, neigh_pattern) end
 
   local op, cl = pair:sub(1, 1), pair:sub(2, 2)
   local line, cur = vim.api.nvim_get_current_line(), vim.api.nvim_win_get_cursor(0)
@@ -43,13 +43,13 @@ H.smart_pairs = function(open, pair, neigh_pattern)
 
   -- Handle triple quotes
   if op == cl and line:sub(col - 1, col) == op:rep(2) then
-    return op .. "\n" .. op:rep(3) .. vim.api.nvim_replace_termcodes("<Up>", true, true, true)
+    return op .. '\n' .. op:rep(3) .. vim.api.nvim_replace_termcodes('<Up>', true, true, true)
   end
 
   -- Disable quotes in string literals
   if op == cl then
     local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, row - 1, math.max(col - 1, 0))
-    if ok and #captures == 1 and captures[1].capture == "string" then return op end
+    if ok and #captures == 1 and captures[1].capture == 'string' then return op end
   end
 
   -- Emit only an opening if unbalanced
@@ -60,7 +60,7 @@ H.smart_pairs = function(open, pair, neigh_pattern)
       local _, nc = H.count_unlanced(right, op, cl)
       if no < nc then return op end
     else -- quotes
-      local _, n = line:gsub("%" .. op, "")
+      local _, n = line:gsub('%' .. op, '')
       if n % 2 ~= 0 then return op end
     end
   end

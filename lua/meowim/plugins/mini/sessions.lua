@@ -1,32 +1,32 @@
 ---@type MeoSpec
-local Spec = { "mini.sessions", event = "VeryLazy" }
+local Spec = { 'mini.sessions', event = 'VeryLazy' }
 local M = { Spec }
 
 Spec.config = function()
-  vim.opt.sessionoptions:append("globals")
-  require("mini.sessions").setup({
+  vim.opt.sessionoptions:append('globals')
+  require('mini.sessions').setup({
     autoread = false,
     autowrite = false,
     hooks = {
       pre = {
         write = function()
-          Meow.load("scope.nvim")
-          vim.cmd("ScopeSaveState")
+          Meow.load('scope.nvim')
+          vim.cmd('ScopeSaveState')
         end,
       },
       post = {
         read = function()
-          Meow.load("scope.nvim")
-          vim.cmd("ScopeLoadState")
+          Meow.load('scope.nvim')
+          vim.cmd('ScopeLoadState')
         end,
       },
     },
   })
 
-  Meow.autocmd("meowim.plugins.mini.sessions", {
+  Meow.autocmd('meowim.plugins.mini.sessions', {
     {
-      event = "VimLeavePre",
-      desc = "Save session on exit",
+      event = 'VimLeavePre',
+      desc = 'Save session on exit',
       once = true,
       callback = function() M.save() end,
     },
@@ -37,7 +37,7 @@ end
 ---@return string?
 M.get = function()
   local repo = Meowim.utils.get_git_repo(vim.fn.getcwd())
-  return repo and vim.fn.fnamemodify(repo, ":t") or nil
+  return repo and vim.fn.fnamemodify(repo, ':t') or nil
 end
 
 ---Saves the current session.
@@ -46,7 +46,7 @@ M.save = function()
   if not name then return end
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
     if vim.bo[bufnr].buflisted then
-      require("mini.sessions").write(name, { force = true, verbose = false })
+      require('mini.sessions').write(name, { force = true, verbose = false })
       return
     end
   end
@@ -56,14 +56,14 @@ end
 M.restore = function()
   local name = M.get()
   if not name then return end
-  require("mini.sessions").read(name, { force = false, verbose = false })
+  require('mini.sessions').read(name, { force = false, verbose = false })
 end
 
 ---Deletes the current session.
 M.delete = function()
   local name = M.get()
   if not name then return end
-  require("mini.sessions").delete(name, { force = true, verbose = false })
+  require('mini.sessions').delete(name, { force = true, verbose = false })
 end
 
 return M
