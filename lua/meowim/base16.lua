@@ -112,8 +112,13 @@ Base16.colors_customizations = function(opts, colors)
 
     ['MiniIndentscopeSymbol']    = {fg=p.base04},
     ['MiniIndentscopeSymbolOff'] = {fg=p.base04},
-    ['MiniStatuslineProject']    = {fg=p.base09, bold = true},
+    ['MiniStatuslineProject']    = {fg=p.base09, bold=true},
     ['MiniStatuslineCursor']     = {fg=p.base0A},
+
+    ['MiniHipatternsFixme']      = {fg=p.base08, bold=true},
+    ['MiniHipatternsHack']       = {fg=p.base0E, bold=true},
+    ['MiniHipatternsNote']       = {fg=p.base0D, bold=true},
+    ['MiniHipatternsTodo']       = {fg=p.base09, bold=true},
   }
   for name, hl in pairs(overrides) do
     colors.groups[name] = hl
