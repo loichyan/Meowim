@@ -28,13 +28,12 @@ Base16.options = {
 ---@param opts meowim.base16.options
 Base16.setup = function(opts)
   local suffix = opts.variant and '-' .. opts.variant or ''
+  local base16_opts = vim.tbl_extend('force', Base16.options, { palette = opts.palette })
   require('meowim.utils').cached_colorscheme({
     name = opts.name .. suffix,
-    cache_token = not vim.env['MEO_DISABLE_CACHE'] and require('meowim.cache_token') or nil,
+    cache_token = require('meowim.cache_token'),
     setup = function()
-      require('mini.base16').setup(
-        vim.tbl_extend('force', Base16.options, { palette = opts.palette })
-      )
+      require('mini.base16').setup(base16_opts)
       local minicolors = require('mini.colors').get_colorscheme()
       minicolors = Base16.colors_customizations(opts, minicolors)
       return minicolors:apply()
@@ -55,55 +54,34 @@ Base16.colors_customizations = function(opts, colors)
     return require('meowim.utils').lighten(color, is_dark and delta or -delta)
   end
   local get = function(name)
+    local opts = colors.groups[name]
+    if opts.link then colors.groups[name] = vim.deepcopy(colors.groups[opts.link]) end
     return colors.groups[name] --[[@as vim.api.keyset.highlight]]
   end
 
-  -- Use undercurl for diagnostics
-  for _, kind in ipairs({ 'Ok', 'Hint', 'Info', 'Warn', 'Error' }) do
-    local hl = get('DiagnosticUnderline' .. kind)
+  -- stylua: ignore
+  local diagnostic_colors = {
+    ['Ok']    = p.base0B,
+    ['Info']  = p.base0C,
+    ['Hint']  = p.base0D,
+    ['Warn']  = p.base0A,
+    ['Error'] = p.base08,
+  }
+  for kind, color in pairs(diagnostic_colors) do
+    local hl
+    -- Update colors
+    hl = get('Diagnostic' .. kind)
+    hl.fg = color
+    hl = get('DiagnosticFloating' .. kind)
+    hl.fg = color
+    -- Use undercurl for diagnostics
+    hl = get('DiagnosticUnderline' .. kind)
+    hl.sp = color
     hl.underline = false
     hl.undercurl = true
-  end
-
-  -- Use yellow color for diagnostics.
-  get('DiagnosticWarn').fg = p.base0A
-  get('DiagnosticFloatingWarn').fg = p.base0A
-  get('DiagnosticUnderlineWarn').sp = p.base0A
-
-  -- Transparent highlights
-  ---@type string[]
-  local transparents = {
-    'TabLineFill',
-    'StatusLine',
-    'StatusLineTerm',
-    'StatusLineNC',
-    'StatusLineTermNC',
-    'WinBar',
-    'WinBarNC',
-
-    'CursorLineNr',
-    'CursorLineSign',
-    'LineNr',
-    'LineNrAbove',
-    'LineNrBelow',
-    'SignColumn',
-
-    'DiagnosticSignError',
-    'DiagnosticSignHint',
-    'DiagnosticSignInfo',
-    'DiagnosticSignOk',
-    'DiagnosticSignWarn',
-    'MiniDiffSignAdd',
-    'MiniDiffSignChange',
-    'MiniDiffSignDelete',
-
-    'WinSeparator',
-    'ErrorMsg',
-  }
-  for _, name in ipairs(transparents) do
-    local link = colors.groups[name].link
-    if link then colors.groups[name] = vim.deepcopy(colors.groups[link]) end
-    colors.groups[name].bg = nil
+    -- Use bold text for diagnostic signs
+    hl = get('DiagnosticSign' .. kind)
+    hl.bg = nil
   end
 
   -- TODO: report inconsistent higroups to mini.base16
@@ -162,6 +140,35 @@ Base16.colors_customizations = function(opts, colors)
     [14] = lighten(p.base0C, bright),
     [15] = p.base07,
   }
+
+  -- Transparent highlights
+  ---@type string[]
+  local transparents = {
+    'TabLineFill',
+    'StatusLine',
+    'StatusLineTerm',
+    'StatusLineNC',
+    'StatusLineTermNC',
+    'WinBar',
+    'WinBarNC',
+
+    'CursorLineNr',
+    'CursorLineSign',
+    'LineNr',
+    'LineNrAbove',
+    'LineNrBelow',
+    'SignColumn',
+
+    'MiniDiffSignAdd',
+    'MiniDiffSignChange',
+    'MiniDiffSignDelete',
+
+    'WinSeparator',
+    'ErrorMsg',
+  }
+  for _, name in ipairs(transparents) do
+    get(name).bg = nil
+  end
 
   if Base16.transparent then colors = colors:add_transparency() end
   return colors
