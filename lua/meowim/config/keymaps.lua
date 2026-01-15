@@ -1,5 +1,6 @@
 local H = require('meowim.config.keymaps_helpers')
 local nx = { 'n', 'x' }
+local nxo = { 'n', 'x', 'o' }
 
 -- stylua: ignore
 Meow.keymap({
@@ -7,6 +8,13 @@ Meow.keymap({
   { '<Esc>',               '<Cmd>noh<CR>',                                                               desc = 'Clear highlights'                  },
   { '<Esc><Esc>',          '<C-\\><C-n>', mode = 't',                                                    desc = 'Escape terminal mode'              },
   { '<C-c>',               function() H.clear_ui() end,                                                  desc = 'Clear trivial UI items'            },
+
+  { '[{',                  function() H.jump_pair('backward', '{}') end, mode = nxo,                     desc = "Unmatched '{'"                     },
+  { ']}',                  function() H.jump_pair('forward',  '{}') end, mode = nxo,                     desc = "Unmatched '}'"                     },
+  { '[[',                  function() H.jump_pair('backward', '[]') end, mode = nxo,                     desc = "Unmatched '['"                     },
+  { ']]',                  function() H.jump_pair('forward',  '[]') end, mode = nxo,                     desc = "Unmatched ']'"                     },
+  { '[(',                  function() H.jump_pair('backward', '()') end, mode = nxo,                     desc = "Unmatched '('"                     },
+  { '])',                  function() H.jump_pair('forward',  '()') end, mode = nxo,                     desc = "Unmatched ')'"                     },
 
   { '<Leader>e',           function() H.plugins.mini.files.open('buffer') end,                           desc = 'Explore buffer directory'          },
   { '<Leader>E',           function() H.plugins.mini.files.open('workspace') end,                        desc = 'Explore workspace root'            },
@@ -90,19 +98,19 @@ Meow.keymap({
   { '[D',                  function() H.jump_diagnostic('first') end,                                    desc = 'Diagnostic first'                  },
   { ']d',                  function() H.jump_diagnostic('forward') end,                                  desc = 'Diagnostic forward'                },
   { ']D',                  function() H.jump_diagnostic('last') end,                                     desc = 'Diagnostic last'                   },
-  { '[w',                  function() H.jump_diagnostic('backward', 'WARN') end,                         desc = 'Warning backward'                  },
-  { '[W',                  function() H.jump_diagnostic('first',    'WARN') end,                         desc = 'Warning first'                     },
-  { ']w',                  function() H.jump_diagnostic('forward',  'WARN') end,                         desc = 'Warning forward'                   },
-  { ']W',                  function() H.jump_diagnostic('last',     'WARN') end,                         desc = 'Warning last'                      },
-  { '[e',                  function() H.jump_diagnostic('backward', 'ERROR') end,                        desc = 'Error backward'                    },
-  { '[E',                  function() H.jump_diagnostic('first',    'ERROR') end,                        desc = 'Error first'                       },
-  { ']e',                  function() H.jump_diagnostic('forward',  'ERROR') end,                        desc = 'Error forward'                     },
-  { ']E',                  function() H.jump_diagnostic('last',     'ERROR') end,                        desc = 'Error last'                        },
+  { '[w',                  function() H.jump_diagnostic('backward', 'WARN' ) end,                        desc = 'Diagnostic warning backward'       },
+  { '[W',                  function() H.jump_diagnostic('first',    'WARN' ) end,                        desc = 'Diagnostic warning first'          },
+  { ']w',                  function() H.jump_diagnostic('forward',  'WARN' ) end,                        desc = 'Diagnostic warning forward'        },
+  { ']W',                  function() H.jump_diagnostic('last',     'WARN' ) end,                        desc = 'Diagnostic warning last'           },
+  { '[e',                  function() H.jump_diagnostic('backward', 'ERROR') end,                        desc = 'Diagnostic error backward'         },
+  { '[E',                  function() H.jump_diagnostic('first',    'ERROR') end,                        desc = 'Diagnostic error first'            },
+  { ']e',                  function() H.jump_diagnostic('forward',  'ERROR') end,                        desc = 'Diagnostic error forward'          },
+  { ']E',                  function() H.jump_diagnostic('last',     'ERROR') end,                        desc = 'Diagnostic error last'             },
 
   { '<Leader>ld',          function() H.pick_diagnostics('current') end,                                 desc = 'Pick document diagnostics'         },
   { '<Leader>lD',          function() H.pick_diagnostics('all') end,                                     desc = 'Pick workspace diagnostics'        },
-  { '<Leader>lw',          function() H.pick_diagnostics('current', 'WARN') end,                         desc = 'Pick document warnings'            },
-  { '<Leader>lW',          function() H.pick_diagnostics('all',     'WARN') end,                         desc = 'Pick workspace warnings'           },
+  { '<Leader>lw',          function() H.pick_diagnostics('current', 'WARN' ) end,                        desc = 'Pick document warnings'            },
+  { '<Leader>lW',          function() H.pick_diagnostics('all',     'WARN' ) end,                        desc = 'Pick workspace warnings'           },
   { '<Leader>le',          function() H.pick_diagnostics('current', 'ERROR') end,                        desc = 'Pick document errors'              },
   { '<Leader>lE',          function() H.pick_diagnostics('all',     'ERROR') end,                        desc = 'Pick workspace errors'             },
 
