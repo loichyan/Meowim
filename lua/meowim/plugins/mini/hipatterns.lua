@@ -8,24 +8,33 @@ Spec.config = function()
     -- stylua: ignore
     highlighters = {
       hex_color = minihipat.gen_highlighter.hex_color(),
-      fixme = { pattern = H.hitodo({ 'FIXME' }), group = 'MiniHipatternsFixme' },
-      hack  = { pattern = H.hitodo({ 'HACK' }),  group = 'MiniHipatternsHack'  },
-      todo  = { pattern = H.hitodo({ 'TODO' }),  group = 'MiniHipatternsTodo'  },
-      note  = { pattern = H.hitodo({ 'NOTE' }),  group = 'MiniHipatternsNote'  },
+      fixme = H.hitodo({ 'FIXME' }, 'F', 'MiniHipatternsFixme'),
+      hack  = H.hitodo({ 'HACK'  }, 'H', 'MiniHipatternsHack'),
+      todo  = H.hitodo({ 'TODO'  }, 'T', 'MiniHipatternsTodo'),
+      note  = H.hitodo({ 'NOTE'  }, 'N', 'MiniHipatternsNote'),
     },
   })
 end
 
 ---Returns Lua patterns used to highlight todo comments.
 ---@param keywords string[]
----@return string[]
-H.hitodo = function(keywords)
-  local patterns = {}
+---@param sign string
+---@param group string
+H.hitodo = function(keywords, sign, group)
+  local pattern = {}
   for _, kw in ipairs(keywords) do
-    table.insert(patterns, '%f[%w]' .. kw .. ':%s+.+$') -- KEYWORD: something
-    table.insert(patterns, '%f[%w]' .. kw .. '%(.*%):%s+.+$') -- KEYWORD(@somebody): something
+    table.insert(pattern, '%f[%w]' .. kw .. ':%s+.+$') -- KEYWORD: something
+    table.insert(pattern, '%f[%w]' .. kw .. '%(.*%):%s+.+$') -- KEYWORD(@somebody): something
   end
-  return patterns
+  return {
+    pattern = pattern,
+    group = group,
+    extmark_opts = {
+      sign_text = sign,
+      sign_hl_group = group .. 'Sign',
+      priority = vim.hl.priorities.diagnostics - 1,
+    },
+  }
 end
 
 return Spec

@@ -84,6 +84,18 @@ Base16.colors_customizations = function(opts, colors)
     hl.bg = nil
   end
 
+  -- stylua: ignore
+  local hipatter_colors = {
+    ['Fixme'] = p.base08,
+    ['Hack']  = p.base0E,
+    ['Note']  = p.base0B,
+    ['Todo']  = p.base0C,
+  }
+  for name, color in pairs(hipatter_colors) do
+    colors.groups['MiniHipatterns' .. name] = { fg = color, bold = true }
+    colors.groups['MiniHipatterns' .. name .. 'Sign'] = { fg = color }
+  end
+
   -- TODO: report inconsistent higroups to mini.base16
   -- Highlight overrides
   -- stylua: ignore
@@ -114,11 +126,6 @@ Base16.colors_customizations = function(opts, colors)
     ['MiniIndentscopeSymbolOff'] = {fg=p.base04},
     ['MiniStatuslineProject']    = {fg=p.base09, bold=true},
     ['MiniStatuslineCursor']     = {fg=p.base0A},
-
-    ['MiniHipatternsFixme']      = {fg=p.base08, bold=true},
-    ['MiniHipatternsHack']       = {fg=p.base0E, bold=true},
-    ['MiniHipatternsNote']       = {fg=p.base0D, bold=true},
-    ['MiniHipatternsTodo']       = {fg=p.base09, bold=true},
   }
   for name, hl in pairs(overrides) do
     colors.groups[name] = hl
