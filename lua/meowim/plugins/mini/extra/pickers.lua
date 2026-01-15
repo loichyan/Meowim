@@ -54,12 +54,22 @@ Pickers.todo = function(local_opts, opts)
 
   local keywords = table.concat(local_opts.keywords, '|')
   local grep_opts = {
-    pattern = '\\b(' .. keywords .. ')(\\(.*\\))?:\\s+.+',
+    pattern = '\\b(' .. keywords .. ')(\\(.*\\))?:\\s+.+$',
     globs = local_opts.scope == 'current' and { vim.fn.expand('%') } or nil,
   }
 
-  local name = table.concat(local_opts.keywords, '|')
-  opts = vim.tbl_deep_extend('force', { source = { name = name } }, opts or {})
+  local default_source = {
+    name = table.concat(local_opts.keywords, '|'),
+    preview = function(bufnr, item)
+      local state = MiniPick.get_picker_state()
+      if not state then return end
+      MiniPick.default_preview(bufnr, item)
+      vim.wo[state.windows.main].signcolumn = 'no' -- disable 'signcolumn' since not useful
+      require('mini.hipatterns').enable(bufnr)
+    end,
+  }
+
+  opts = vim.tbl_deep_extend('force', { source = default_source }, opts or {})
   return MiniPick.builtin.grep(grep_opts, opts)
 end
 
