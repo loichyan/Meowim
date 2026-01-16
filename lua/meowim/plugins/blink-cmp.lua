@@ -51,6 +51,7 @@ Spec.config = function()
     ['<Left>']    = { 'select_prev', 'fallback' },
   }
 
+  H.get_icon = require('mini.icons').get
   local draw_with_miniicon = {
     components = {
       kind_icon = {
@@ -111,7 +112,5 @@ H.select_and_pair = function(cmp)
   end)
   return true
 end
-
-H.get_icon = require('mini.icons').get
 
 return Spec

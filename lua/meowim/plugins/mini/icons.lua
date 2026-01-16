@@ -1,5 +1,5 @@
 ---@type MeoSpec
-local Spec = { 'mini.icons', lazy = false, priority = 90 }
+local Spec = { 'mini.icons', event = 'UIEnter' }
 
 Spec.config = function()
   local lsp = {}
