@@ -8,7 +8,7 @@ vim.filetype.add({
 -- Enable virtual text
 local severity = vim.diagnostic.severity
 vim.diagnostic.config({
-  virtual_text = true,
+  virtual_text = { prefix = '' },
   signs = {
     -- stylua: ignore
     text = {
