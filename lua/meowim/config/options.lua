@@ -17,9 +17,10 @@ o.laststatus = 3 -- show global statusline
 o.showtabline = 2 -- always show tabline
 o.conceallevel = 2 -- improve rendering for Markdown
 o.relativenumber = true -- show relative numbers
-
 o.jumpoptions = 'stack' -- more intuitive jumps
+
 opt.diffopt:append('algorithm:histogram', 'inline:word') -- improve diff mode
+opt.listchars = { nbsp = '⎵', tab = '› ' } -- better listchars
 opt.shortmess:append('A') -- suppress swapfile warnings
 
 o.foldmethod = 'expr'
