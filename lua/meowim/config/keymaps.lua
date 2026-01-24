@@ -8,6 +8,7 @@ Meow.keymap({
   { '<Esc>',               '<Cmd>noh<CR>',                                                               desc = 'Clear highlights'                  },
   { '<Esc><Esc>',          '<C-\\><C-n>', mode = 't',                                                    desc = 'Escape terminal mode'              },
   { '<C-c>',               function() H.clear_ui() end,                                                  desc = 'Clear trivial UI items'            },
+  { 'gw',                  function() H.hlcword() end,                                                   desc = 'Highlight <cword>'                 },
 
   { '[{',                  function() H.jump_pair('backward', '{}') end, mode = nxo,                     desc = "Unmatched '{'"                     },
   { ']}',                  function() H.jump_pair('forward',  '{}') end, mode = nxo,                     desc = "Unmatched '}'"                     },

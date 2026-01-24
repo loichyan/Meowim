@@ -12,6 +12,11 @@ H.clear_ui = function()
   vim.cmd('noh | redrawstatus')
 end
 
+H.hlcword = function()
+  vim.fn.setreg('/', '\\<' .. vim.fn.expand('<cword>') .. '\\>')
+  vim.o.hlsearch = true
+end
+
 ---@param dir 'forward'|'backward'
 ---@param pair string
 H.jump_pair = function(dir, pair)
