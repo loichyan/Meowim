@@ -1,5 +1,16 @@
 local Utils = {}
 
+---@class meowim.utils.cached_colorscheme.options
+---The name to identify this colorscheme.
+---@field name string
+---A token to identify the latest cache.
+---@field cache_token? string
+---A list of runtime files used to determine whether to update the cache.
+---@field watch_paths? string[]
+---The function used to setup the colorscheme. An optional colorscheme object
+---obtained from MiniColors can be returned to generate highlight groups.
+---@field setup fun():table?
+
 ---Wraps the given function with a new one.
 ---@param old function
 ---@param new function
@@ -126,17 +137,6 @@ Utils.loclist_unique = function(opts)
   opts.items = new_items
   Utils.loclist_or_jump(opts)
 end
-
----@class meowim.utils.cached_colorscheme.options
----The name to identify this colorscheme.
----@field name string
----A token to identify the latest cache.
----@field cache_token? string
----A list of runtime files used to determine whether to update the cache.
----@field watch_paths? string[]
----The function used to setup the colorscheme. An optional colorscheme object
----obtained from MiniColors can be returned to generate highlight groups.
----@field setup fun():table?
 
 ---@param opts meowim.utils.cached_colorscheme.options
 Utils.cached_colorscheme = function(opts)

@@ -1,5 +1,16 @@
 local Base16 = {}
 
+---@class meowim.base16.options
+---Name to identify this colorscheme.
+---@field name string
+---Variant of this colorscheme.
+---@field variant? "dark"|"light"
+---Lightness adjustment to create bright colors. May be an absolute value
+---greater than 1 or a relative percentage less than 1.0.
+---@field bright? number
+---Base16 palette.
+---@field palette table<string,string>
+
 ---Whether to enable transparent background in the default customization.
 Base16.transparent = false
 
@@ -12,17 +23,6 @@ Base16.options = {
     ["nvim-mini/mini.nvim"] = true,
   },
 }
-
----@class meowim.base16.options
----Name to identify this colorscheme.
----@field name string
----Variant of this colorscheme.
----@field variant? "dark"|"light"
----Lightness adjustment to create bright colors. May be an absolute value
----greater than 1 or a relative percentage less than 1.0.
----@field bright? number
----Base16 palette.
----@field palette table<string,string>
 
 ---Apply a customized mini.base16 colorscheme.
 ---@param opts meowim.base16.options
