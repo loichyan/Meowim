@@ -14,7 +14,7 @@ follows <https://www.conventionalcommits.org/en/v1.0.0/> to track changes.
 
 This release focuses mainly on UI and keymaps. Here are the notable updates:
 
-- (**breaking**, [509861c]) Replace mini.statusline and mini.tabline with
+- (**breaking**, [3509861]) Replace mini.statusline and mini.tabline with
   [meoline.nvim]—my new plugin that provides a minimal statusline, tabline, and
   winbar. It looks similar to the current UI and has a much simpler
   implementation (~800 LoC), though it's opinionated and supports only a few
@@ -35,7 +35,7 @@ This release focuses mainly on UI and keymaps. Here are the notable updates:
   - Remap `<Leader>gH` to `<Leader>gl`.
   - Remap `<Leader>gl` to `<Leader>gL`.
   - Remap `<Leader>gL` to `<Leader>go`.
-- ([75e0e8f], [63a9b49]) Improve builtin fold support:
+- ([75e0e8f], [63a9b49]) Improve built-in fold support:
   - Enable 'foldcolumn' on Neovim 0.12.
   - Automatically select a proper expression to obtain fold levels.
 
@@ -44,7 +44,7 @@ Besides meoline.nvim, two other plugins are added:
 - [tiagovla/scope.nvim] is added for buffers-per-tab support.
 - [SmiteshP/nvim-navic] is used by meoline.nvim to fetch winbar items.
 
-[509861c]: https://github.com/loichyan/Meowim/commit/509861cfd136991cd068686cb0d4afb7ca5baf6
+[3509861]: https://github.com/loichyan/Meowim/commit/3509861cfd136991cd068686cb0d4afb7ca5baf6
 [c3fe7e2]: https://github.com/loichyan/Meowim/commit/c3fe7e205d592c70dd33c4ace9c9e309bf1e35a7
 [9df50b1]: https://github.com/loichyan/Meowim/commit/9df50b1b69dee93b1931253d980800b14780c9cd
 [99bdf34]: https://github.com/loichyan/Meowim/commit/99bdf34a99854b267201af3dfd5a7111022ac8b8
