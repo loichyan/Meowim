@@ -1,8 +1,8 @@
 ---@type MeoSpec
-local Spec = { "mini.notify", lazy = false, priority = 95 }
+local Spec = { 'mini.notify', lazy = false, priority = 95 }
 
 Spec.config = function()
-  local mininotify = require("mini.notify")
+  local mininotify = require('mini.notify')
   mininotify.setup({
     window = {
       config = function()

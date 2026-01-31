@@ -1,8 +1,8 @@
 ---@type MeoSpec
-local Spec = { "mini.comment", event = "LazyFile" }
+local Spec = { 'mini.comment', event = 'LazyFile' }
 
 Spec.config = function()
-  require("mini.comment").setup({
+  require('mini.comment').setup({
     -- stylua: ignore
     mappings = {
       comment        = 'gc',
@@ -13,10 +13,10 @@ Spec.config = function()
   })
 
   local do_cursor = function()
-    return require("mini.comment").operator() .. "<Cmd>lua MiniComment.textobject()<CR>"
+    return require('mini.comment').operator() .. '<Cmd>lua MiniComment.textobject()<CR>'
   end
   Meow.keymap({
-    { "gcC", function() return do_cursor() end, expr = true, desc = "Toggle comment block" },
+    { 'gcC', function() return do_cursor() end, expr = true, desc = 'Toggle comment block' },
   })
 end
 

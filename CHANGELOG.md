@@ -10,6 +10,51 @@ follows <https://www.conventionalcommits.org/en/v1.0.0/> to track changes.
 
 ## [Unreleased]
 
+## [20260131]
+
+This release focuses mainly on UI and keymaps. Here are the notable updates:
+
+- (**breaking**, [509861c]) Replace mini.statusline and mini.tabline with
+  [meoline.nvim]—my new plugin that provides a minimal statusline, tabline, and
+  winbar. It looks similar to the current UI and has a much simpler
+  implementation (~800 LoC), though it's opinionated and supports only a few
+  customization options.
+- (**breaking**, [c3fe7e2]) Prefer single quotes whenever possible. Single
+  quotes look cleaner than double quotes and are preferred by 'mini.nvim' and
+  Neovim's built-in modules.
+- (**breaking**, [9df50b1], [99bdf34], [622e26b]) Refine keymaps to interact
+  with git:
+  - Remap `<Leader>ca` to `<Leader>cb`.
+  - Remap `<Leader>cr` to `<Leader>cx`.
+  - Remap `[gh`, `]gh` to `[g`, `]g`.
+  - Remap `[gc`, `]gc` to `[/`, `]/`.
+  - Remap `<Leader>gd` to `<LocalLeader>g`.
+  - Remap `<Leader>gD` to `<Leader>gd`.
+  - Remap `<Leader>gf` to `<Leader>gx`.
+  - Remap `<Leader>gg` to `<Leader>G`.
+  - Remap `<Leader>gH` to `<Leader>gl`.
+  - Remap `<Leader>gl` to `<Leader>gL`.
+  - Remap `<Leader>gL` to `<Leader>go`.
+- ([75e0e8f], [63a9b49]) Improve builtin fold support:
+  - Enable 'foldcolumn' on Neovim 0.12.
+  - Automatically select a proper expression to obtain fold levels.
+
+Besides meoline.nvim, two other plugins are added:
+
+- [tiagovla/scope.nvim] is added for buffers-per-tab support.
+- [SmiteshP/nvim-navic] is used by meoline.nvim to fetch winbar items.
+
+[509861c]: https://github.com/loichyan/Meowim/commit/509861cfd136991cd068686cb0d4afb7ca5baf6
+[c3fe7e2]: https://github.com/loichyan/Meowim/commit/c3fe7e205d592c70dd33c4ace9c9e309bf1e35a7
+[9df50b1]: https://github.com/loichyan/Meowim/commit/9df50b1b69dee93b1931253d980800b14780c9cd
+[99bdf34]: https://github.com/loichyan/Meowim/commit/99bdf34a99854b267201af3dfd5a7111022ac8b8
+[622e26b]: https://github.com/loichyan/Meowim/commit/622e26b82adfc5631cedf0aa5ee55f709105fcd6
+[75e0e8f]: https://github.com/loichyan/Meowim/commit/75e0e8f9fa3e111bba77ca01984a30a9ef332dbf
+[63a9b49]: https://github.com/loichyan/Meowim/commit/63a9b49d5053b3783f8554fbf663b6eaf63facc9
+[meoline.nvim]: https://github.com/loichyan/meoline.nvim
+[tiagovla/scope.nvim]: https://github.com/tiagovla/scope.nvim
+[SmiteshP/nvim-navic]: https://github.com/SmiteshP/nvim-navic
+
 ## [20260104]
 
 This release includes several significant changes to the editing experience and
@@ -34,12 +79,10 @@ UI enhancements. Here are some notable updates:
 - (**breaking**, [bd6e630]) Revert the default colorscheme to gruvbox-material.
   gruvbox-carbon is a bit too dark, and the contrast ratio is too high 🙃
 
-<!-- prettier-ignore-start -->
 [a54b2e8]: https://github.com/loichyan/Meowim/commit/a54b2e8f2be0544601cba5a7e816f31585570338
 [c91e011]: https://github.com/loichyan/Meowim/commit/c91e011cbc395cab766b06ba2dae158c0078e3bf
 [275d32d]: https://github.com/loichyan/Meowim/commit/275d32d94211f1c21d8b4c4e2ab0f31aa3a3764c
 [bd6e630]: https://github.com/loichyan/Meowim/commit/bd6e63098bad8f792f55fbdbde64da2f515f6a1f
-<!-- prettier-ignore-end -->
 
 ## [20250828]
 
@@ -74,7 +117,6 @@ keymaps and auto-completion. Noticeable changes are listed below:
   (since they have the same author :heart:) but provides more options for
   customization.
 
-<!-- prettier-ignore-start -->
 [2832af2]: https://github.com/loichyan/Meowim/commit/2832af2a8cf0fea3095fd1817ac8718879b89bb5
 [055071f]: https://github.com/loichyan/Meowim/commit/055071fc367e2a69a2cbf286e28c5919e1304604
 [414b46c]: https://github.com/loichyan/Meowim/commit/414b46c622eccccf644517206ca057672256b653
@@ -83,7 +125,6 @@ keymaps and auto-completion. Noticeable changes are listed below:
 [c74a720]: https://github.com/loichyan/Meowim/commit/c74a72057e86ca7aefd82b306ece75bbd281301d
 [mini.nvim#1938]: https://github.com/echasnovski/mini.nvim/issues/1938
 [mini.nvim#1944]: https://github.com/echasnovski/mini.nvim/issues/1944
-<!-- prettier-ignore-end -->
 
 ## [20250809]
 
@@ -122,10 +163,9 @@ updates include:
   lack good LSP support or for which a LSP server is just too expensive to
   start.
 
-<!-- prettier-ignore-start -->
 [20250731]: https://github.com/loichyan/Meowim/tree/v20250731
 [20250809]: https://github.com/loichyan/Meowim/compare/v20250731..v20250809
 [20250828]: https://github.com/loichyan/Meowim/compare/v20250809..v20250828
 [20260104]: https://github.com/loichyan/Meowim/compare/v20250828..v20260104
-[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260104..HEAD
-<!-- prettier-ignore-end -->
+[20260131]: https://github.com/loichyan/Meowim/compare/v20260104..v20260131
+[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260131..HEAD

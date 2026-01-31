@@ -1,6 +1,6 @@
 ---@type MeoSpec
 return {
-  "mini.extra",
+  'mini.extra',
   lazy = true,
-  config = function() require("mini.extra").setup() end,
+  config = function() require('mini.extra').setup() end,
 }

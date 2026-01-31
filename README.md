@@ -53,7 +53,7 @@ On the other hand, Meowim won't offer an extendable layer over its codebase like
 distribution meets everyone's needs (which is also one reason this project
 exists).
 
-## ♥️ Special Thanks
+## ❤️ Special Thanks
 
 - [mini.nvim](https://github.com/nvim-mini/mini.nvim) for the fundamental
   contribution to the birth of this project.

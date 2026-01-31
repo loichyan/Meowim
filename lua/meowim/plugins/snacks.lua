@@ -1,22 +1,22 @@
 ---@type MeoSpec
 local Spec = {
-  "folke/snacks.nvim",
+  'folke/snacks.nvim',
   lazy = false,
   priority = 90,
 }
 
 Spec.config = function()
-  require("snacks").setup({
+  require('snacks').setup({
     quickfile = { enabled = true },
     input = { enabled = true },
     words = { enabled = true, debounce = 300 },
   })
-  Meow.autocmd("meowim.plugins.snacks", {
+  Meow.autocmd('meowim.plugins.snacks', {
     {
-      event = "User",
-      pattern = "MiniFilesActionRename",
-      desc = "Track renamed files",
-      callback = function(ev) require("snacks.rename").on_rename_file(ev.data.from, ev.data.to) end,
+      event = 'User',
+      pattern = 'MiniFilesActionRename',
+      desc = 'Track renamed files',
+      callback = function(ev) require('snacks.rename').on_rename_file(ev.data.from, ev.data.to) end,
     },
   })
 end
