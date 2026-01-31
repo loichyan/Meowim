@@ -89,6 +89,11 @@ Spec.config = function()
       min_keyword_length = 2,
       providers = {
         lsp = { fallbacks = {} },
+        lazydev = {
+          name = 'LazyDev',
+          module = 'lazydev.integrations.blink',
+          score_offset = 100,
+        },
       },
     },
     -- keymaps
