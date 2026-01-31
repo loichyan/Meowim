@@ -133,6 +133,7 @@ Meow.keymap({
   { '<Leader>fg',          function() H.pick_lgrep('current') end,                                       desc = 'Grep current buffer'               },
   { '<Leader>fG',          function() H.pick_lgrep('all') end,                                           desc = 'Grep workspace files'              },
   { '<Leader>fh',          function() H.pick('help') end,                                                desc = 'Pick helptags'                     },
+  { '<Leader>fH',          function() H.pick('manpages') end,                                            desc = 'Pick manpages'                     },
   { '<Leader>fk',          function() H.pick('keymaps') end,                                             desc = 'Pick keymaps'                      },
   { '<Leader>fm',          function() H.pick('marks') end,                                               desc = 'Pick marks'                        },
   { '<Leader>fn',          function() H.pick('notify') end,                                              desc = 'Pick notifications'                },
