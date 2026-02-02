@@ -67,7 +67,7 @@ Spec.config = function()
   }
 
   require('blink.cmp').setup({
-    enabled = function() return not Meowim.utils.is_toggle_on(0, 'completion_disable') end,
+    enabled = function() return not Meowim.utils.is_toggle_on('completion_disable') end,
     -- General
     completion = {
       accept = { auto_brackets = { enabled = false } },

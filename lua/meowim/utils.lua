@@ -56,9 +56,10 @@ Utils.get_git_repo = function(cwd)
 end
 
 ---Returns the state of a toggler of current buffer.
----@param bufnr integer
 ---@param key string
-Utils.is_toggle_on = function(bufnr, key)
+---@param bufnr? integer
+Utils.is_toggle_on = function(key, bufnr)
+  bufnr = bufnr or 0
   local val = vim.b[bufnr][key]
   if val == nil then val = vim.g[key] end
   return val == true
@@ -75,7 +76,7 @@ Utils.toggle = function(key, scope)
     return vim.g[key]
   else
     local bufnr = vim.api.nvim_get_current_buf()
-    vim.b[bufnr][key] = not Utils.is_toggle_on(bufnr, key)
+    vim.b[bufnr][key] = not Utils.is_toggle_on(key, bufnr)
     return vim.b[bufnr][key]
   end
 end
