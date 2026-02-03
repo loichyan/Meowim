@@ -108,12 +108,12 @@ Meow.keymap({
   { ']e',                  function() H.jump_diagnostic('forward',  'ERROR') end,                        desc = 'Diagnostic error forward'          },
   { ']E',                  function() H.jump_diagnostic('last',     'ERROR') end,                        desc = 'Diagnostic error last'             },
 
-  { '<Leader>ld',          function() H.pick_diagnostics('current') end,                                 desc = 'Pick document diagnostics'         },
-  { '<Leader>lD',          function() H.pick_diagnostics('all') end,                                     desc = 'Pick workspace diagnostics'        },
-  { '<Leader>lw',          function() H.pick_diagnostics('current', 'WARN' ) end,                        desc = 'Pick document warnings'            },
-  { '<Leader>lW',          function() H.pick_diagnostics('all',     'WARN' ) end,                        desc = 'Pick workspace warnings'           },
-  { '<Leader>le',          function() H.pick_diagnostics('current', 'ERROR') end,                        desc = 'Pick document errors'              },
-  { '<Leader>lE',          function() H.pick_diagnostics('all',     'ERROR') end,                        desc = 'Pick workspace errors'             },
+  { '<Leader>ld',          function() H.list_diagnostics('current') end,                                 desc = 'List document diagnostics'         },
+  { '<Leader>lD',          function() H.list_diagnostics('all') end,                                     desc = 'List workspace diagnostics'        },
+  { '<Leader>le',          function() H.list_diagnostics('current', 'ERROR') end,                        desc = 'List document errors'              },
+  { '<Leader>lE',          function() H.list_diagnostics('all',     'ERROR') end,                        desc = 'List workspace errors'             },
+  { '<Leader>lw',          function() H.list_diagnostics('current', 'WARN' ) end,                        desc = 'List document warnings'            },
+  { '<Leader>lW',          function() H.list_diagnostics('all',     'WARN' ) end,                        desc = 'List workspace warnings'           },
 
   -- Pickers
   { '<C-q>',               function() H.pick('list', {scope='quickfix'}) end,                            desc = 'Pick quickfix'                     },
