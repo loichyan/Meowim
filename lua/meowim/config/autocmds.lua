@@ -37,7 +37,6 @@ Meow.autocmd('meowim.config.autocmds', {
     callback = function(ev)
       if not trivial_files[ev.match] then return end
       vim.bo.buflisted = false
-      vim.b.miniindentscope_disable = true
       vim.keymap.set('n', 'q', '<Cmd>lua Meowim.utils.try_close()<CR>', {
         buffer = ev.buf,
         desc = 'Close current buffer',
