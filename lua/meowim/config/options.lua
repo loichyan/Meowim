@@ -11,6 +11,7 @@ o.tabstop = 4
 o.shiftwidth = 4
 o.softtabstop = 4
 
+o.colorcolumn = '+1' -- show ruler
 o.cmdheight = 0 -- hide cmdline
 o.showcmdloc = 'statusline' -- display command messages in statusline
 o.laststatus = 3 -- show global statusline
