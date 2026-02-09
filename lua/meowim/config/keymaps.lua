@@ -41,6 +41,8 @@ Meow.keymap({
   { '<Leader>W',           '<Cmd>close<CR>',                                                             desc = 'Close current window'              },
   { '<Leader>Q',           '<Cmd>tabclose<CR>',                                                          desc = 'Close current tab'                 },
 
+  { 'gb',                  function() require('meoline').goto_tab('select') end,                         desc = 'Select tab and goto'               },
+  { 'gB',                  function() require('meoline').close_tab('select') end,                        desc = 'Select tab and close'              },
   { '[t',                  '<Cmd>tabprevious<CR>',                                                       desc = 'Tab previous'                      },
   { '[T',                  '<Cmd>tabfirst<CR>',                                                          desc = 'Tab first'                         },
   { ']t',                  '<Cmd>tabnext<CR>',                                                           desc = 'Tab next'                          },
