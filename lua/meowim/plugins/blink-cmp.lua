@@ -80,7 +80,7 @@ Spec.config = function()
     -- Completion
     fuzzy = {
       implementation = 'prefer_rust_with_warning',
-      prebuilt_binaries = { force_version = 'v1.8.0' },
+      prebuilt_binaries = { force_version = 'v1.9.1' },
       sorts = { 'exact', 'score', 'sort_text', 'kind' },
     },
     snippets = { preset = 'mini_snippets' },
