@@ -10,6 +10,24 @@ follows <https://www.conventionalcommits.org/en/v1.0.0/> to track changes.
 
 ## [Unreleased]
 
+## [20260226]
+
+This release does not include major updates. Here are the notable changes:
+
+- (**breaking**, [0f341dd]) Use quickfix instead of mini.pick to open
+  diagnostics.
+- ([d587a04]) Map `gb` to perform [easymotion]-like label selection on the
+  tabline.
+
+Additionally, there are a bunch of minor improvements to [meoline.nvim] in this
+month. Please refer to
+[this link](https://github.com/loichyan/meoline.nvim/compare/fbadf1c398c558b59a3cbc1f4442091b9aeaa5e0..7b59e54e6c63f5ac61d01043777ef92e58767b9a)
+for the detailed changes.
+
+[0f341dd]: https://github.com/loichyan/Meowim/commit/0f341dd71183807836030e4905ae716ee406ffec
+[d587a04]: https://github.com/loichyan/Meowim/commit/d587a0448d1efefd02b0b272b0e86997da62bca1
+[easymotion]: https://github.com/easymotion/vim-easymotion
+
 ## [20260131]
 
 This release focuses mainly on UI and keymaps. Here are the notable updates:
@@ -168,4 +186,5 @@ updates include:
 [20250828]: https://github.com/loichyan/Meowim/compare/v20250809..v20250828
 [20260104]: https://github.com/loichyan/Meowim/compare/v20250828..v20260104
 [20260131]: https://github.com/loichyan/Meowim/compare/v20260104..v20260131
-[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260131..HEAD
+[20260226]: https://github.com/loichyan/Meowim/compare/v20260131..v20260226
+[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260226..HEAD
