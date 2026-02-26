@@ -3,7 +3,7 @@ local Spec = {
   'nvim-treesitter/nvim-treesitter',
   checkout = 'main',
   build = function() vim.cmd('TSUpdate') end,
-  lazy = false,
+  event = 'VeryLazy',
 }
 local H = {}
 

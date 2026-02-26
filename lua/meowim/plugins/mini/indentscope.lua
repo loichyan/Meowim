@@ -17,6 +17,12 @@ Spec.config = function()
       goto_bottom = '',
     },
   })
+  Meow.autocmd('meowim.plugins.mini.indentscope', {
+    {
+      event = 'BufEnter',
+      callback = function() vim.b.miniindentscope_disable = not vim.bo.buflisted end,
+    },
+  })
 end
 
 return Spec

@@ -129,15 +129,6 @@ H.pick = function(picker, local_opts)
 end
 
 ---@param scope 'current'|'all'
----@param severity vim.diagnostic.Severity?
-H.pick_diagnostics = function(scope, severity)
-  require('mini.pick').registry.diagnostic({
-    scope = scope,
-    get_opts = { severity = severity },
-  })
-end
-
----@param scope 'current'|'all'
 H.pick_lgrep = function(scope, grep_opts)
   local globs = scope == 'current' and { vim.fn.expand('%') } or nil
   grep_opts = vim.tbl_extend('force', { globs = globs }, grep_opts or {})
@@ -156,6 +147,19 @@ H.pick_word = function(scope, grep_opts)
   local name = string.format('Grep (%s | %s)', grep_opts.tool, pattern)
   local opts = { source = { name = name } }
   require('mini.pick').registry.grep(grep_opts, opts)
+end
+
+---@param scope 'current'|'all'
+---@param severity vim.diagnostic.Severity?
+H.list_diagnostics = function(scope, severity)
+  local diagnostics = vim.diagnostic.get(scope == 'current' and 0 or nil, { severity = severity })
+  if #diagnostics == 0 then
+    Meow.notify('WARN', 'No diagnostics found')
+    return
+  end
+  local qfitems = vim.diagnostic.toqflist(diagnostics)
+  vim.fn.setqflist(qfitems)
+  vim.schedule(function() vim.cmd('copen | cfirst') end)
 end
 
 return H

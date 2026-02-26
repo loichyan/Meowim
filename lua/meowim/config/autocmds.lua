@@ -37,7 +37,6 @@ Meow.autocmd('meowim.config.autocmds', {
     callback = function(ev)
       if not trivial_files[ev.match] then return end
       vim.bo.buflisted = false
-      vim.b.miniindentscope_disable = true
       vim.keymap.set('n', 'q', '<Cmd>lua Meowim.utils.try_close()<CR>', {
         buffer = ev.buf,
         desc = 'Close current buffer',
@@ -49,12 +48,9 @@ Meow.autocmd('meowim.config.autocmds', {
     event = 'FileType',
     desc = 'Configure rulers',
     callback = function(ev)
-      local ft = ev.match
+      local ft, opt_local = ev.match, vim.opt_local
       if vim.bo.buftype ~= '' or trivial_files[ft] then return end
-      local width = rulers[ft] or rulers['*']
-      vim.opt_local.colorcolumn:append({ width })
-      vim.bo.textwidth = width
-      if ft == 'markdown' then vim.opt_local.wrap = true end
+      opt_local.textwidth = rulers[ft] or rulers['*']
     end,
   },
 

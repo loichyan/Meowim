@@ -20,7 +20,7 @@ H.lsp_keyaps = {
   { '<Leader>lr', function() H.lsp_references('current') end,                                  desc = 'List buffer references'         },
   { '<Leader>lR', function() H.lsp_references('all') end,                                      desc = 'List workspace references'      },
   { '<Leader>ls', function() H.pick('lsp', {scope='document_symbol'}) end,                     desc = 'Pick buffer symbols'            },
-  { '<Leader>lS', function() H.pick('lsp', {scope='workspace_symbol'}) end,                    desc = 'Pick workspace symbols'         },
+  { '<Leader>lS', function() H.pick('lsp', {scope='workspace_symbol_live'}) end,               desc = 'Pick workspace symbols'         },
 }
 
 M.setup = function(bufnr, client)

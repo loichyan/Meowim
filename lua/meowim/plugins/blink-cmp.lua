@@ -67,7 +67,7 @@ Spec.config = function()
   }
 
   require('blink.cmp').setup({
-    enabled = function() return not Meowim.utils.is_toggle_on(0, 'completion_disable') end,
+    enabled = function() return not Meowim.utils.is_toggle_on('completion_disable') end,
     -- General
     completion = {
       accept = { auto_brackets = { enabled = false } },
@@ -80,7 +80,7 @@ Spec.config = function()
     -- Completion
     fuzzy = {
       implementation = 'prefer_rust_with_warning',
-      prebuilt_binaries = { force_version = 'v1.8.0' },
+      prebuilt_binaries = { force_version = 'v1.9.1' },
       sorts = { 'exact', 'score', 'sort_text', 'kind' },
     },
     snippets = { preset = 'mini_snippets' },
