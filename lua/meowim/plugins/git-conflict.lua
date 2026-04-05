@@ -1,5 +1,5 @@
 ---@type MeoSpec
-local Spec = { 'akinsho/git-conflict.nvim', event = 'LazyFile' }
+local Spec = { 'loichyan/git-conflict.nvim', event = 'LazyFile' }
 
 Spec.config = function()
   require('git-conflict').setup({
