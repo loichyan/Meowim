@@ -10,6 +10,16 @@ follows <https://www.conventionalcommits.org/en/v1.0.0/> to track changes.
 
 ## [Unreleased]
 
+## [20260405]
+
+This release doesn't add any new features, because I've been busy preparing for
+an important exam. The only notable change is that the plugin
+[akinsho/git-conflict.nvim] has been replaced with my own
+[fork](https://github.com/loichyan/git-conflict.nvim), since the original
+repository hasn't been updated for a long time.
+
+[akinsho/git-conflict.nvim]: https://github.com/akinsho/git-conflict.nvim
+
 ## [20260226]
 
 This release does not include major updates. Here are the notable changes:
@@ -187,4 +197,5 @@ updates include:
 [20260104]: https://github.com/loichyan/Meowim/compare/v20250828..v20260104
 [20260131]: https://github.com/loichyan/Meowim/compare/v20260104..v20260131
 [20260226]: https://github.com/loichyan/Meowim/compare/v20260131..v20260226
-[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260226..HEAD
+[20260405]: https://github.com/loichyan/Meowim/compare/v20260226..v20260405
+[Unreleased]: https://github.com/loichyan/Meowim/compare/v20260405..HEAD
